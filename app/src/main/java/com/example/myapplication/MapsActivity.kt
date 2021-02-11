@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -84,40 +85,56 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
         mMap.setOnMarkerClickListener(this)
         mMap.setOnMapClickListener(this)
 
-        //providers localization
+        createProviderMarker()
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(53.723275, 91.432107),10f))
+
+    }
+
+
+    private fun createProviderMarker(){
+
         val arshanov = LatLng(53.402971, 91.083748)
         val chernogorskiy = LatLng(53.759367, 91.061604)
         val izyhskiy = LatLng(53.630114, 91.436063)
         val cirbinskiy= LatLng(53.529799, 91.410684)
 
-        mMap.addMarker(MarkerOptions().position(arshanov).title("Аршановский разрез"))
-        mMap.addMarker(MarkerOptions().position(chernogorskiy).title("Черногорский разрез"))
-        mMap.addMarker(MarkerOptions().position(izyhskiy).title("Изыхский разрез"))
-        mMap.addMarker(MarkerOptions().position(cirbinskiy).title("Кирбинский разрез"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(53.723275, 91.432107),10f))
+        when(intent.getStringExtra("provider")){
 
+            "arshanov" -> mMap.addMarker(MarkerOptions().position(arshanov).title("Аршановский разрез"))
+            "chernogorskiy" -> mMap.addMarker(MarkerOptions().position(chernogorskiy).title("Черногорский разрез"))
+            "izyhskiy" -> mMap.addMarker(MarkerOptions().position(izyhskiy).title("Изыхский разрез"))
+            "cirbinskiy" -> mMap.addMarker(MarkerOptions().position(cirbinskiy).title("Кирбинский разрез"))
 
+            else -> onDestroy()
+        }
     }
-
 
     private fun showConfirmDialog(p0: LatLng){
         dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_confirm_adress)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val fieldText = dialog.findViewById<EditText>(R.id.field_adressConfirm)
+        //обработчик на нажатие фона диалога
+        dialog.setOnDismissListener {
+            showToast("Hello")
+        }
+
+        val fieldText = dialog.findViewById<TextView>(R.id.field_adressConfirm)
         val btnConfirm = dialog.findViewById<Button>(R.id.btn_confirm)
 
-        fieldText.setText("$p0")
+        fieldText.text = "$p0"
 
         btnConfirm.setOnClickListener {
             mMap.clear()
             dialog.dismiss()
+            createProviderMarker()
 //            val intent = Intent(this, MainActivity::class.java)
 //            intent.putExtra("sms", "$p0")
 //            startActivity(intent)
 //            onStop()
         }
+
+
 
         dialog.show()
 
@@ -144,12 +161,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
 //        Toast.makeText(this, "Latitude-> ${p0.latitude}\nLongitude-> ${p0.longitude}", Toast.LENGTH_SHORT).show()
     }
 
+
+
     private fun placeMarkerOnMap(location: LatLng) {
         val markerOptions = MarkerOptions().position(location)
         markerOptions.title("Выбранный адрес -> ${location.longitude}\n${location.longitude}")
         markerr = mMap.addMarker(markerOptions)
     }
 
+
+    //метод, упрощающий создание тостов
+    private fun showToast(string: String){
+        Toast.makeText(this, "$string", Toast.LENGTH_SHORT).show()
+    }
 
 
 }

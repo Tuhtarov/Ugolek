@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var Preferences: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
+    lateinit var str: String
 
     //инициализация переменных
     @SuppressLint("CommitPrefEdits")
@@ -38,7 +39,16 @@ class MainActivity : AppCompatActivity() {
 
     fun createMapsLayout(){
         val mapsLayout = Intent(this, MapsActivity::class.java)
+        mapsLayout.putExtra("provider", str)
         startActivity(mapsLayout)
+    }
+
+    fun createToast(string: String){
+            Toast.makeText(
+            applicationContext,
+            "$string",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
 
@@ -46,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         prefinit()
+
 
         //активация кнопки провайдера
         textView3.setOnClickListener {
@@ -55,27 +66,53 @@ class MainActivity : AppCompatActivity() {
             showdialogprovider()
         }
 
+
         imageButton.setOnClickListener {
-            createMapsLayout()
+
+            if ((textView3.text.toString() == "") and (textView4.text.toString() == "") and (editTextNumber2.text.toString() == "")){
+                createToast("Заполните поля: Поставщик, Марка угля, Требуемая масса")
+            } else if ((textView3.text.toString() != "") and (textView4.text.toString() == "") and (editTextNumber2.text.toString() == "")){
+                createToast("Заполните поля: Марка угля, Требуемая масса")
+            } else if ((textView3.text.toString() != "") and (textView4.text.toString() != "") and (editTextNumber2.text.toString() == "")){
+                createToast("Заполните поля: Требуемая масса")
+            } else {
+                createMapsLayout()
+            }
+
         }
 
-        val toast = Toast.makeText(
-            applicationContext,
-            "Заполняй последовательно :)",
-            Toast.LENGTH_SHORT
-        )
 
         textView4.setOnClickListener {
             if (textView3.text.toString() != "") {
                 when (textView3.text.toString()) {
-                    getString(R.string.arschanovr) -> showdialogmarkfor_arshanov()
-                    getString(R.string.cirbinskiy) -> showdialogmarkfor_cirbinskiy()
-                    getString(R.string.chernogorskiy) -> showdialogmarkfor_chernogoskiy()
-                    getString(R.string.izyhskiy) -> showdialogmarkfor_izyhskiy()
-                    else -> toast.show()
+                    getString(R.string.arschanovr) -> {
+                        showdialogmarkfor_arshanov()
+                        str = ""
+                        str = "arshanov"
+                    }
+
+                    getString(R.string.cirbinskiy) -> {
+                        showdialogmarkfor_cirbinskiy()
+                        str = ""
+                        str = "cirbinskiy"
+                    }
+
+                    getString(R.string.chernogorskiy) -> {
+                        showdialogmarkfor_chernogoskiy()
+                        str = ""
+                        str = "chernogorskiy"
+                    }
+
+                    getString(R.string.izyhskiy) -> {
+                        showdialogmarkfor_izyhskiy()
+                        str = ""
+                        str = "izyhskiy"
+                    }
+
+                    else -> createToast("Заполняй последовательно")
                 }
             } else {
-                toast.show()
+                createToast("Заполняй последовательно")
             }
         }
 
@@ -183,9 +220,6 @@ class MainActivity : AppCompatActivity() {
         textView4.append(str)
 
     }
-
-
-
 
 
 
