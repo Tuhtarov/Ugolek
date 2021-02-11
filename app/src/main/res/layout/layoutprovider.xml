@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/ListContainers"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/backgroundforlistproviders"
+    android:scaleType="centerCrop">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:background="@drawable/textforlistproviders"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+        </TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ChooseProvider"
+        android:layout_width="match_parent"
+        android:layout_height="260dp"
+        android:orientation="vertical"
+        >
+        <ImageButton
+            android:layout_marginLeft="20dp"
+            android:id="@+id/btn_arschanovr"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:background="@drawable/btn_arschanovr">
+
+        </ImageButton>
+        <ImageButton
+            android:layout_marginLeft="20dp"
+            android:id="@+id/btn_cirbinsciyr"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:background="@drawable/btn_cirbinsciyr">
+
+        </ImageButton>
+        <ImageButton
+            android:layout_marginLeft="20dp"
+            android:id="@+id/btn_chernogorskiyr"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:background="@drawable/btn_chernogorskiyr">
+
+        </ImageButton>
+        <ImageButton
+            android:layout_marginLeft="20dp"
+            android:id="@+id/btn_izyskhiyr"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="10"
+            android:background="@drawable/btn_izyskhiyr">
+
+        </ImageButton>
+
+
+    </LinearLayout>
+</LinearLayout>

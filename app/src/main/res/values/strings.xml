@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name" translatable="false">Уголёк</string>
+    <string name="Provider" translatable="false">Провайдер</string>
+    <string name="arschanovr" translatable="false">Аршановский разрез</string>
+    <string name="cirbinskiy" translatable="false">Кирбинский разрез</string>
+    <string name="chernogorskiy" translatable="false">Черногорский разрез</string>
+    <string name="izyhskiy" translatable="false">Изыхский разрез</string>
+
+    <string name="mark1" translatable="false">ДМСШ 0–25</string>
+    <string name="mark2" translatable="false">ДО 25–50</string>
+    <string name="mark3" translatable="false">ДПК 50–200</string>
+    <string name="mark4" translatable="false">ДР 0–300</string>
+
+
+    <string name="contraintfortxtnum" translatable="false">"1","2","3","4"
+        ,"5","6","7","8","9","10","11","12","13","14","15","16","17","18","19",
+        "20","21","22","23","24","25","26","27","28","29","30","31","32","33",
+        "34","35","36","37","38","39","40"</string>
+
+    <string name="todo" translatable="false">TODO</string>
+    <string name="Coal" translatable="false">Уголь</string>
+    <string name="TitleDialog" translatable="false">Выберите поставшика</string>
+    <string name="Fire" translatable="false">Принять</string>
+    <string name="forFieldConfirm" translatable="false">Значение</string>
+    <string name="Cancel" translatable="false">Отклонить</string>
+    <string name="_1_40" translatable="false">1-40(тонн)</string>
+    <string name="back">Нааааазаааад</string>
+    <string name="enteredOrderFields">Введённые поля заказа</string>
+    <string name="markCoal">Марка угля</string>
+    <string name="requiredMass">Требуемая масса</string>
+    <string name="PriceTonn">Стоимость тонны</string>
+    <string name="adressDelivery">Адрес доставки</string>
+    <string name="provider">Поставщик</string>
+    <string name="priceDelivery">Доставка</string>
+    <string name="Disctance">Расстояние</string>
+    <string name="totalAmount">Общая стоимость</string>
+    <string name="Tellphone">Телефон</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="Adress">Адресс</string>
+    <string name="text_accept">Подтвердить</string>
+</resources>
