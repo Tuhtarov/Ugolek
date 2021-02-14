@@ -14,7 +14,7 @@
             </stroke>
 
             <solid
-                android:color="#9CFB98">
+                android:color="@color/theme_bttn">
             </solid>
         </shape>
     </item>

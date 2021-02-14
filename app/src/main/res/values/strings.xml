@@ -36,6 +36,7 @@
     <string name="totalAmount">Общая стоимость</string>
     <string name="Tellphone">Телефон</string>
     <string name="title_activity_maps">Map</string>
-    <string name="Adress">Адресс</string>
+    <string name="Adress">Адрес</string>
     <string name="text_accept">Подтвердить</string>
+    <string name="text_chooseProvider">Выберите поставщика</string>
 </resources>
