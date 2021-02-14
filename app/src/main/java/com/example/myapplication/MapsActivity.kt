@@ -126,33 +126,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
             Toast.makeText(this, "Нулевое значение", Toast.LENGTH_SHORT).show()
         }
 
-//        if (intent.getStringExtra("provider") != null) {
-//            val arshanov = LatLng(53.402971, 91.083748)
-//            val chernogorskiy = LatLng(53.759367, 91.061604)
-//            val izyhskiy = LatLng(53.630114, 91.436063)
-//            val cirbinskiy = LatLng(53.529799, 91.410684)
-//
-//            when (intent.getStringExtra("provider")) {
-//
-//                "arshanov" -> mMap.addMarker(
-//                    MarkerOptions().position(arshanov).title("Аршановский разрез")
-//                )
-//                "chernogorskiy" -> mMap.addMarker(
-//                    MarkerOptions().position(chernogorskiy).title("Черногорский разрез")
-//                )
-//                "izyhskiy" -> mMap.addMarker(
-//                    MarkerOptions().position(izyhskiy).title("Изыхский разрез")
-//                )
-//                "cirbinskiy" -> mMap.addMarker(
-//                    MarkerOptions().position(cirbinskiy).title("Кирбинский разрез")
-//                )
-//
-//                else -> finish()
-//            }
-//        } else {
-//            return
-//        }
-
     }
 
     private fun showConfirmDialog(p0: LatLng){

@@ -1,76 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ListContainers"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:background="@drawable/backgroundforlistproviders"
-    android:scaleType="centerCrop">
+    android:layout_gravity="center">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:orientation="vertical">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/CardViewPrLt"
+        app:cardCornerRadius="50dp"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#F9F9F9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:background="@drawable/textforlistproviders"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-        </TextView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/text_chooseProvider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Выберите поставщика"
+                android:textSize="22sp"
+                android:fontFamily="@font/russian_road"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="25dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_chernogorsk"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
+            </TextView>
 
-    </LinearLayout>
+            <!-- Здесь кнопка для Черногорского разреза-->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_chernogorsk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_arschanov"
+                app:layout_constraintEnd_toEndOf="@+id/container"
+                app:layout_constraintStart_toStartOf="@+id/container"
+                app:layout_constraintTop_toBottomOf="@+id/text_chooseProvider"
+                app:layout_constraintVertical_bias="0.0">
 
-    <LinearLayout
-        android:id="@+id/ChooseProvider"
-        android:layout_width="match_parent"
-        android:layout_height="260dp"
-        android:orientation="vertical"
-        >
-        <ImageButton
-            android:layout_marginLeft="20dp"
-            android:id="@+id/btn_arschanovr"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:background="@drawable/btn_arschanovr">
+            </androidx.appcompat.widget.AppCompatButton>
 
-        </ImageButton>
-        <ImageButton
-            android:layout_marginLeft="20dp"
-            android:id="@+id/btn_cirbinsciyr"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:background="@drawable/btn_cirbinsciyr">
+            <!-- Здесь кнопка для Аршановского разреза-->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_arschanov"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_izyskhiy"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_chernogorsk">
 
-        </ImageButton>
-        <ImageButton
-            android:layout_marginLeft="20dp"
-            android:id="@+id/btn_chernogorskiyr"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:background="@drawable/btn_chernogorskiyr">
+            </androidx.appcompat.widget.AppCompatButton>
 
-        </ImageButton>
-        <ImageButton
+            <!-- Здесь кнопка для Изыхского разреза-->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_izyskhiy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                app:layout_constraintBottom_toTopOf="@+id/btn_cirbinsciy"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_arschanov">
 
-            android:layout_marginLeft="20dp"
-            android:id="@+id/btn_izyskhiyr"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:background="@drawable/btn_izyskhiyr">
+            </androidx.appcompat.widget.AppCompatButton>
 
-        </ImageButton>
+            <!-- Здесь кнопка для Кирбинского разреза-->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_cirbinsciy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                app:layout_constraintBottom_toBottomOf="@+id/container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_izyskhiy">
 
+            </androidx.appcompat.widget.AppCompatButton>
 
-    </LinearLayout>
-</LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

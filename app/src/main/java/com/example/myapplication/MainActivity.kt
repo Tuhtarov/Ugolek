@@ -19,22 +19,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_second.*
 import kotlinx.android.synthetic.main.mark_layout.*
 import org.w3c.dom.Text
+import java.util.prefs.Preferences
 
 
 class MainActivity : AppCompatActivity() {
-
-    lateinit var Preferences: SharedPreferences
-    lateinit var editor: SharedPreferences.Editor
     lateinit var IntentForMapsLayout: Intent
     var str: String? = null
     val requestCodes = 0
-
-    //инициализация переменных
-    @SuppressLint("CommitPrefEdits")
-    private fun prefinit() {
-        Preferences = getSharedPreferences("Hello", MODE_PRIVATE)
-        editor = Preferences.edit()
-    }
 
     fun createSecondLayout(){
         Intent(this, SecondActivity::class.java).also {
@@ -61,7 +52,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        prefinit()
 
         IntentForMapsLayout = Intent(this, MapsActivity::class.java)
 
@@ -125,6 +115,7 @@ class MainActivity : AppCompatActivity() {
             textView3.text = ""
             textView4.text = ""
             summ_tonn.text = ""
+            editTextNumber2.setText("")
             str = null
             showdialogprovider()
         }
