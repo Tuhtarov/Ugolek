@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.ActivityChooserView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
@@ -75,6 +76,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+
     }
 
 
@@ -92,7 +95,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
 
 
     private fun createProviderMarker(){
-
         val arshanov = LatLng(53.402971, 91.083748)
         val chernogorskiy = LatLng(53.759367, 91.061604)
         val izyhskiy = LatLng(53.630114, 91.436063)
@@ -105,7 +107,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
             "izyhskiy" -> mMap.addMarker(MarkerOptions().position(izyhskiy).title("Изыхский разрез"))
             "cirbinskiy" -> mMap.addMarker(MarkerOptions().position(cirbinskiy).title("Кирбинский разрез"))
 
-            else -> onDestroy()
+            else -> finish()
         }
     }
 
@@ -114,24 +116,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
         dialog.setContentView(R.layout.dialog_confirm_adress)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        //обработчик на нажатие фона диалога
-        dialog.setOnDismissListener {
-            showToast("Hello")
-        }
+        val str = "${p0.toString()}"
+        val intent1 = Intent(this, MainActivity::class.java)
 
+        dialog.setOnCancelListener { showToast("Выберите адресс -> Нажмите кнопку \"Подтвердить\"") }
+
+        //объявление переменных, содержащие компоненты из диалогового окна
         val fieldText = dialog.findViewById<TextView>(R.id.field_adressConfirm)
         val btnConfirm = dialog.findViewById<Button>(R.id.btn_confirm)
 
         fieldText.text = "$p0"
 
+        //обработчик кнопки ПОДТВЕРДИТЬ
         btnConfirm.setOnClickListener {
             mMap.clear()
-            dialog.dismiss()
+            //создание метки с местоположением выбранного поставщика на карте
             createProviderMarker()
-//            val intent = Intent(this, MainActivity::class.java)
-//            intent.putExtra("sms", "$p0")
-//            startActivity(intent)
-//            onStop()
+            //
+            intent1.putExtra("sms", str)
+            setResult(RESULT_OK, intent1)
+
+            dialog.dismiss()
+            finish()
         }
 
 
@@ -146,19 +152,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
         return false
     }
 
-
-
     //имплементированный к классу обработчик для нажатия по карте
     override fun onMapClick(p0: LatLng) {
 
-//        val markerOptions = MarkerOptions().position(p0)
-//        markerOptions.title("Выбранный адрес")
-//        markerr = mMap.addMarker(markerOptions)
-//
-//
+        val markerOptions = MarkerOptions().position(p0)
+        markerOptions.title("Выбранный адрес")
+        markerr = mMap.addMarker(markerOptions)
+
         showConfirmDialog(p0)
 
-//        Toast.makeText(this, "Latitude-> ${p0.latitude}\nLongitude-> ${p0.longitude}", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Latitude-> ${p0.latitude}\nLongitude-> ${p0.longitude}", Toast.LENGTH_SHORT).show()
+
     }
 
 
@@ -170,7 +174,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
     }
 
 
-    //метод, упрощающий создание тостов
+
+
+    //создать и показать тост на экране))0)00
     private fun showToast(string: String){
         Toast.makeText(this, "$string", Toast.LENGTH_SHORT).show()
     }

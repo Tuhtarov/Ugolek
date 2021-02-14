@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var Preferences: SharedPreferences
     lateinit var editor: SharedPreferences.Editor
     lateinit var str: String
+    val requestCodes = 0
 
     //инициализация переменных
     @SuppressLint("CommitPrefEdits")
@@ -33,14 +34,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createSecondLayout(){
-        val secondLayout = Intent(this, SecondActivity::class.java)
-        startActivity(secondLayout)
+        Intent(this, SecondActivity::class.java).also {
+            startActivity(it)
+        }
     }
 
-    fun createMapsLayout(){
-        val mapsLayout = Intent(this, MapsActivity::class.java)
-        mapsLayout.putExtra("provider", str)
-        startActivity(mapsLayout)
+//    fun createMapsLayout(){
+//        val mapsLayout = Intent(this, MapsActivity::class.java)
+//        mapsLayout.putExtra("provider", str)
+//        startActivityForResult(mapsLayout, requestCodes)
+//    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == requestCodes){
+            if (resultCode == RESULT_OK){
+                val strr = data?.getStringExtra("sms")
+                editTextTextPersonName2.setText(strr)
+            }
+        } else {
+            editTextTextPersonName2.setText("")
+        }
     }
 
     fun createToast(string: String){
@@ -57,6 +72,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         prefinit()
 
+            val intent = intent.getStringExtra("sms")
+            editTextTextPersonName2.setText(intent)
 
         //активация кнопки провайдера
         textView3.setOnClickListener {
@@ -76,7 +93,10 @@ class MainActivity : AppCompatActivity() {
             } else if ((textView3.text.toString() != "") and (textView4.text.toString() != "") and (editTextNumber2.text.toString() == "")){
                 createToast("Заполните поля: Требуемая масса")
             } else {
-                createMapsLayout()
+
+                val mapsLayout = Intent(this, MapsActivity::class.java)
+                mapsLayout.putExtra("provider", str)
+                startActivityForResult(mapsLayout, requestCodes)
             }
 
         }
