@@ -30,6 +30,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
     private lateinit var mMap: GoogleMap
     private lateinit var markerr: Marker
     private lateinit var dialog: Dialog
+    val intentProviderFromMainActivity: Intent? = null
 
     //переменная request для работы функций по предоставлению разрешений
     private val LOCATION_PERMISSION_REQUEST = 1
@@ -95,20 +96,63 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
 
 
     private fun createProviderMarker(){
-        val arshanov = LatLng(53.402971, 91.083748)
-        val chernogorskiy = LatLng(53.759367, 91.061604)
-        val izyhskiy = LatLng(53.630114, 91.436063)
-        val cirbinskiy= LatLng(53.529799, 91.410684)
+            intent.getStringExtra("provider")?.let {
+            mMap.clear()
 
-        when(intent.getStringExtra("provider")){
+            val arshanov = LatLng(53.402971, 91.083748)
+            val chernogorskiy = LatLng(53.759367, 91.061604)
+            val izyhskiy = LatLng(53.630114, 91.436063)
+            val cirbinskiy = LatLng(53.529799, 91.410684)
 
-            "arshanov" -> mMap.addMarker(MarkerOptions().position(arshanov).title("Аршановский разрез"))
-            "chernogorskiy" -> mMap.addMarker(MarkerOptions().position(chernogorskiy).title("Черногорский разрез"))
-            "izyhskiy" -> mMap.addMarker(MarkerOptions().position(izyhskiy).title("Изыхский разрез"))
-            "cirbinskiy" -> mMap.addMarker(MarkerOptions().position(cirbinskiy).title("Кирбинский разрез"))
+            when (it) {
 
-            else -> finish()
+                "arshanov" -> mMap.addMarker(
+                    MarkerOptions().position(arshanov).title("Аршановский разрез")
+                )
+                "chernogorskiy" -> mMap.addMarker(
+                    MarkerOptions().position(chernogorskiy).title("Черногорский разрез")
+                )
+                "izyhskiy" -> mMap.addMarker(
+                    MarkerOptions().position(izyhskiy).title("Изыхский разрез")
+                )
+                "cirbinskiy" -> mMap.addMarker(
+                    MarkerOptions().position(cirbinskiy).title("Кирбинский разрез")
+                )
+
+                else -> finish()
+            }
+        } ?: run {
+                mMap.clear()
+            Toast.makeText(this, "Нулевое значение", Toast.LENGTH_SHORT).show()
         }
+
+//        if (intent.getStringExtra("provider") != null) {
+//            val arshanov = LatLng(53.402971, 91.083748)
+//            val chernogorskiy = LatLng(53.759367, 91.061604)
+//            val izyhskiy = LatLng(53.630114, 91.436063)
+//            val cirbinskiy = LatLng(53.529799, 91.410684)
+//
+//            when (intent.getStringExtra("provider")) {
+//
+//                "arshanov" -> mMap.addMarker(
+//                    MarkerOptions().position(arshanov).title("Аршановский разрез")
+//                )
+//                "chernogorskiy" -> mMap.addMarker(
+//                    MarkerOptions().position(chernogorskiy).title("Черногорский разрез")
+//                )
+//                "izyhskiy" -> mMap.addMarker(
+//                    MarkerOptions().position(izyhskiy).title("Изыхский разрез")
+//                )
+//                "cirbinskiy" -> mMap.addMarker(
+//                    MarkerOptions().position(cirbinskiy).title("Кирбинский разрез")
+//                )
+//
+//                else -> finish()
+//            }
+//        } else {
+//            return
+//        }
+
     }
 
     private fun showConfirmDialog(p0: LatLng){
@@ -117,33 +161,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val str = "${p0.toString()}"
-        val intent1 = Intent(this, MainActivity::class.java)
-
-        dialog.setOnCancelListener { showToast("Выберите адресс -> Нажмите кнопку \"Подтвердить\"") }
-
-        //объявление переменных, содержащие компоненты из диалогового окна
+        val intentResult = Intent(this, MainActivity::class.java)
         val fieldText = dialog.findViewById<TextView>(R.id.field_adressConfirm)
         val btnConfirm = dialog.findViewById<Button>(R.id.btn_confirm)
-
         fieldText.text = "$p0"
+
+        dialog.show()
+        dialog.setOnCancelListener { showToast("Нажатием на карту выберите адресс -> Нажмите кнопку \"Подтвердить\"") }
 
         //обработчик кнопки ПОДТВЕРДИТЬ
         btnConfirm.setOnClickListener {
-            mMap.clear()
-            //создание метки с местоположением выбранного поставщика на карте
             createProviderMarker()
-            //
-            intent1.putExtra("sms", str)
-            setResult(RESULT_OK, intent1)
 
+            //передача требуемого результата в MainActivity
+            intentResult.putExtra("sms", str)
+            setResult(RESULT_OK, intentResult)
             dialog.dismiss()
             finish()
         }
-
-
-
-        dialog.show()
-
     }
 
     //имплементированный к классу обработчик для любого нажатого маркера
@@ -154,25 +189,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
 
     //имплементированный к классу обработчик для нажатия по карте
     override fun onMapClick(p0: LatLng) {
-
-        val markerOptions = MarkerOptions().position(p0)
-        markerOptions.title("Выбранный адрес")
-        markerr = mMap.addMarker(markerOptions)
-
         showConfirmDialog(p0)
-
         Toast.makeText(this, "Latitude-> ${p0.latitude}\nLongitude-> ${p0.longitude}", Toast.LENGTH_SHORT).show()
-
     }
 
 
-
-    private fun placeMarkerOnMap(location: LatLng) {
+    private fun createMarkOfChoiceAddress(location: LatLng) {
         val markerOptions = MarkerOptions().position(location)
         markerOptions.title("Выбранный адрес -> ${location.longitude}\n${location.longitude}")
         markerr = mMap.addMarker(markerOptions)
     }
-
 
 
 
