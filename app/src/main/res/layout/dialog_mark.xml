@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ListContainersMark"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/CardViewMrkLt"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="50dp"
+        android:backgroundTint="@color/color_themeCardView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/containerMark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/text_chooseMark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp"
+                android:layout_gravity="center"
+                android:text="@string/chooseMark"
+                android:textSize="22sp"
+                android:fontFamily="@font/russian_road">
+            </TextView>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_dmsch_mark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:layout_gravity="center"
+                android:text="@string/dmsch"
+                android:textSize="17sp"
+                android:paddingHorizontal="15dp"
+                android:background="@drawable/bg_bttn_for_provoder_layout">
+
+            </androidx.appcompat.widget.AppCompatButton>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_do_mark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:layout_gravity="center"
+                android:text="@string/do25"
+                android:textSize="17sp"
+                android:paddingHorizontal="15dp"
+                android:background="@drawable/bg_bttn_for_provoder_layout">
+
+            </androidx.appcompat.widget.AppCompatButton>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_dpk_mark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:layout_gravity="center"
+                android:text="@string/dpk"
+                android:textSize="17sp"
+                android:paddingHorizontal="15dp"
+                android:background="@drawable/bg_bttn_for_provoder_layout">
+
+            </androidx.appcompat.widget.AppCompatButton>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_dp_mark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:layout_gravity="center"
+                android:text="@string/dp"
+                android:textSize="17sp"
+                android:paddingHorizontal="15dp"
+                android:background="@drawable/bg_bttn_for_provoder_layout">
+
+            </androidx.appcompat.widget.AppCompatButton>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

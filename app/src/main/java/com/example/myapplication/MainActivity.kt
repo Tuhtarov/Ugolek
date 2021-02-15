@@ -1,16 +1,14 @@
 package com.example.myapplication
 
-import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
-import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import com.afollestad.materialdialogs.MaterialDialog
@@ -18,21 +16,21 @@ import com.afollestad.materialdialogs.customview.customView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_second.*
 import kotlinx.android.synthetic.main.mark_layout.*
-import org.w3c.dom.Text
-import java.util.prefs.Preferences
 
 
 class MainActivity : AppCompatActivity() {
     lateinit var IntentForMapsLayout: Intent
     var str: String? = null
     val requestCodes = 0
+    lateinit var dialog: Dialog
 
-    fun createSecondLayout(){
+    private fun createSecondLayout(){
         Intent(this, SecondActivity::class.java).also {
             startActivity(it)
         }
     }
 
+    // обработка result с класса MapsActivity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -117,17 +115,8 @@ class MainActivity : AppCompatActivity() {
             summ_tonn.text = ""
             editTextNumber2.setText("")
             str = null
-            showdialogprovider()
+            showProviderDialog()
         }
-
-
-
-
-
-
-
-
-
 
 
         //ограничение на ввод чисел для текстового поля
@@ -142,7 +131,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                val listNumber = listOf<String>(
+                val listNumber = listOf(
                     "1",
                     "2",
                     "3",
@@ -187,75 +176,70 @@ class MainActivity : AppCompatActivity() {
                 )
                 if (!listNumber.contains(editTextNumber2.text.toString())) {
                     editTextNumber2.text.clear()
-                    val WARN = Toast.makeText(
-                        applicationContext,
-                        "Только целочисленные значения от 1-40",
-                        Toast.LENGTH_SHORT
-                    )
-                    WARN.show()
+                    Toast.makeText(applicationContext, "Только целочисленные значения от 1-40", Toast.LENGTH_SHORT).show()
                 }
-
-
             }
-
-
         })
-
-
     }
 
 
     //функция, подставляющая текстовое значение в поле "стоимость тонны", в зависимости от значений предыдущих полей
-    fun countsumm(value: String) {
+    private fun countsumm(value: String) {
         summ_tonn.text = value
     }
 
     //функции для добавления необходимого текста в поля "поставщик" и "марка угля"
-    fun setTextProvider(str: String) {
+    private fun setTextProvider(str: String) {
         textView3.text = ""
         textView3.append(str)
     }
 
-    fun setTextMark(str: String) {
+    private fun setTextMark(str: String) {
         textView4.text = ""
         textView4.append(str)
     }
 
-    //функция, вызывающая диалоговое окно провайдера
-    private fun showdialogprovider() {
-        val dialog = MaterialDialog(this)
-            .noAutoDismiss()
-            .customView(R.layout.provoder_layoutt)
 
-        dialog.findViewById<ImageButton>(R.id.btn_arschanovr).setOnClickListener {
-            setTextProvider(getString(R.string.arschanovr))
-            dialog.dismiss()
-        }
-
-        dialog.findViewById<ImageButton>(R.id.btn_cirbinsciyr).setOnClickListener {
-            setTextProvider(getString(R.string.cirbinskiy))
-            dialog.dismiss()
-        }
-
-        dialog.findViewById<ImageButton>(R.id.btn_chernogorskiyr).setOnClickListener {
-            setTextProvider(getString(R.string.chernogorskiy))
-            dialog.dismiss()
-        }
-
-        dialog.findViewById<ImageButton>(R.id.btn_izyskhiyr).setOnClickListener {
-            setTextProvider(getString(R.string.izyhskiy))
-            dialog.dismiss()
-        }
-
+    // Блок допиленного обработчика для нажатия на поле "Поставщик", закомиченно в версии Ugolek 1.1.5
+    // изменения: использованы возможности Kotlin, реализован лаконичный обработчик кнопок в модалке, через listOf. Заменён класс модалок на более простой.
+    private fun showProviderDialog(){
+        dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_provider)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val btnArshanov = dialog.findViewById<Button>(R.id.btn_arschanov)
+        val btnChernogorsk = dialog.findViewById<Button>(R.id.btn_chernogorsk)
+        val btnCirbinsciy = dialog.findViewById<Button>(R.id.btn_cirbinsciy)
+        val btnIzyshkiy = dialog.findViewById<Button>(R.id.btn_izyskhiy)
         dialog.show()
 
+        val listView = listOf<Button>(btnArshanov,btnChernogorsk,btnCirbinsciy,btnIzyshkiy)
+        listView.forEach { button ->
+            button.setOnClickListener{
+            onClick(it)
+            dialog.dismiss() }}
     }
+
+    private fun onClick(v: View){
+        when(v.id){
+            R.id.btn_izyskhiy -> setTextProvider(getString(R.string.izyhskiy))
+            R.id.btn_chernogorsk -> setTextProvider(getString(R.string.chernogorskiy))
+            R.id.btn_cirbinsciy -> setTextProvider(getString(R.string.cirbinskiy))
+            R.id.btn_arschanov -> setTextProvider(getString(R.string.arschanovr))
+            else -> Toast.makeText(this, "Java.NullPointerException)))))))", Toast.LENGTH_LONG).show()
+        }
+    }
+    // Блок допиленного обработчика для нажатия на поле "Поставщик", закомиченно в версии Ugolek 1.1.5
+
+
+    //Блок кода, разрабатываемый под модалки для выбора сорта угля
+    //Блок кода, разрабатываемый под модалки для выбора сорта угля
+
 
     //диалоговое окно для аршановского разреза
     private fun showdialogmarkfor_arshanov() {
         val dialog = MaterialDialog(this)
             .noAutoDismiss()
-            .customView(R.layout.mark_layout)
+            .customView(R.layout.dialog_mark)
 
         dialog.findViewById<TextView>(R.id.mark1).setOnClickListener {
             setTextMark(getString(R.string.mark1))
@@ -282,13 +266,16 @@ class MainActivity : AppCompatActivity() {
         }
         dialog.show()
 
+
     }
+
+
 
     //диалоговое окно для кирбинского разреза
     private fun showdialogmarkfor_cirbinskiy() {
         val dialog = MaterialDialog(this)
             .noAutoDismiss()
-            .customView(R.layout.mark_layout)
+            .customView(R.layout.dialog_mark)
 
         dialog.findViewById<TextView>(R.id.mark1).setOnClickListener {
             setTextMark(getString(R.string.mark1))
@@ -317,7 +304,7 @@ class MainActivity : AppCompatActivity() {
     private fun showdialogmarkfor_chernogoskiy() {
         val dialog = MaterialDialog(this)
             .noAutoDismiss()
-            .customView(R.layout.mark_layout)
+            .customView(R.layout.dialog_mark)
 
         dialog.mark1.isGone = true
         dialog.mark2.isGone = true
@@ -342,7 +329,7 @@ class MainActivity : AppCompatActivity() {
     private fun showdialogmarkfor_izyhskiy() {
         val dialog = MaterialDialog(this)
             .noAutoDismiss()
-            .customView(R.layout.mark_layout)
+            .customView(R.layout.dialog_mark)
 
         dialog.mark1.isGone = true
 
@@ -367,4 +354,6 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
 
     }
+
+
 }

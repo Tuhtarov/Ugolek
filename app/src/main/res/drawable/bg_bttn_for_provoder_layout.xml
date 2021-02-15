@@ -18,6 +18,18 @@
                     </corners>
                 </shape>
             </item>
+            <item>
+                <shape
+                    android:shape="rectangle">
+                    <stroke
+                        android:width="10dp"
+                        android:color="#03377734">
+                    </stroke>
+                    <corners
+                        android:radius="50dp">
+                    </corners>
+                </shape>
+            </item>
         </layer-list>
     </item>
 

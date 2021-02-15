@@ -6,10 +6,10 @@
     <string name="chernogorskiy" translatable="false">Черногорский разрез</string>
     <string name="izyhskiy" translatable="false">Изыхский разрез</string>
 
-    <string name="mark1" translatable="false">ДМСШ 0–25</string>
-    <string name="mark2" translatable="false">ДО 25–50</string>
-    <string name="mark3" translatable="false">ДПК 50–200</string>
-    <string name="mark4" translatable="false">ДР 0–300</string>
+    <string name="dmsch" translatable="false">ДМСШ 0–25</string>
+    <string name="do25" translatable="false">ДО 25–50</string>
+    <string name="dpk" translatable="false">ДПК 50–200</string>
+    <string name="dp" translatable="false">ДР 0–300</string>
 
 
     <string name="contraintfortxtnum" translatable="false">"1","2","3","4"
@@ -39,4 +39,5 @@
     <string name="Adress">Адрес</string>
     <string name="text_accept">Подтвердить</string>
     <string name="text_chooseProvider">Выберите поставщика</string>
+    <string name="chooseMark">Выберите марку угля</string>
 </resources>

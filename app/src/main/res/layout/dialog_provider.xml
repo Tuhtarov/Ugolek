@@ -12,7 +12,7 @@
         app:cardCornerRadius="50dp"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#F9F9F9"
+        android:backgroundTint="@color/color_themeCardView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
