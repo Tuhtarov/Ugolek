@@ -30,7 +30,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
     private lateinit var mMap: GoogleMap
     private lateinit var markerr: Marker
     private lateinit var dialog: Dialog
-    val intentProviderFromMainActivity: Intent? = null
 
     //переменная request для работы функций по предоставлению разрешений
     private val LOCATION_PERMISSION_REQUEST = 1
@@ -106,17 +105,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
 
             when (it) {
 
-                "arshanov" -> mMap.addMarker(
-                    MarkerOptions().position(arshanov).title("Аршановский разрез")
+                getString(R.string.arschanovr) -> mMap.addMarker(
+                    MarkerOptions().position(arshanov).title(getString(R.string.arschanovr))
                 )
-                "chernogorskiy" -> mMap.addMarker(
-                    MarkerOptions().position(chernogorskiy).title("Черногорский разрез")
+                getString(R.string.chernogorskiy) -> mMap.addMarker(
+                    MarkerOptions().position(chernogorskiy).title(getString(R.string.chernogorskiy))
                 )
-                "izyhskiy" -> mMap.addMarker(
-                    MarkerOptions().position(izyhskiy).title("Изыхский разрез")
+                getString(R.string.izyhskiy) -> mMap.addMarker(
+                    MarkerOptions().position(izyhskiy).title(getString(R.string.izyhskiy))
                 )
-                "cirbinskiy" -> mMap.addMarker(
-                    MarkerOptions().position(cirbinskiy).title("Кирбинский разрез")
+                getString(R.string.cirbinskiy) -> mMap.addMarker(
+                    MarkerOptions().position(cirbinskiy).title(getString(R.string.cirbinskiy))
                 )
 
                 else -> finish()
@@ -177,7 +176,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
 
     //создать и показать тост на экране))0)00
     private fun showToast(string: String){
-        Toast.makeText(this, "$string", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, string, Toast.LENGTH_SHORT).show()
     }
 
 
