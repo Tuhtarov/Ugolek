@@ -7,25 +7,28 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.dialog_mark.*
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var intentForMapsLayout: Intent
+    private lateinit var intentForMapsLayout: Intent
     private var str: String? = null
-    val requestCodes = 0
-    lateinit var dialog: Dialog
-    var listMarkTon = mutableListOf<String>()
+    private val requestCodes = 0
+    private lateinit var dialog: Dialog
+    private var listMarkCoal = mutableListOf<String>()
+    private var listPriceTon = mutableMapOf<String, Int>()
 
-    private var do25: String = ""
-    private var dp: String = ""
-    private var dpk: String = ""
-    private var dmsch: String = ""
+    private var do25 = ""
+    private var dp = ""
+    private var dpk = ""
+    private var dmsch = ""
+
+    private var err: String = "JavaNullPointerExceptions"
 
     private fun createSecondLayout(){
         Intent(this, SecondActivity::class.java).also {
@@ -33,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // обработка result с класса MapsActivity
+    //обработка result с класса MapsActivity
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -55,8 +58,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         intentForMapsLayout = Intent(this, MapsActivity::class.java)
 
+        //кнопка "выбрать на карте"
         imageButton.setOnClickListener {
-//
 //            if ((textView3.text.toString() == "") and (textView4.text.toString() == "") and (editTextNumber2.text.toString() == "")){
 //                createToast("Заполните поля: Поставщик, Марка угля, Требуемая масса")
 //            } else if ((textView3.text.toString() != "") and (textView4.text.toString() == "") and (editTextNumber2.text.toString() == "")){
@@ -71,6 +74,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        //кнопка "марка угля"
         textView4.setOnClickListener {
             textView3.text.toString().also {
                 if(it != ""){
@@ -82,6 +86,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        //кнопка "заказать"
         imageButton2.setOnClickListener{
             if ((textView3.text.toString() != "") and (textView4.text.toString() != "")
                 and (editTextNumber2.text.toString() != "") and (editTextTextPersonName2.text.toString() != "")){
@@ -89,8 +94,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-        //очистка полей, по нажатию на поле "поставщик"
+        //кнопка "поставщик" + очистка полей
         textView3.setOnClickListener {
             textView3.text = ""
             textView4.text = ""
@@ -109,10 +113,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
                 val listNumber = listOf(
                     "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22",
                     "23", "24", "25", "26", "27", "28", "29", "30", "31",
@@ -123,14 +123,33 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Только целочисленные значения от 1-40", Toast.LENGTH_SHORT).show()
                 }
             }
+
+            override fun afterTextChanged(s: Editable?) {
+                //TODO здесь можно производить вычисление для определение общей стоимости заказа
+            }
         })
     }
 
 
-    //функции для добавления необходимого текста в поля "поставщик" и "марка угля"
-    private fun setTextProvider(str: String) {
+    //для присвоения имени выбранного поставщика в поле "поставщик"
+    private fun setTextProvider(nameProvider: String) {
         textView3.text = ""
-        textView3.append(str)
+        //переменным присваиваются названия марок угля, определенные в строковых ресурсах (необходимо для создания списка угля соответствующего поставщика)
+        do25 = getString(R.string.do25)
+        dp = getString(R.string.dp)
+        dpk = getString(R.string.dpk)
+        dmsch = getString(R.string.dmsch)
+
+        textView3.append(nameProvider).also {
+            when(textView3.text.toString()){
+                //обработчики для диалога "выбор поставщика"
+                getString(R.string.izyhskiy) -> listMarkCoal = mutableListOf(do25, dp, dpk)
+                getString(R.string.chernogorskiy) -> listMarkCoal = mutableListOf(dpk, dp)
+                getString(R.string.cirbinskiy) -> listMarkCoal = mutableListOf(do25, dmsch, dp)
+                getString(R.string.arschanovr) -> listMarkCoal = mutableListOf(do25, dp, dpk, dmsch)
+                else -> Toast.makeText(this, err, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setTextMark(str: String) {
@@ -155,40 +174,23 @@ class MainActivity : AppCompatActivity() {
         listBttnProvider.forEach { button ->
             button.setOnClickListener{
                 onClick(it)
-                dialog.dismiss() }}
+                //здесь определяется (determine) список угля и цен на них для выбранного поставщика
+                determineListCoalForProvider(textView3.text.toString())
+                dialog.dismiss()
+            }
+        }
     }
 
-    //обработчики для диалога "выбор поставщика"
-    /*
-    R.id.btn_izyskhiy -> {
-        setTextProvider(getString(R.string.izyhskiy))
-        listMarkTon = mutableListOf(getString(R.string.do25), getString(R.string.dp), getString(R.string.dpk))
-    }
-    R.id.btn_chernogorsk -> {
-        setTextProvider(getString(R.string.chernogorskiy))
-        listMarkTon = mutableListOf(getString(R.string.dpk), getString(R.string.dp))
-    }
-    R.id.btn_cirbinsciy -> {
-        setTextProvider(getString(R.string.cirbinskiy))
-        listMarkTon = mutableListOf(getString(R.string.do25), getString(R.string.dmsch), getString(R.string.dp))
-    }
-    R.id.btn_arschanov -> {
-        setTextProvider(getString(R.string.arschanovr))
-        listMarkTon = mutableListOf(getString(R.string.do25), getString(R.string.dp), getString(R.string.dpk), getString(R.string.dmsch))
-    }
-     */
-
-
+    //обработчик для модалок
     private fun onClick(v: View){
         when(v.id){
-
-            //обработчики для диалога "выбор поставщика"
+            //для диалога "выбор поставщика"
             R.id.btn_izyskhiy -> setTextProvider(getString(R.string.izyhskiy))
             R.id.btn_chernogorsk -> setTextProvider(getString(R.string.chernogorskiy))
             R.id.btn_cirbinsciy -> setTextProvider(getString(R.string.cirbinskiy))
             R.id.btn_arschanov -> setTextProvider(getString(R.string.arschanovr))
 
-            //обработчики для диалога "выбор марки угля"
+            //для диалога "выбор марки угля"
             R.id.btn_dpk_mark -> setTextMark(dpk)
             R.id.btn_dp_mark -> setTextMark(dp)
             R.id.btn_do_mark -> setTextMark(do25)
@@ -196,181 +198,94 @@ class MainActivity : AppCompatActivity() {
             else -> Toast.makeText(this, "Java.NullPointerException)))))))", Toast.LENGTH_LONG).show()
         }
     }
-    // Блок допиленного обработчика для нажатия на поле "Поставщик", закомиченно в версии Ugolek 1.1.5
 
-
-    //TODO РАЗРАБОТКА
-    //Блок кода, разрабатываемый под модалки для выбора сорта угля
+    //модалка для выбора сорта угля
     private fun showMarkDialog(){
         dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_mark)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
         val btnDMSCH = dialog.findViewById<Button>(R.id.btn_dmsch_mark)
         val btnDO = dialog.findViewById<Button>(R.id.btn_do_mark)
         val btnDP = dialog.findViewById<Button>(R.id.btn_dp_mark)
         val btnDPK = dialog.findViewById<Button>(R.id.btn_dpk_mark)
 
-        do25 = btnDO?.text.toString()
-        dp = btnDP?.text.toString()
-        dpk = btnDPK?.text.toString()
-        dmsch = btnDMSCH?.text.toString()
+        //создание списка для сокрытия кнопок (марок угля), несоответствующих поставщику угля
+        val listBtnMark = listOf<Button>(btnDMSCH, btnDO, btnDP, btnDPK)
 
-        val listBttnMark = listOf<Button>(btnDMSCH, btnDO, btnDP, btnDPK)
-
-        when(textView3.text.toString()){
-            //обработчики для диалога "выбор поставщика"
-            getString(R.string.izyhskiy) -> listMarkTon = mutableListOf(do25, dp, dpk)
-            getString(R.string.chernogorskiy) -> listMarkTon = mutableListOf(dpk, dp)
-            getString(R.string.cirbinskiy) -> listMarkTon = mutableListOf(do25, dmsch, dp)
-            getString(R.string.arschanovr) -> listMarkTon = mutableListOf(do25, dp, dpk, dmsch)
-            else -> Toast.makeText(this, "JavaNullPointerException))))", Toast.LENGTH_SHORT).show()
-        }
-
-        for (button in listBttnMark) {
+        for (button in listBtnMark) {
             button.text.toString().also {
                 textB ->
-                //аналог if, в случае соответствия условий, выдаёт перебираемой кнопке атрибут isGone с определенным значением
-                button.isGone = !listMarkTon.contains(textB)
+                //аналог if, в случае соответствия условий, выдаёт перебираемой кнопке атрибут isGone true/false
+                button.isGone = !listMarkCoal.contains(textB)
             }
         }
 
         //здесь вешаются "прослушки" на имеющиеся кнопки
-        listBttnMark.forEach { button ->
+        listBtnMark.forEach { button ->
             button.setOnClickListener {
             onClick(it)
-            dialog.dismiss()
+                //здесь вызывается ф-я для определения цены за выбранную марку угля
+                countPriceCoal(button.text.toString())
+                dialog.dismiss()
         } }
-
         dialog.show()
+
     }
-    //Блок кода, разрабатываемый под модалки для выбора сорта угля
 
 
+    //здесь определяется список угля и цен на них для выбранного поставщика
+    private fun determineListCoalForProvider(providerName: String){
+        listPriceTon.clear()
+        when(providerName){
+            getString(R.string.cirbinskiy)-> {
+                //я тебя вижу друг
+                //лист цен для кирбинского разреза
+                listPriceTon[dmsch] = 1495
+                listPriceTon[do25] = 1705
+                listPriceTon[dp] = 1205
+            }
+            getString(R.string.chernogorskiy) -> {
+                //лист цен для черногорского разреза
+                listPriceTon[dpk] = 1795
+                listPriceTon[dp] = 1205
+            }
+            getString(R.string.izyhskiy)-> {
+                //лист цен для изыхского разреза
+                listPriceTon[do25] = 1705
+                listPriceTon[dpk] = 1905
+                listPriceTon[dp] = 1195
+            }
+            getString(R.string.arschanovr)-> {
+                //лист цен для аршановского разреза
+                listPriceTon[dmsch] = 1495
+                listPriceTon[do25] = 1700
+                listPriceTon[dpk] = 1905
+                listPriceTon[dp] = 1195
+            }
+            else -> Toast.makeText(this, err + "262", Toast.LENGTH_SHORT).show()
+        }
+    }
 
-//    //TODO РАЗРАБОТКА ПОДСЧЁТА СТОИМОСТИ ТОННЫ
-//    private fun countSum(dp: String?, dmsch: String?, do25: String?, dpk: String?){
-//    }
+    //подсчёт стоимости одной тонны на основании выбора марки угля определённого поставщика
+    private fun countPriceCoal(mark: String){
+        var accessMark:String? = null
+        //если приходящий аргумент соответствует одному из элементов списка listPriceTon, то этот элемент присваивается переменной выше
+        for((key, value) in listPriceTon){
+            key.also {
+                if(it == mark){
+                    accessMark = "$value"
+                    Log.d("usefulArg", "args: mark == $accessMark")
+                } else {
+                    Log.d("notEqual", "args: mark == $mark <> it == $it")
+                }
+            }
+        }
 
-    //диалоговое окно для аршановского разреза
-//    private fun showdialogmarkfor_arshanov() {
-//        val dialog = MaterialDialog(this)
-//            .noAutoDismiss()
-//            .customView(R.layout.dialog_mark)
-//
-//        dialog.findViewById<TextView>(R.id.mark1).setOnClickListener {
-//            setTextMark(getString(R.string.mark1))
-//            dialog.dismiss()
-//            countsumm("1495")
-//        }
-//
-//        dialog.findViewById<TextView>(R.id.mark2).setOnClickListener {
-//            setTextMark(getString(R.string.mark2))
-//            dialog.dismiss()
-//            countsumm("1700")
-//        }
-//
-//        dialog.findViewById<TextView>(R.id.mark3).setOnClickListener {
-//            setTextMark(getString(R.string.mark3))
-//            countsumm("1905")
-//            dialog.dismiss()
-//        }
-//
-//        dialog.findViewById<TextView>(R.id.mark4).setOnClickListener {
-//            setTextMark(getString(R.string.mark4))
-//            countsumm("1195")
-//            dialog.dismiss()
-//        }
-//        dialog.show()
-//
-//
-//    }
-//
-//
-//
-//    //диалоговое окно для кирбинского разреза
-//    private fun showdialogmarkfor_cirbinskiy() {
-//        val dialog = MaterialDialog(this)
-//            .noAutoDismiss()
-//            .customView(R.layout.dialog_mark)
-//
-//        dialog.findViewById<TextView>(R.id.mark1).setOnClickListener {
-//            setTextMark(getString(R.string.mark1))
-//            countsumm("1495")
-//            dialog.dismiss()
-//        }
-//
-//        dialog.findViewById<TextView>(R.id.mark2).setOnClickListener {
-//            setTextMark(getString(R.string.mark2))
-//            countsumm("1705")
-//            dialog.dismiss()
-//        }
-//
-//        dialog.findViewById<TextView>(R.id.mark4).setOnClickListener {
-//            setTextMark(getString(R.string.mark4))
-//            countsumm("1205")
-//            dialog.dismiss()
-//        }
-//
-//        dialog.mark3.isGone = true
-//        dialog.show()
-//
-//    }
-//
-//    //диалоговое окно для черногорского разреза
-//    private fun showdialogmarkfor_chernogoskiy() {
-//        val dialog = MaterialDialog(this)
-//            .noAutoDismiss()
-//            .customView(R.layout.dialog_mark)
-//
-//        dialog.mark1.isGone = true
-//        dialog.mark2.isGone = true
-//
-//        dialog.findViewById<TextView>(R.id.mark3).setOnClickListener {
-//            setTextMark(getString(R.string.mark3))
-//            countsumm("1795")
-//            dialog.dismiss()
-//        }
-//
-//        dialog.findViewById<TextView>(R.id.mark4).setOnClickListener {
-//            setTextMark(getString(R.string.mark4))
-//            countsumm("1205")
-//            dialog.dismiss()
-//        }
-//
-//        dialog.show()
-//
-//    }
-//
-//    //диалоговое окно для изыхского разреза
-//    private fun showdialogmarkfor_izyhskiy() {
-//        val dialog = MaterialDialog(this)
-//            .noAutoDismiss()
-//            .customView(R.layout.dialog_mark)
-//
-//        dialog.mark1.isGone = true
-//
-//        dialog.findViewById<TextView>(R.id.mark2).setOnClickListener {
-//            setTextMark(getString(R.string.mark2))
-//            countsumm("1705")
-//            dialog.dismiss()
-//        }
-//
-//        dialog.findViewById<TextView>(R.id.mark3).setOnClickListener {
-//            setTextMark(getString(R.string.mark3))
-//            countsumm("1905")
-//            dialog.dismiss()
-//        }
-//
-//        dialog.findViewById<TextView>(R.id.mark4).setOnClickListener {
-//            setTextMark(getString(R.string.mark4))
-//            countsumm("1195")
-//            dialog.dismiss()
-//        }
-//
-//        dialog.show()
-//
-//    }
+        //если переменная не null, то тогда её значение присвается в текстовое поле summ_tonn на activity_main
+        accessMark?.let {
+            summ_tonn.text = accessMark
+        } ?: Toast.makeText(this, err + "285 / accessMark = null", Toast.LENGTH_SHORT).show()
+    }
 
 
 }
