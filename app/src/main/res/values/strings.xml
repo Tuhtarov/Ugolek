@@ -26,8 +26,6 @@
     <string name="_1_40" translatable="false">1-40(тонн)</string>
     <string name="back">Нааааазаааад</string>
     <string name="enteredOrderFields">Введённые поля заказа</string>
-    <string name="markCoal">Марка угля</string>
-    <string name="requiredMass">Требуемая масса</string>
     <string name="PriceTonn">Стоимость тонны</string>
     <string name="adressDelivery">Адрес доставки</string>
     <string name="provider">Поставщик</string>
@@ -40,4 +38,16 @@
     <string name="text_accept">Подтвердить</string>
     <string name="text_chooseProvider">Выберите поставщика</string>
     <string name="chooseMark">Выберите марку угля</string>
+    <string name="requiredMass">Требуемая масса</string>
+    <string name="priceCoal">Стоимость тонны</string>
+    <string name="markCoal">Марка угля</string>
+    <string name="txt_Provider">Поставщик</string>
+    <string name="enteredFieldsOnOrder">Введённые поля заказа</string>
+    <string name="confirm">Подтвердить</string>
+    <string name="phone">Телефон</string>
+    <string name="phoneOfDeveloper">+7(923)398-75-19</string>
+    <string name="commonPrice">Общая стоимость</string>
+    <string name="distance">Расстояние</string>
+    <string name="delivery">Доставка</string>
+    <string name="toOrder">Заказать</string>
 </resources>

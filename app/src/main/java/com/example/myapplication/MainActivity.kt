@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private var err: String = "JavaNullPointerExceptions"
 
     private fun createSecondLayout(){
-        Intent(this, SecondActivity::class.java).also {
+        Intent(this, ConfirmActivity::class.java).also {
             startActivity(it)
         }
     }
@@ -40,16 +40,16 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        val field = findViewById<TextView>(R.id.textView3)
+        val field = findViewById<TextView>(R.id.field_provider)
         if(field.text == ""){ str = null }
 
         if (requestCode == requestCodes){
             if (resultCode == RESULT_OK){
                 val strr = data?.getStringExtra("sms")
-                editTextTextPersonName2.setText(strr)
+                field_addressDelivery.setText(strr)
             }
         } else {
-            editTextTextPersonName2.setText("")
+            field_addressDelivery.setText("")
         }
     }
 
@@ -75,8 +75,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         //кнопка "марка угля"
-        textView4.setOnClickListener {
-            textView3.text.toString().also {
+        field_markCoal.setOnClickListener {
+            field_provider.text.toString().also {
                 if(it != ""){
                     str = it
                     showMarkDialog()
@@ -87,26 +87,26 @@ class MainActivity : AppCompatActivity() {
         }
 
         //кнопка "заказать"
-        imageButton2.setOnClickListener{
-            if ((textView3.text.toString() != "") and (textView4.text.toString() != "")
-                and (editTextNumber2.text.toString() != "") and (editTextTextPersonName2.text.toString() != "")){
+        btn_toOrder.setOnClickListener{
+            if ((field_provider.text.toString() != "") and (field_markCoal.text.toString() != "")
+                and (field_requiredMass.text.toString() != "") and (field_addressDelivery.text.toString() != "")){
                 createSecondLayout()
             }
         }
 
         //кнопка "поставщик" + очистка полей
-        textView3.setOnClickListener {
-            textView3.text = ""
-            textView4.text = ""
-            summ_tonn.text = ""
-            editTextNumber2.setText("")
+        field_provider.setOnClickListener {
+            field_provider.text = ""
+            field_markCoal.text = ""
+            field_priceCoal.text = ""
+            field_requiredMass.setText("")
             str = null
             showProviderDialog()
         }
 
 
         //ограничение на ввод чисел для текстового поля
-        editTextNumber2.addTextChangedListener(object : TextWatcher {
+        field_requiredMass.addTextChangedListener(object : TextWatcher {
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -118,8 +118,8 @@ class MainActivity : AppCompatActivity() {
                     "23", "24", "25", "26", "27", "28", "29", "30", "31",
                     "32", "33", "34", "35", "36", "37", "38", "39", "40", ""
                 )
-                if (!listNumber.contains(editTextNumber2.text.toString())) {
-                    editTextNumber2.text.clear()
+                if (!listNumber.contains(field_requiredMass.text.toString())) {
+                    field_requiredMass.text.clear()
                     Toast.makeText(applicationContext, "Только целочисленные значения от 1-40", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -133,15 +133,15 @@ class MainActivity : AppCompatActivity() {
 
     //для присвоения имени выбранного поставщика в поле "поставщик"
     private fun setTextProvider(nameProvider: String) {
-        textView3.text = ""
-        //переменным присваиваются названия марок угля, определенные в строковых ресурсах (необходимо для создания списка угля соответствующего поставщика)
+        field_provider.text = ""
+        //переменным присваиваются названия марок угля, определенные в строковых ресурсах (необходимо для создания списка угля соответствующего поставщика) v1.2.5
         do25 = getString(R.string.do25)
         dp = getString(R.string.dp)
         dpk = getString(R.string.dpk)
         dmsch = getString(R.string.dmsch)
 
-        textView3.append(nameProvider).also {
-            when(textView3.text.toString()){
+        field_provider.append(nameProvider).also {
+            when(field_provider.text.toString()){
                 //обработчики для диалога "выбор поставщика"
                 getString(R.string.izyhskiy) -> listMarkCoal = mutableListOf(do25, dp, dpk)
                 getString(R.string.chernogorskiy) -> listMarkCoal = mutableListOf(dpk, dp)
@@ -153,8 +153,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setTextMark(str: String) {
-        textView4.text = ""
-        textView4.append(str)
+        field_markCoal.text = ""
+        field_markCoal.append(str)
     }
 
 
@@ -175,7 +175,7 @@ class MainActivity : AppCompatActivity() {
             button.setOnClickListener{
                 onClick(it)
                 //здесь определяется (determine) список угля и цен на них для выбранного поставщика
-                determineListCoalForProvider(textView3.text.toString())
+                determineListCoalForProvider(field_provider.text.toString())
                 dialog.dismiss()
             }
         }
@@ -233,7 +233,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    //здесь определяется список угля и цен на них для выбранного поставщика
+    //здесь определяется список угля и цен на них для выбранного поставщика v1.2.5
     private fun determineListCoalForProvider(providerName: String){
         listPriceTon.clear()
         when(providerName){
@@ -266,7 +266,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //подсчёт стоимости одной тонны на основании выбора марки угля определённого поставщика
+    //подсчёт стоимости одной тонны на основании выбора марки угля определённого поставщика v1.2.5
     private fun countPriceCoal(mark: String){
         var accessMark:String? = null
         //если приходящий аргумент соответствует одному из элементов списка listPriceTon, то этот элемент присваивается переменной выше
@@ -283,7 +283,7 @@ class MainActivity : AppCompatActivity() {
 
         //если переменная не null, то тогда её значение присвается в текстовое поле summ_tonn на activity_main
         accessMark?.let {
-            summ_tonn.text = accessMark
+            field_priceCoal.text = accessMark
         } ?: Toast.makeText(this, err + "285 / accessMark = null", Toast.LENGTH_SHORT).show()
     }
 
