@@ -19,9 +19,11 @@ class ConfirmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_confirm)
 
-        btn_confirmOrder.setOnClickListener {
-            Toast.makeText(this, "ты нажал ого", Toast.LENGTH_SHORT).show()
-        }
+        field_providerOrder.text = intent.getStringExtra("provider")
+        field_markCoalOrder.text = intent.getStringExtra("coal")
+        field_priceCoalOrder.text = intent.getStringExtra("priceCoal")
+        field_addressDeliveryOrder.text = intent.getStringExtra("addressDelivery")
+        field_requiredMassOrder.text = intent.getStringExtra("requiredMass")
 
         field_phoneOrder.addTextChangedListener(object : TextWatcher {
 

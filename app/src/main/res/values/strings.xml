@@ -26,7 +26,6 @@
     <string name="_1_40" translatable="false">1-40(тонн)</string>
     <string name="back">Нааааазаааад</string>
     <string name="enteredOrderFields">Введённые поля заказа</string>
-    <string name="PriceTonn">Стоимость тонны</string>
     <string name="adressDelivery">Адрес доставки</string>
     <string name="provider">Поставщик</string>
     <string name="priceDelivery">Доставка</string>
@@ -50,4 +49,6 @@
     <string name="distance">Расстояние</string>
     <string name="delivery">Доставка</string>
     <string name="toOrder">Заказать</string>
+    <string name="address">Регион, Город, улица, дом</string>
+    <string name="chooseOnMap">Выбрать на карте</string>
 </resources>

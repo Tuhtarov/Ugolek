@@ -32,6 +32,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun createSecondLayout(){
         Intent(this, ConfirmActivity::class.java).also {
+            it.putExtra("provider", field_provider.text.toString())
+            it.putExtra("coal", field_markCoal.text.toString())
+            it.putExtra("priceCoal", field_priceCoal.text.toString())
+            it.putExtra("addressDelivery", field_addressDelivery.text.toString())
+            it.putExtra("requiredMass", field_requiredMass.text.toString())
             startActivity(it)
         }
     }
@@ -59,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         intentForMapsLayout = Intent(this, MapsActivity::class.java)
 
         //кнопка "выбрать на карте"
-        imageButton.setOnClickListener {
+        btn_chooseOnMap.setOnClickListener {
 //            if ((textView3.text.toString() == "") and (textView4.text.toString() == "") and (editTextNumber2.text.toString() == "")){
 //                createToast("Заполните поля: Поставщик, Марка угля, Требуемая масса")
 //            } else if ((textView3.text.toString() != "") and (textView4.text.toString() == "") and (editTextNumber2.text.toString() == "")){
@@ -91,6 +96,8 @@ class MainActivity : AppCompatActivity() {
             if ((field_provider.text.toString() != "") and (field_markCoal.text.toString() != "")
                 and (field_requiredMass.text.toString() != "") and (field_addressDelivery.text.toString() != "")){
                 createSecondLayout()
+            } else {
+                Toast.makeText(this, "Заполните недостающие поля", Toast.LENGTH_SHORT).show()
             }
         }
 

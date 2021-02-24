@@ -191,12 +191,13 @@
 
             <TextView
                 android:id="@+id/field_addressDeliveryOrder"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:textSize="20sp"
                 android:textAlignment="center"
                 android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="10dp"
                 android:fontFamily="@font/russian_road"
                 android:textStyle="bold"
                 tools:text="Республика Хакасия, г.Абакан, Щетинкина 11-а"
@@ -214,12 +215,12 @@
                 android:layout_height="wrap_content"
                 android:text="@string/distance"
                 android:textSize="24sp"
-                android:layout_marginTop="5dp"
                 android:fontFamily="@font/russian_road"
+                app:layout_constraintStart_toStartOf="@+id/field_distanceOrder"
+                app:layout_constraintEnd_toEndOf="@+id/field_distanceOrder"
+                app:layout_constraintTop_toBottomOf="@+id/field_addressDeliveryOrder"
                 app:layout_constraintBottom_toTopOf="@+id/field_distanceOrder"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/text_deliveryOrder"
-                app:layout_constraintTop_toBottomOf="@+id/field_addressDeliveryOrder">
+                >
             </TextView>
 
             <TextView
@@ -227,13 +228,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/delivery"
-                android:layout_marginTop="5dp"
                 android:textSize="24sp"
                 android:fontFamily="@font/russian_road"
-                app:layout_constraintBottom_toTopOf="@+id/field_deliveryOrder"
-                app:layout_constraintStart_toEndOf="@+id/text_distanceOrder"
                 app:layout_constraintTop_toBottomOf="@+id/field_addressDeliveryOrder"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintBottom_toTopOf="@+id/field_deliveryOrder"
+                app:layout_constraintStart_toStartOf="@+id/field_deliveryOrder"
+                app:layout_constraintEnd_toEndOf="@id/field_deliveryOrder"
+                >
             </TextView>
 
             <TextView
@@ -242,17 +243,18 @@
                 android:layout_height="wrap_content"
                 android:paddingVertical="7dp"
                 android:paddingHorizontal="40dp"
+                android:layout_marginBottom="10dp"
                 tools:text="10 км"
                 android:gravity="center"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:background="@drawable/bg_field_confirm_activity"
                 android:fontFamily="@font/russian_road"
-                android:layout_marginBottom="5dp"
                 app:layout_constraintBottom_toTopOf="@+id/field_allPriceOrder"
-                app:layout_constraintStart_toStartOf="@id/text_distanceOrder"
-                app:layout_constraintEnd_toEndOf="@+id/text_distanceOrder"
-                app:layout_constraintTop_toBottomOf="@+id/text_distanceOrder">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/field_deliveryOrder"
+                app:layout_constraintTop_toBottomOf="@+id/text_distanceOrder"
+                >
             </TextView>
 
             <TextView
@@ -267,15 +269,15 @@
                 android:background="@drawable/bg_field_confirm_activity"
                 android:textSize="22sp"
                 android:fontFamily="@font/russian_road"
-                android:layout_marginBottom="5dp"
-                app:layout_constraintBottom_toTopOf="@+id/field_allPriceOrder"
-                app:layout_constraintStart_toStartOf="@+id/text_deliveryOrder"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_deliveryOrder"
-                app:layout_constraintEnd_toEndOf="@id/text_deliveryOrder">
+                app:layout_constraintBottom_toTopOf="@+id/field_allPriceOrder"
+                app:layout_constraintStart_toEndOf="@+id/field_distanceOrder"
+                >
             </TextView>
 
             <TextView
-                android:id="@+id/text_allPrice"
+                android:id="@+id/text_allPriceOrder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/commonPrice"
@@ -302,7 +304,7 @@
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:background="@drawable/bg_field_confirm_activity"
-                app:layout_constraintStart_toEndOf="@+id/text_allPrice"
+                app:layout_constraintStart_toEndOf="@+id/text_allPriceOrder"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/field_deliveryOrder">
@@ -331,13 +333,12 @@
     <!-- Вот тут поставить EditTextMask, сюда телефон вписываться должен-->
     <EditText
         android:id="@+id/field_phoneOrder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
         android:hint="@string/phoneOfDeveloper"
         android:textStyle="bold"
-        android:paddingVertical="8dp"
-        android:paddingHorizontal="10dp"
         android:inputType="phone"
+        android:gravity="center"
         android:background="@drawable/bg_field_confirm_activity"
         android:fontFamily="@font/russian_road"
         android:textSize="24sp"
@@ -353,13 +354,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/confirm"
-        android:padding="10dp"
+        android:textSize="18sp"
+        android:drawablePadding="5dp"
+        android:paddingHorizontal="22dp"
+        android:paddingVertical="10dp"
         android:fontFamily="@font/russian_road"
-        android:textSize="24sp"
-        android:textStyle="bold"
         android:enabled="false"
         android:gravity="center"
-        android:textAllCaps="false"
+        android:textAllCaps="true"
         android:drawableEnd="@drawable/ic_baseline_check_24"
         android:background="@drawable/bg_btn_accept"
         app:layout_constraintStart_toStartOf="parent"
