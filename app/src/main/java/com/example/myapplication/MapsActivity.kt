@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -24,6 +25,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import java.io.IOException
+import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListener, GoogleMap.OnMapClickListener{
 
@@ -133,10 +136,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         val str = "${p0.toString()}"
+        var result = ""
         val intentResult = Intent(this, MainActivity::class.java)
         val fieldText = dialog.findViewById<TextView>(R.id.field_adressConfirm)
         val btnConfirm = dialog.findViewById<Button>(R.id.btn_confirm)
-        fieldText.text = "$p0"
+
+        val geocoder:Geocoder = Geocoder(this, Locale.getDefault())
+
+        try {
+            val addressList = geocoder.getFromLocation(p0.latitude, p0.longitude, 1)
+            result = addressList.get(0).getAddressLine(0)
+
+        } catch (e: IOException){
+            Toast.makeText(this, "${e.message}", Toast.LENGTH_SHORT).show()
+        }
+
+        fieldText.text = result
 
         dialog.show()
         dialog.setOnCancelListener { showToast("Нажатием на карту выберите адресс -> Нажмите кнопку \"Подтвердить\"") }
@@ -146,7 +161,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, OnMarkerClickListe
             createProviderMarker()
 
             //передача требуемого результата в MainActivity
-            intentResult.putExtra("sms", str)
+            intentResult.putExtra("sms", result)
             setResult(RESULT_OK, intentResult)
             dialog.dismiss()
             finish()

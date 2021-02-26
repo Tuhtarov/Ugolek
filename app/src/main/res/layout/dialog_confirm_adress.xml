@@ -47,10 +47,11 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:gravity="center"
-                android:text="@string/Adress"
+                android:hint="Адрес"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_margin="10dp"
+                android:paddingHorizontal="10dp"
                 android:textSize="22sp"
                 android:elevation="20dp"
                 >
