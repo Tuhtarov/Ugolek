@@ -22,7 +22,7 @@
     <string name="TitleDialog" translatable="false">Выберите поставшика</string>
     <string name="Fire" translatable="false">Принять</string>
     <string name="forFieldConfirm" translatable="false">Значение</string>
-    <string name="Cancel" translatable="false">Отклонить</string>
+    <string name="Cancel" translatable="false">Отменить</string>
     <string name="_1_40" translatable="false">1-40(тонн)</string>
     <string name="back">Нааааазаааад</string>
     <string name="enteredOrderFields">Введённые поля заказа</string>
@@ -51,4 +51,5 @@
     <string name="toOrder">Заказать</string>
     <string name="address">Регион, Город, улица, дом</string>
     <string name="chooseOnMap">Выбрать на карте</string>
+    <string name="chooseAddress">Введите адрес</string>
 </resources>

@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -107,6 +108,7 @@ class MainActivity : AppCompatActivity() {
             field_markCoal.text = ""
             field_priceCoal.text = ""
             field_requiredMass.setText("")
+            field_addressDelivery.setText("")
             str = null
             showProviderDialog()
         }
