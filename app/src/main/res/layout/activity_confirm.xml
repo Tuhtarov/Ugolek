@@ -339,14 +339,13 @@
         android:textStyle="bold"
         android:inputType="phone"
         android:gravity="center"
-        android:background="@drawable/bg_field_confirm_activity"
+        android:background="@drawable/bg_field_main_activity"
         android:fontFamily="@font/russian_road"
-        android:textSize="24sp"
+        android:textSize="22sp"
         app:layout_constraintBottom_toTopOf="@+id/btn_confirmOrder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/text_phoneOrder"
         app:layout_constraintTop_toBottomOf="@+id/CardViewOrder">
-
     </EditText>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -363,7 +362,7 @@
         android:gravity="center"
         android:textAllCaps="true"
         android:drawableEnd="@drawable/ic_baseline_check_24"
-        android:background="@drawable/bg_btn_accept"
+        android:background="@drawable/bg_btn_accept_address"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

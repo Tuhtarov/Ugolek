@@ -330,7 +330,7 @@
         android:drawablePadding="5dp"
         android:paddingHorizontal="22dp"
         android:paddingVertical="10dp"
-        android:background="@drawable/bg_btn_accept"
+        android:background="@drawable/bg_btn_accept_address"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

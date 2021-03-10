@@ -47,6 +47,9 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+
+
     <androidx.cardview.widget.CardView
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,9 +61,49 @@
         android:layout_marginBottom="30dp"
         app:cardElevation="10dp">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/LinearLayout"
+                app:layout_constraintBottom_toTopOf="@+id/text_chosenAddress"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_acceptAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_btn_accept"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/txt_solid"
+                    android:text=""
+                    app:layout_constraintEnd_toStartOf="@+id/btn2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/text_chosenAddress"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_cancelAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_btn_cancel"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/txt_solid"
+                    android:text=""
+                    app:layout_constraintStart_toEndOf="@+id/btn1"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/text_chosenAddress"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/text_chosenAddress"
@@ -70,7 +113,8 @@
                 android:text="Выбранный адрес:"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/LinearLayout"
+                app:layout_constraintBottom_toTopOf="@+id/field_chosenAddress"
                 />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -88,7 +132,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_chosenAddress"
                 app:layout_constraintHorizontal_bias="0.502"
                 app:layout_constraintVertical_bias="0.0" />
 
@@ -98,25 +141,25 @@
 
     <LinearLayout
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="150dp"
+        app:layout_constraintBottom_toTopOf="@+id/CardViewInputsAddress"
+        android:layout_marginBottom="20dp"
         android:layout_marginEnd="5dp"
         android:orientation="vertical"
         android:elevation="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_acceptAddress"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/bg_btn_accept"
-            android:layout_marginBottom="20dp"
-            android:fontFamily="@font/txt_solid"
-            android:text=""
-            android:textSize="24sp"
-            >
-        </androidx.appcompat.widget.AppCompatButton>
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:id="@+id/btn_acceptAddress"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:background="@drawable/bg_btn_accept"-->
+<!--            android:layout_marginBottom="20dp"-->
+<!--            android:fontFamily="@font/txt_solid"-->
+<!--            android:text=""-->
+<!--            android:textSize="24sp"-->
+<!--            >-->
+<!--        </androidx.appcompat.widget.AppCompatButton>-->
 
 
         <androidx.appcompat.widget.AppCompatButton
@@ -132,16 +175,16 @@
         </androidx.appcompat.widget.AppCompatButton>
 
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_cancelAddress"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/bg_btn_cancel"
-            android:fontFamily="@font/txt_solid"
-            android:text=""
-            android:textSize="26sp"
-            >
-        </androidx.appcompat.widget.AppCompatButton>
+<!--        <androidx.appcompat.widget.AppCompatButton-->
+<!--            android:id="@+id/btn_cancelAddress"-->
+<!--            android:layout_width="60dp"-->
+<!--            android:layout_height="60dp"-->
+<!--            android:background="@drawable/bg_btn_cancel"-->
+<!--            android:fontFamily="@font/txt_solid"-->
+<!--            android:text=""-->
+<!--            android:textSize="26sp"-->
+<!--            >-->
+<!--        </androidx.appcompat.widget.AppCompatButton>-->
 
     </LinearLayout>
 

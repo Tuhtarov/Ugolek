@@ -7,7 +7,7 @@
         <shape
             android:shape="rectangle">
             <corners
-                android:radius="30dp">
+                android:topLeftRadius="20dp">
             </corners>
 
             <stroke
@@ -28,7 +28,7 @@
         <shape
             android:shape="rectangle">
             <corners
-                android:radius="30dp">
+                android:topLeftRadius="20dp">
             </corners>
 
             <stroke
@@ -47,7 +47,9 @@
         android:state_pressed="true">
         <shape android:shape="rectangle">
             <solid android:color="#78FF73" />
-            <corners android:radius="35dp"/>
+            <corners
+                android:topLeftRadius="20dp">
+            </corners>
             <stroke android:color="#7CFFFFFF"
                 android:width="2dp"/>
         </shape>
