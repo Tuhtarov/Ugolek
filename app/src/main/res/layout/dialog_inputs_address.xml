@@ -31,7 +31,7 @@
                 />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/field_chosenAddress"
+                android:id="@+id/fieldChosenAddress"
                 tools:text="Улица пушкина, 55, Абакан, Республика Хакасия, Россия"
                 android:layout_width="match_parent"
                 android:layout_marginHorizontal="5dp"

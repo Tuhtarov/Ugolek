@@ -11,6 +11,7 @@ import android.location.Geocoder
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.renderscript.ScriptGroup
 import android.util.Log
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
@@ -22,6 +23,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import com.example.myapplication.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -29,23 +31,12 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
 import io.reactivex.Single
-import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.functions.BiConsumer
-import io.reactivex.internal.operators.single.SingleObserveOn
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_maps.*
 import kotlinx.android.synthetic.main.dialog_inputs_address.*
-import org.w3c.dom.Text
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
-import kotlin.jvm.javaClass
 import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
@@ -54,13 +45,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var markerr: Marker
     private lateinit var dialog: Dialog
     private lateinit var dialogCalculate: Dialog
+    private lateinit var binding: ActivityMapsBinding
     private val tag = MapsActivity::class.java.simpleName
-    private var result = ""
+    private var addressResult = ""
 
-    //переменная request для работы функций по предоставлению разрешений
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMapsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+    }
+
     private val LOCATION_PERMISSION_REQUEST = 1
-
-    //метод - получение доступа к местоположению
+    //получение доступа к местоположению
     private fun getLocationAccess() {
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -113,11 +114,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     //TODO АДРЕСНАЯ СТРОКА
     private fun init() {
         Log.d(tag, "init: initialing")
+        val searchField = binding.inputAddressMap
         searchField.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.action == KeyEvent.KEYCODE_ENTER) {
                 Log.d("TAG_ok", "button was pressed")
                 if (searchField.text.toString() != "" && searchField.text.length >= 3) {
-                    result = geoLocate(null)
+
+                    val dispose = findGeolocationFromName(searchField.text.toString())
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude), 15f))
+                        },{
+                            Toast.makeText(this, "Адрес не был найден", Toast.LENGTH_SHORT).show()
+                        })
+
                 } else {
                     searchField.setText("")
                 }
@@ -128,80 +139,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     }
 
-
-    //TODO функция возвращающая адрессную строку, на основании входящих данных
-    private fun geoLocate(p0: LatLng?): String {
-        Log.d(tag, "geoLocate: geoLocating")
-        var listAddress = mutableListOf<Address>()
-        var address = String()
-        var geocode = Geocoder(this)
-        var result: String
-
-        if (p0 != null) {
-            //TODO поиск локации на основе данных lat/lng
-            try {
-                listAddress = geocode.getFromLocation(p0.latitude, p0.longitude, 1)
-            } catch (e: IOException) {
-                Log.e(tag, "geoLocate: getFromLocation = ${e.message}")
-            }
-
-        } else {
-            //TODO здесь поиск локации по введённой стринге
-            var searchString = field_inputAddressMap.text.toString()
-            try {
-                listAddress = geocode.getFromLocationName(searchString, 1)
-            } catch (e: IOException) {
-                Log.e(tag, "geoLocate: getFromLocationName = ${e.message}")
-            }
-        }
-
-        if (listAddress.size > 0) {
-            address = listAddress[0].getAddressLine(0)
-            Log.d(tag, "geoLocate: address has successful found =  ${listAddress[0]}")
-            if (p0 == null) {
-                var forMoveCamera = listAddress[0]
-                var latitude = forMoveCamera.latitude
-                var longitude = forMoveCamera.longitude
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(latitude, longitude), 15f))
-            }
-            result = address
-        } else {
-            result = "Адресс не был найден"
-            Log.e(
-                tag,
-                "geoLocate: address has not found, array is null or empty = ${address.isNullOrEmpty()} "
-            )
-        }
-
-        return result
-    }
-
-
-    lateinit var searchField: EditText
-    lateinit var field: TextView
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps)
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-        searchField = findViewById<EditText>(R.id.field_inputAddressMap)
-        field = findViewById<TextView>(R.id.field_chosenAddress)
-    }
-
-    //функция, отправляющая результат о выбранном адрессе в мейн активити
+    //отправляет выбранный адрес, дистанцию между поставщиком и адресом, в MainActivity
     private fun sendResult() {
-        if (result == "Адресс не был найден") {
-            result = ""
-        }
         val intentResult = Intent(this, MainActivity::class.java)
-        intentResult.putExtra("sms", result)
-        intentResult.putExtra("distance", distance[0].toString())
+        if (addressResult == "Адрес не был найден") { addressResult = "" }
+        if (addressResult != ""){ intentResult.putExtra("distance", distance[0].toString()) }
+
+        intentResult.putExtra("sms", addressResult)
         setResult(RESULT_OK, intentResult)
-        searchField.text.clear()
-        field.text = ""
+        binding.inputAddressMap.text.clear()
+        binding.fieldChosenAddress.text = ""
         finish()
     }
 
@@ -211,7 +158,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         if (flag){
             Location.distanceBetween(positionProvider.latitude, positionProvider.longitude, p0.latitude, p0.longitude, distance)
             val resultDistance = distance[0].toString()
-            Toast.makeText(this, "$resultDistance", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, resultDistance, Toast.LENGTH_SHORT).show()
         } else {
             Log.e(tag, "calculateDistance: provider is null or empty")
         }
@@ -223,31 +170,31 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         mMap = googleMap
         getLocationAccess()
         mMap.setOnMapClickListener(this)
-        val btnOk = findViewById<Button>(R.id.btn_acceptAddress)
-        val btnNo = findViewById<Button>(R.id.btn_cancelAddress)
-        val btnCalc = findViewById<Button>(R.id.btn_calculateAddress)
-        btnCalc.isVisible = false
+        val btnAccept = findViewById<Button>(R.id.btn_acceptAddress)
+        val btnCancel = findViewById<Button>(R.id.btn_cancelAddress)
+        val btnDistance = findViewById<Button>(R.id.btn_calculateAddress)
+        btnDistance.isVisible = false
 
         createProviderMarker()
         if(flagProvider){
-            btnCalc.isVisible = true
+            btnDistance.isVisible = true
         }
 
-        btnOk.setOnClickListener {
+        btnAccept.setOnClickListener {
             sendResult()
             mMap.clear()
         }
 
-        btnNo.setOnClickListener {
-            field.text = ""
-            result = ""
+        btnCancel.setOnClickListener {
+            binding.fieldChosenAddress.text = ""
+            addressResult = ""
+            distance = FloatArray(10)
             mMap.clear()
             createProviderMarker()
         }
 
-        btnCalc.setOnClickListener {
+        btnDistance.setOnClickListener {
             showDialogCalculate()
-//            getDistance("53.730489"+","+"91.421181", "53.409444"+","+"91.061542")
         }
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(53.723275, 91.432107), 10f))
@@ -257,24 +204,32 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private fun showConfirmDialog(p0: LatLng) {
         dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_confirm_adress)
+
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val fieldText = dialog.findViewById<TextView>(R.id.field_adressConfirm)
-        val btnConfirm = dialog.findViewById<Button>(R.id.btn_confirm)
-        val btnCancel = dialog.findViewById<Button>(R.id.btn_cancel)
+        val fieldText = dialog.findViewById<TextView>(R.id.fieldDIalogAddressConfirm)
+        val btnConfirm = dialog.findViewById<Button>(R.id.btnDialogConfirmAddress)
+        val btnCancel = dialog.findViewById<Button>(R.id.btnDialogCancelAddress)
 
-        result = geoLocate(p0)
-        fieldText.text = result
-        field.text = result
+        val dispose = findGeolocation(p0)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                addressResult = it
+                fieldText.setText(addressResult)
+                binding.fieldChosenAddress.text = addressResult
+            },{
+                Toast.makeText(this, "Адрес не был найден", Toast.LENGTH_SHORT).show()
+                fieldText.text = "Адрес не найден"
+                addressResult = "Адрес не был найден"
+            })
 
         btnCancel.setOnClickListener {
             dialog.dismiss()
         }
 
         dialog.setOnCancelListener {
-            result = ""
             dialog.dismiss()
-            Toast.makeText(this, "dismiss", Toast.LENGTH_SHORT).show()
         }
 
         btnConfirm.setOnClickListener {
@@ -294,7 +249,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         val fieldResultDistance = dialogCalculate.findViewById<EditText>(R.id.field_outputDistance)
 
         if(distance.isNotEmpty()){
-            fieldResultDistance.setText("${distance[0].toString()}")
+            fieldResultDistance.setText(distance[0].toString())
         } else {
             Log.e(tag, "showDialogCalculate: результат подсчёта дистанции - нулевой" )
         }
@@ -311,23 +266,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         checkFocus()
         createProviderMarker()
         createMarkOfChoiceAddress(p0)
-//        showConfirmDialog(p0)
-//        calculateDistance(flagProvider, p0)
-        val dispose = backgroundThread(p0)
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                val result = it[0].toString()
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
-            },{
-                Toast.makeText(this, "Вообщем через жопу получилось, завтра доделать попытаюсь", Toast.LENGTH_SHORT).show()
-            })
+        showConfirmDialog(p0)
+        calculateDistance(flagProvider, p0)
     }
 
-    //
     private fun checkFocus() {
-        if (searchField.isFocused) {
-            searchField.clearFocus()
+        if (binding.inputAddressMap.isFocused) {
+            binding.inputAddressMap.clearFocus()
         }
     }
 
@@ -388,15 +333,43 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
-    //TODO фоновая задача по поиску адреса, не тормозящая ui thread
-    private fun backgroundThread(p0: LatLng): Single<MutableList<Address>> {
+    //TODO поиск адреса на фоновом потоке
+    private fun findGeolocation(p0: LatLng): Single<String> {
         return Single.create { subscriber ->
             val geocoder = Geocoder(this)
-            val address = geocoder.getFromLocation(p0.latitude, p0.longitude, 1)
-            subscriber.onSuccess(address)
+            try {
+                val addressList = geocoder.getFromLocation(p0.latitude, p0.longitude, 1)
+                if (addressList.size > 0){
+                    subscriber.onSuccess(addressList[0].getAddressLine(0))
+                } else{
+                    Log.e(tag, "findGeolocation: адрес не был найден")
+                }
+            } catch (e: IOException){
+                Log.e(tag, "backgroundThread: ${e.localizedMessage}")
+            }
         }
     }
 
+    //TODO поиск адреса на фоновом потоке на основании строки, возращает массив с адресом
+    private fun findGeolocationFromName(s: String?):Single<Address>{
+        return Single.create {
+            if (s != null){
+                val geocoder = Geocoder(this)
+                try {
+                    val addressList = geocoder.getFromLocationName(s, 1)
+                    if(addressList.size > 0){
+                        it.onSuccess(addressList[0])
+                    } else {
+                        Log.e(tag, "findGeolocationFromName: адрес не был найден")
+                    }
+                } catch (e: IOException){
+                    Log.e(tag, "findGeolocationFromName: ${e.localizedMessage}")
+                }
+            } else {
+                Log.e(tag,"findGeolocationFromName: в аргумент функции пришла пустая строка")
+            }
+        }
+    }
 
 }
 

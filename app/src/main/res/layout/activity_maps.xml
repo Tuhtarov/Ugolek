@@ -28,7 +28,7 @@
         android:id="@+id/constraintMaps">
 
         <EditText
-            android:id="@+id/field_inputAddressMap"
+            android:id="@+id/inputAddressMap"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:drawableStart="@drawable/ic_search_input_address"
@@ -114,11 +114,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/LinearLayout"
-                app:layout_constraintBottom_toTopOf="@+id/field_chosenAddress"
+                app:layout_constraintBottom_toTopOf="@+id/fieldChosenAddress"
                 />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/field_chosenAddress"
+                android:id="@+id/fieldChosenAddress"
                 android:layout_width="match_parent"
                 android:layout_marginHorizontal="5dp"
                 android:layout_height="wrap_content"
