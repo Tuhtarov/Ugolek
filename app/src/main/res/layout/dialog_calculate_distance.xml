@@ -42,7 +42,7 @@
                 app:layout_constraintBottom_toTopOf="@id/btn_ok"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:text="20 км"
+                tools:text = "20 км"
                 android:focusable="false"
                 android:editable="false">
             </EditText>
