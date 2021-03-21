@@ -2,6 +2,7 @@
 package com.example.myapplication
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -14,20 +15,20 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import com.example.myapplication.common.MainActivityData
+import com.example.myapplication.common.management.ManageDialog
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.kotlin.Observables
-import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(){
     private lateinit var intentForMapsLayout: Intent
     private var providerName: String? = null
     private val REQUEST_CODE = 0
-    private var distanceBetweenTwoPoints: String? = null
+    private var distanceBetweenTwoPoints = ""
     private lateinit var dialog: Dialog
     private lateinit var b: ActivityMainBinding
     lateinit var disposable: CompositeDisposable
@@ -36,13 +37,9 @@ class MainActivity : AppCompatActivity() {
     private var dp = ""
     private var dpk = ""
     private var dmsch = ""
-    private var listMarkCoal = mutableListOf<String>()
-    private var listPriceCoal = mutableMapOf<String, Int>()
-    var accessMark: String? = null
 
     private var totalPriceCoal: Int? = null
     private var totalPriceDelivery: Int? = null
-    private var totalPrice: Int? = null
 
     private var err: String = "JavaNullPointerException"
     private val TAG = MainActivity::class.java.simpleName
@@ -105,25 +102,20 @@ class MainActivity : AppCompatActivity() {
         b.fieldRequiredMass.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (!MainActivityData.getListOfNumber().contains(b.fieldRequiredMass.text.toString())) {
+                if (!MainActivityData().listNumber.contains(b.fieldRequiredMass.text.toString())) {
                     b.fieldRequiredMass.text.clear()
                     Toast.makeText(applicationContext,"Только целочисленные значения от 1-40", Toast.LENGTH_SHORT).show()
                 }
             }
             override fun afterTextChanged(s: Editable?) {
-                val requiredMass = b.fieldRequiredMass
-                if (!MainActivityData.getListOfNumber().contains(requiredMass.text.toString())) {
-                    requiredMass.text.clear()
-                } else if (!requiredMass.text.isNullOrEmpty()){
-                    if (!b.fieldAddressDelivery.text.isNullOrEmpty()){
-                        calculateTotalPriceCoal(requiredMass.text.toString().toInt())
-                        calculatePriceDelivery()
-                        calculateAllPrice()
-                    }
-                } else {
-                    Log.d(TAG, "afterTextChanged: количество угля ещё не определено")
+                if (!b.fieldRequiredMass.text.isNullOrEmpty()){
+                        calculateTotalPriceCoal(b.fieldRequiredMass.text.toString().toInt())
+                        if (!b.fieldAddressDelivery.text.isNullOrEmpty() && distanceBetweenTwoPoints != ""){
+                            calculatePriceDelivery()
+                            calculateAllPrice()
+                        }
                 }
-                if(requiredMass.text.isNullOrEmpty()){
+                if(b.fieldRequiredMass.text.isNullOrEmpty()){
                     b.fieldDelivery.text = ""
                     b.fieldDistance.text = ""
                     b.fieldAllPrice.text = ""
@@ -155,11 +147,10 @@ class MainActivity : AppCompatActivity() {
         b.fieldDelivery.text = ""
         b.fieldDistance.text = ""
         b.fieldAllPrice.text = ""
-        if(b.fieldRequiredMass.text.toString() != ""){ b.fieldRequiredMass.text.clear() }
-        b.fieldAddressDelivery.setText("")
-        accessMark = null
-        providerName = null
-        distanceBetweenTwoPoints = null
+        distanceBetweenTwoPoints = ""
+        providerName = ""
+        b.fieldRequiredMass.text.clear()
+        b.fieldAddressDelivery.text.clear()
     }
 
     //проверка заполнения полей перед тем, как открыть карту
@@ -195,13 +186,17 @@ class MainActivity : AppCompatActivity() {
             if(resultCode == RESULT_OK){
                 data?.let {
                     val address = data.getStringExtra("address")
-                    val distance = data.getStringExtra("distance")
+                    distanceBetweenTwoPoints = data.getStringExtra("distance").toString()
+                    
+                    if (b.fieldRequiredMass.text.isNotEmpty()){
+                        b.fieldAddressDelivery.setText(address)
+                        b.fieldDistance.text = distanceBetweenTwoPoints
 
-                    b.fieldAddressDelivery.setText(address)
-                    b.fieldDistance.text = distance!!
-
-                    calculatePriceDelivery()
-                    calculateAllPrice()
+                        calculatePriceDelivery()
+                        calculateAllPrice()
+                    } else {
+                        Toast.makeText(this, "Укажите желаемую массу угля", Toast.LENGTH_LONG).show()
+                    }
                 }
             }
         }
@@ -255,6 +250,10 @@ class MainActivity : AppCompatActivity() {
                 countPriceCoal(button.text.toString())
                 if (b.fieldRequiredMass.text.toString() != "") {
                     calculateTotalPriceCoal(b.fieldRequiredMass.text.toString().toInt())
+                    if(!b.fieldDistance.text.isNullOrEmpty() && !b.fieldAddressDelivery.text.isNullOrEmpty() && distanceBetweenTwoPoints != ""){
+                        calculatePriceDelivery()
+                        calculateAllPrice()
+                    }
                 }
                 dialog.dismiss()
             }
@@ -262,6 +261,8 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
+
+    private var listPriceCoal = mutableMapOf<String, Int>()
     //здесь определяется список угля и цен на них для выбранного поставщика
     private fun determineListCoalForProvider(providerName: String) {
         listPriceCoal.clear()
@@ -317,6 +318,7 @@ class MainActivity : AppCompatActivity() {
         b.fieldMarkCoal.append(markOfCoal)
     }
 
+    private var listMarkCoal = mutableListOf<String>()
     //для присвоения имени выбранного поставщика в поле "поставщик"
     private fun setTextProvider(nameProvider: String) {
         b.fieldProvider.text = ""
@@ -339,72 +341,58 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun calculateTotalPriceCoal(quantity: Int) {
-        if (accessMark != null || quantity != null) {
-            totalPriceCoal = quantity * accessMark.toString().toInt()
+        if (b.fieldPriceCoal.text.toString() != "") {
+            totalPriceCoal = quantity * b.fieldPriceCoal.text.toString().toInt()
         } else {
             Log.d(TAG, "calculateTotalPriceCoal: стоимость марки ещё не определена")
         }
     }
 
     private fun calculatePriceDelivery(){
-        var priceQuantityCoal: Int? = null
-        val quantityCoal = b.fieldRequiredMass.text.toString()
-        distanceBetweenTwoPoints = b.fieldDistance.text.toString().replace("км","").trim()
-
-            when (quantityCoal.toInt()) {
+        var priceDeliveryForQuantitiesOfCoal = 0
+        b.fieldDistance.text = distanceBetweenTwoPoints
+        var distance = distanceBetweenTwoPoints.replace("км","").trim()
+            when (b.fieldRequiredMass.text.toString().toInt()) {
                 in 1..3 -> {
-                    priceQuantityCoal = 10
+                    priceDeliveryForQuantitiesOfCoal = 10
                 }
                 in 4..7 -> {
-                    priceQuantityCoal = 15
+                    priceDeliveryForQuantitiesOfCoal = 15
                 }
                 in 8..20 -> {
-                    priceQuantityCoal = 35
+                    priceDeliveryForQuantitiesOfCoal = 35
                 }
                 in 21..40 -> {
-                    priceQuantityCoal = 80
-                }
-                else -> {
-                    Log.e(TAG, "err 195")
+                    priceDeliveryForQuantitiesOfCoal = 80
                 }
             }
-
-        priceQuantityCoal?.let{
-            totalPriceDelivery = it * distanceBetweenTwoPoints!!.toInt()
-            b.fieldDelivery.text = totalPriceDelivery!!.toString()
+            totalPriceDelivery = priceDeliveryForQuantitiesOfCoal * distance.toInt()
+            b.fieldDelivery.text = totalPriceDelivery.toString()
             b.fieldDelivery.append(" руб.")
-        } ?: run {
-            Toast.makeText(this@MainActivity, "Выберите адрес доставки", Toast.LENGTH_SHORT).show()
-        }
     }
 
 
 
     private fun calculateAllPrice(){
-        totalPrice = totalPriceCoal?.plus(totalPriceDelivery!!)
-        b.fieldAllPrice.text = totalPrice.toString()
+        b.fieldAllPrice.text = totalPriceCoal?.plus(totalPriceDelivery!!).toString()
         b.fieldAllPrice.append(" руб.")
     }
 
     //подсчёт стоимости одной тонны на основании выбора марки угля определённого поставщика
     private fun countPriceCoal(mark: String) {
-        for ((key, value) in listPriceCoal) {
-            key.also {
+        for ((coal, price) in listPriceCoal) {
+            coal.also {
                 if (it == mark) {
-                    accessMark = "$value"
+                    b.fieldPriceCoal.text = "$price"
                 }
             }
         }
-        accessMark?.let {
-            b.fieldPriceCoal.text = accessMark
-        } ?: Toast.makeText(this, err + "317 | accessMark = null", Toast.LENGTH_SHORT).show()
     }
-
-
 
     override fun onDestroy() {
         super.onDestroy()
         disposable.dispose()
     }
+
 
 }

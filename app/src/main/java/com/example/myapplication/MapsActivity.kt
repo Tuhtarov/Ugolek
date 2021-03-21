@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
 import android.view.inputmethod.EditorInfo
@@ -191,7 +192,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                         if (distanceResult == ""){
                             Toast.makeText(
                                 this@MapsActivity,
-                                "Проверьте интернет соединение, расстояние подсчитано не точно.",
+                                "Проверьте интернет соединение",
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -199,6 +200,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
                     override fun onError(e: Throwable) {
                         Log.e("TAG retrofit", "Возникла ошибка ${e.localizedMessage}")
+                        Toast.makeText(this@MapsActivity, "Проверьте подключение к интернету.", Toast.LENGTH_LONG).show()
                     }
                 })
         } ?: run {
@@ -282,7 +284,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         if(!distanceResult.isNullOrEmpty()){
             fieldResultDistance.setText(distanceResult.replace("km","км"))
         } else {
-            Toast.makeText(this, "Не выбран адрес доставки, или же отсутствует интернет соединение", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Отсутствует интернет соединение", Toast.LENGTH_LONG).show()
         }
 
         btnOkay.setOnClickListener {
@@ -362,6 +364,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private fun sendResult() {
         val intentResult = Intent(this, MainActivity::class.java)
 
+        addressResult = "Улица пушкина, дом калатушкина"
+        //TODO ХАРДКОДИНГ
+
         if (addressResult == "Дырка от бублика") {
             setResult(RESULT_CANCELED)
         } else if (addressResult.isNotEmpty() && distanceResult.isNotEmpty()){
@@ -373,10 +378,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     override fun onDestroy() {
-        findLocation.compositeDisposable.dispose()
+        /* Отложенное очищение композит бэга нужно, что бы композит бэк не очистился во время выполнения запроса на сервер(иначе результат попытается придти
+        в удалённый контейнер), это может случится при плохом соединении с интернетом */
         binding.inputAddressMap.text.clear()
         binding.fieldChosenAddress.text = ""
         mMap.clear()
+
+        Handler().postDelayed({
+            findLocation.compositeDisposable.dispose()
+            Log.e(tag, "composite bag is cleared = ${findLocation.compositeDisposable.isDisposed}")
+        }, 25000)
+
         super.onDestroy()
     }
 
