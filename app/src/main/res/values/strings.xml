@@ -53,4 +53,5 @@
     <string name="chooseOnMap">Выбрать на карте</string>
     <string name="chooseAddress">Введите адрес</string>
     <string name="distanceBetween">Расстояние между поставщиком и выбранным адресом:</string>
+    <string name="enterAddress">Введите адрес</string>
 </resources>

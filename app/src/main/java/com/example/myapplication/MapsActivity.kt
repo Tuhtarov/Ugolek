@@ -1,3 +1,4 @@
+
 package com.example.myapplication
 
 import android.Manifest
@@ -159,13 +160,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     }
 
+    private var stringDestination = ""
     override fun onMapClick(p0: LatLng) {
         cleanFocus()
         createProviderMarker()
         createMarkOfChoiceAddress(p0)
         showConfirmDialog(p0)
-
-        val stringDestination = StringBuilder("${p0.latitude},${p0.longitude}").toString()
+        stringDestination = StringBuilder("${p0.latitude},${p0.longitude}").toString()
         calculateDistanceMatrixApi(stringDestination, p0)
     }
 
@@ -364,14 +365,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private fun sendResult() {
         val intentResult = Intent(this, MainActivity::class.java)
 
-        addressResult = "Улица пушкина, дом калатушкина"
-        //TODO ХАРДКОДИНГ
-
         if (addressResult == "Дырка от бублика") {
             setResult(RESULT_CANCELED)
         } else if (addressResult.isNotEmpty() && distanceResult.isNotEmpty()){
             intentResult.putExtra("address", addressResult)
             intentResult.putExtra("distance", distanceResult)
+            intentResult.putExtra("addressGeolocation", stringDestination)
             setResult(RESULT_OK, intentResult)
         }
         finish()

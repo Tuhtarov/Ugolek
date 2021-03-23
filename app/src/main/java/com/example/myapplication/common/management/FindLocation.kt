@@ -79,7 +79,45 @@ open class FindLocation(private val context: Context){
        }
    }
 
+    fun getLocationByTextString(string: String): Single<Address>{
+        return Single.create{ single ->
+            try {
+                val geocoder = Geocoder(this.context)
+                val addressList: List<Address> =
+                    geocoder.getFromLocationName(string, 1)
+                if (addressList.isNotEmpty()){
+                    single.onSuccess(addressList[0])
+                    Log.d("TAG", "FindLocation: адрес найден -> ${addressList[0].getAddressLine(0)}")
+                }
+            } catch (e: IOException){
+                single.onError(e)
+                Log.e("TAG", "FindLocation: адрес не найден -> ${e.localizedMessage}")
+            }
+        }
+    }
+
+    fun findLatLngByString(addressLine: String){
+        val geocoder = Geocoder(context)
+        try {
+            val address = geocoder.getFromLocationName(addressLine, 1)
+            if(address.size > 0){
+                val latLngString = "${address[0].latitude}, ${address[0].longitude}"
+                Log.e("GEOCODER", "Данные по LatLng -> $latLngString")
+            } else {
+                Log.e("GEOCODER", "Ничего не найдено, возможно криворукий ввод строки")
+            }
+        } catch (e: IOException){
+            Log.e("GEOCODER", "ошибка ${e.localizedMessage}")
+        }
+    }
+
     private fun Disposable.disposeAtTheEnd(){
         compositeDisposable.add(this)
+    }
+}
+
+interface FindLocationManagement{
+    fun getLocationByString(context: Context, addressLine: String): Single<Address>{
+        return FindLocation(context).getLocationByTextString(addressLine)
     }
 }

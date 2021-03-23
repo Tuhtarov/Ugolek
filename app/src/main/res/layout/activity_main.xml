@@ -10,6 +10,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/CardViewPrMrk"
+        tools:viewBindingIgnore="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="20dp"
@@ -29,6 +30,7 @@
             <TextView
                 android:id="@+id/text_provider"
                 android:text="Поставщик"
+                tools:viewBindingIgnore="true"
                 style="@style/text_main_activity"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/field_provider"
@@ -56,6 +58,7 @@
             <TextView
                 android:id="@+id/text_markCoal"
                 android:text="Марка угля"
+                tools:viewBindingIgnore="true"
                 style="@style/text_main_activity"
                 app:layout_constraintStart_toStartOf="@+id/field_markCoal"
                 app:layout_constraintEnd_toEndOf="@+id/field_markCoal"
@@ -88,6 +91,7 @@
     <TextView
         android:id="@+id/text_priceCoal"
         style="@style/text_main_activity"
+        tools:viewBindingIgnore="true"
         android:text="@string/priceCoal"
         android:layout_marginBottom="6dp"
         app:layout_constraintTop_toTopOf="@+id/field_priceCoal"
@@ -115,6 +119,7 @@
     <TextView
         android:id="@+id/text_requiredMass"
         style="@style/text_main_activity"
+        tools:viewBindingIgnore="true"
         android:text="@string/requiredMass"
         android:layout_marginBottom="6dp"
         app:layout_constraintEnd_toStartOf="@+id/field_requiredMass"
@@ -133,6 +138,7 @@
         android:inputType="number"
         android:maxLength="2"
         tools:text="56"
+        android:text=""
         android:textColor="#000"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -145,36 +151,63 @@
             android:id="@+id/text_addressDelivery"
             style="@style/text_main_activity"
             android:text="@string/adressDelivery"
-            app:layout_constraintBottom_toTopOf="@+id/field_addressDelivery"
-            app:layout_constraintEnd_toEndOf="@+id/field_addressDelivery"
-            app:layout_constraintStart_toStartOf="@+id/field_addressDelivery"
+            tools:viewBindingIgnore="true"
+            app:layout_constraintBottom_toTopOf="@+id/LinearLayoutContainer"
+            app:layout_constraintEnd_toEndOf="@+id/LinearLayoutContainer"
+            app:layout_constraintStart_toStartOf="@+id/LinearLayoutContainer"
             app:layout_constraintTop_toBottomOf="@id/field_requiredMass"
             />
 
+    <LinearLayout
+        android:id="@+id/LinearLayoutContainer"
+        tools:viewBindingIgnore="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_addressDelivery"
+        app:layout_constraintBottom_toTopOf="@id/btn_chooseOnMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
         <EditText
             android:id="@+id/field_addressDelivery"
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:layout_marginHorizontal="20dp"
+            android:layout_width="0dp"
+            android:layout_weight="9"
+            android:layout_height="80dp"
             android:textSize="20sp"
-            android:maxLength="150"
+            android:maxLength="100"
+            android:maxLines="4"
             android:textAlignment="center"
             android:gravity="center"
             android:fontFamily="@font/russian_road"
             android:paddingHorizontal="5dp"
-            android:hint="Введите адрес"
+            android:hint="@string/enterAddress"
+            android:layout_marginHorizontal="10dp"
             tools:text="Республика Хакасия, г.Абакан, Щетинкина 11-а"
-            android:background="@drawable/bg_field_main_activity"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_addressDelivery"
-            app:layout_constraintBottom_toTopOf="@+id/btn_chooseOnMap">
+            android:layout_gravity="center"
+            android:background="@drawable/bg_field_main_activity">
         </EditText>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_searchAddress"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_btn_choose_map"
+            android:fontFamily="@font/txt_solid"
+            android:textSize="22sp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            android:text="">
+        </androidx.appcompat.widget.AppCompatButton>
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/text_chooseOnMap"
         style="@style/text_main_activity"
         android:text="@string/chooseOnMap"
+        tools:viewBindingIgnore="true"
         android:layout_marginBottom="6dp"
         app:layout_constraintTop_toTopOf="@+id/btn_chooseOnMap"
         app:layout_constraintBottom_toBottomOf="@+id/btn_chooseOnMap"
@@ -192,7 +225,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/text_chooseOnMap"
-        app:layout_constraintTop_toBottomOf="@+id/field_addressDelivery"
+        app:layout_constraintTop_toBottomOf="@+id/LinearLayoutContainer"
         app:layout_constraintBottom_toTopOf="@+id/CardViewDistance"
         />
 
@@ -219,6 +252,7 @@
                 style="@style/text_main_activity"
                 android:text="@string/distance"
                 android:layout_marginVertical="5dp"
+                tools:viewBindingIgnore="true"
                 app:layout_constraintStart_toStartOf="@+id/field_distance"
                 app:layout_constraintEnd_toEndOf="@+id/field_distance"
                 app:layout_constraintTop_toTopOf="parent"
@@ -248,6 +282,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/CardViewDelivery"
+        tools:viewBindingIgnore="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardElevation="0dp"
@@ -267,6 +302,7 @@
                 style="@style/text_main_activity"
                 android:text="@string/delivery"
                 android:layout_marginVertical="5dp"
+                tools:viewBindingIgnore="true"
                 app:layout_constraintStart_toStartOf="@+id/field_delivery"
                 app:layout_constraintEnd_toEndOf="@+id/field_delivery"
                 app:layout_constraintTop_toTopOf="parent"
@@ -312,6 +348,7 @@
         style="@style/text_main_activity"
         android:text="@string/totalAmount"
         android:layout_marginBottom="5dp"
+        tools:viewBindingIgnore="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/field_allPrice"
         app:layout_constraintTop_toTopOf="@+id/field_allPrice"
