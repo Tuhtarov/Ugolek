@@ -21,12 +21,13 @@ import kotlin.math.roundToInt
 open class CalculateDistanceMatrixApi(
     val context: Context
 ) {
+
+/*
     val arshanov = LatLng(53.402971, 91.083748)
     val chernogorskiy = LatLng(53.759367, 91.061604)
     val izyhskiy = LatLng(53.630114, 91.436063)
     val cirbinskiy = LatLng(53.529799, 91.410684)
-
-    val compositeDisposable = CompositeDisposable()
+*/
 
     var providersLocations = mutableMapOf(
         MainActivityData.Arschanovr to "53.402971, 91.083748",
@@ -35,8 +36,8 @@ open class CalculateDistanceMatrixApi(
         MainActivityData.Cirbinskiy to "53.529799, 91.410684"
     )
 
-    fun checkProvider(provider: String): String?{
-        if(providersLocations.contains(provider)){
+    fun checkProvider(provider: String): String? {
+        if (providersLocations.contains(provider)) {
             return providersLocations.getValue(provider)
         } else {
             return null
@@ -44,26 +45,9 @@ open class CalculateDistanceMatrixApi(
     }
 
     fun calculateDistance(origin: String, destination: String): Single<RowsMatrix> {
-        val disposable = DistanceMatrix().configureRetrofit().getDistance(MainActivityData.keyMatrixApi, origin, destination)
+        val disposable = DistanceMatrix().configureRetrofit()
+            .getDistance(MainActivityData.keyMatrixApi, origin, destination)
         return disposable
     }
-
-    private fun Disposable.disposeAtTheEnd(){
-        compositeDisposable.add(this)
-    }
-    fun compositeDispose(){
-        compositeDisposable.dispose()
-    }
 }
 
-interface CalculateDistanceManagement{
-    fun calculateDistance(context: Context, provider: String, destination: String): Single<RowsMatrix>?{
-        val calculateClass = CalculateDistanceMatrixApi(context)
-        val destinationAddress = calculateClass.checkProvider(provider)
-        destinationAddress?.let {
-            return calculateClass.calculateDistance(it, destination)
-        } ?: run {
-            return null
-        }
-    }
-}

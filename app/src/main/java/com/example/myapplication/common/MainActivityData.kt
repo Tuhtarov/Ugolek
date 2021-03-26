@@ -1,10 +1,5 @@
 package com.example.myapplication.common
 interface MainActivityData{
-
-    open fun getlistNum(): List<String>{
-        return listNumber
-    }
-
     companion object{
         //TODO имена поставщиков
         val Arschanovr: String = "Аршановский разрез"
@@ -24,7 +19,6 @@ interface MainActivityData{
             "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "")
 
         val keyMatrixApi = "AIzaSyDwQInIFtD14iJb85Or8hen_oaoSSpU7oI"
-
     }
 }
 
