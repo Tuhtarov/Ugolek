@@ -30,6 +30,7 @@ open class DistanceMatrix {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(httpClient)
             .build()
+
         val matrixApi = retrofit.create(MatrixApi::class.java)
         return matrixApi
     }

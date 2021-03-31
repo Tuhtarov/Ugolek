@@ -165,12 +165,12 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
 //            if(checkValidatesField()){
                 intentConfirm.putExtra("provider", b.fieldProvider.text.toString())
                 intentConfirm.putExtra("coal", b.fieldMarkCoal.text.toString())
-//                intentConfirm.putExtra("priceCoal", b.fieldPriceCoal.text.toString())
-//                intentConfirm.putExtra("addressDelivery", b.fieldAddressDelivery.text.toString())
-//                intentConfirm.putExtra("requiredMass", b.fieldRequiredMass.text.toString())
-//                intentConfirm.putExtra("distance", b.fieldDistance.text.toString())
-//                intentConfirm.putExtra("priceDelivery", b.fieldDelivery.text.toString())
-//                intentConfirm.putExtra("allPrice", b.fieldAllPrice.text.toString())
+                intentConfirm.putExtra("priceCoal", b.fieldPriceCoal.text.toString())
+                intentConfirm.putExtra("addressDelivery", b.fieldAddressDelivery.text.toString())
+                intentConfirm.putExtra("requiredMass", b.fieldRequiredMass.text.toString())
+                intentConfirm.putExtra("distance", b.fieldDistance.text.toString())
+                intentConfirm.putExtra("priceDelivery", b.fieldDelivery.text.toString())
+                intentConfirm.putExtra("allPrice", b.fieldAllPrice.text.toString())
                 startActivity(intentConfirm)
 //            }
         }
