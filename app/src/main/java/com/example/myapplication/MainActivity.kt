@@ -162,7 +162,7 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
 
         val intentConfirm= Intent(this, ConfirmActivity::class.java)
         b.btnToOrder.setOnClickListener {
-//            if(checkValidatesField()){
+            if(checkValidatesField()){
                 intentConfirm.putExtra("provider", b.fieldProvider.text.toString())
                 intentConfirm.putExtra("coal", b.fieldMarkCoal.text.toString())
                 intentConfirm.putExtra("priceCoal", b.fieldPriceCoal.text.toString())
@@ -172,7 +172,7 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                 intentConfirm.putExtra("priceDelivery", b.fieldDelivery.text.toString())
                 intentConfirm.putExtra("allPrice", b.fieldAllPrice.text.toString())
                 startActivity(intentConfirm)
-//            }
+            }
         }
 
     }
@@ -330,6 +330,7 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                 data?.let {
                     addressGeolocation = data.getStringExtra("addressGeolocation").toString()
                     b.fieldAddressDelivery.setText(data.getStringExtra("address").toString())
+                    b.fieldAddressDelivery.setSelection(b.fieldAddressDelivery.text.length)
                     b.fieldDistance.text = data.getStringExtra("distance")
                     addressString = data.getStringExtra("address").toString()
                     calculateOrder()

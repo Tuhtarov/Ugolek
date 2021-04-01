@@ -18,7 +18,8 @@ import retrofit2.http.HTTP
 class RetrofitSmsApi() {
     private val loginApi = "lflagmanl"
     private val passwordApi = "eujkmkexitdct[!"
-
+    private val fmt = "3" //необходимо для получения ответа сервера в Json формате
+//    private val all = "0" //содержимое ответа сервера (не полное)
     private fun configureRetrofit(): SmsApi{
 
         val httpLoggingInterceptor = HttpLoggingInterceptor()
@@ -41,11 +42,18 @@ class RetrofitSmsApi() {
 
     fun sendMessageApi(phone: String, message: String): Single<SmsModel>{
         configureRetrofit().also {
-            val fmt = "3" //необходимо для получения ответа сервера в Json формате
             return it.sendConfirmSms(login = loginApi,
             psw = passwordApi,
             phone, fmt, message)
         }
     }
+
+    /* для проверки статуса отправленного сообщения */
+//    fun checkMessageStatus(phone: String, id: String): Single<SmsStatusModel>{
+//        configureRetrofit().also {
+//            return it.checkSmsStatus(login = loginApi,
+//            psw = passwordApi, phone, fmt, id, all)
+//        }
+//    }
 
 }

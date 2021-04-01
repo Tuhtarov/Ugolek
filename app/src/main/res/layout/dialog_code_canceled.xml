@@ -44,7 +44,7 @@
             <TextView
                 android:id="@+id/text_order_confirmed_canceled"
                 android:text="Неверный код подтверждения.\nОтправить код повторно можно\n
-через 1 минуту. "
+через несколько секунд. "
                 android:textAlignment="center"
                 android:fontFamily="@font/russian_road"
                 android:textSize="22sp"

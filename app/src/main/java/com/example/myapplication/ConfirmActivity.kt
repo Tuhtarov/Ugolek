@@ -1,14 +1,12 @@
 package com.example.myapplication
 
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -18,34 +16,28 @@ import com.example.myapplication.databinding.ActivityConfirmBinding
 import com.example.myapplication.smscru.RetrofitSmsApi
 import com.example.myapplication.smscru.SmsModel
 import com.jakewharton.rxbinding4.widget.textChanges
+import io.reactivex.Observable
 import io.reactivex.SingleObserver
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.ObservableSource
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.sql.Time
 import java.util.concurrent.TimeUnit
-import kotlin.math.log
-import kotlin.random.Random
 
 class ConfirmActivity : AppCompatActivity() {
-    private lateinit var dialog: Dialog
     private lateinit var b: ActivityConfirmBinding
     private lateinit var compositeDisposable: CompositeDisposable
     private lateinit var compositeDisposableRx2: io.reactivex.disposables.CompositeDisposable
-    private val TAG = ConfirmActivity::class.java.simpleName
     lateinit var retrofitSmsApi: RetrofitSmsApi
-    var codeSms = ""
 
-    private fun Disposable.disposeAtTheEnd() {
-        compositeDisposable.add(this)
+    companion object {
+        const val PHONE_OPERATOR_COAL = "+79628003000"
+        private val TAG = ConfirmActivity::class.java.simpleName
+        private val SMS = "SmsApi"
+        var codeSms = ""
     }
 
-    private fun io.reactivex.disposables.Disposable.disposeAtTheEnd() {
-        compositeDisposableRx2.add(this)
-    }
+    var orderIsValid: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +66,7 @@ class ConfirmActivity : AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (it) {
-                    //TODO да, тут большой флуд кодом, но главное работает без эксепшинов))0 0))))
+                    //TODO флуд
                     if (b.fieldPhoneOrder.text.isNotEmpty()) {
                         b.fieldPhoneOrder.text.trim()
                         if (b.fieldPhoneOrder.text?.toString()?.get(0) == '+') {
@@ -90,7 +82,7 @@ class ConfirmActivity : AppCompatActivity() {
                         }
 
                         if (b.fieldPhoneOrder.text.length > 2) {
-                            b.fieldPhoneOrder.text.takeLast(b.fieldPhoneOrder.text.length.toInt() - 1)
+                            b.fieldPhoneOrder.text.takeLast(b.fieldPhoneOrder.text.length - 1)
                                 .forEachIndexed { index, c ->
                                     if (ConfirmActivityData().numbersPhone.contains(c)) {
                                     } else {
@@ -114,15 +106,189 @@ class ConfirmActivity : AppCompatActivity() {
                     b.btnConfirmOrder.isEnabled = b.fieldPhoneOrder.text.length == 12
                 }
             }, {
-                Log.e(TAG, "${it.localizedMessage}")
+                Log.e(TAG, it.localizedMessage)
             }).disposeAtTheEnd()
 
         b.btnConfirmOrder.setOnClickListener {
             val codeConfirm = generateCodeSms()
+            sendCodeConfirm(b.fieldPhoneOrder.text.toString(), codeConfirm)
             showDialogConfirmSms(codeConfirm)
         }
 
     }
+
+    /*========================================DIALOGS && RETROFIT && RXJAVA==============================================*/
+
+    private fun showDialogConfirmSms(codeConfirm: String) {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_confirm_phone)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val fieldConfirmCode = dialog.findViewById<EditText>(R.id.field_inputCodeSms)
+        dialog.show()
+
+        var validCode: Boolean? = null
+        fieldConfirmCode.textChanges()
+            .map { text -> (text.length == 4) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.newThread())
+            .debounce(350, TimeUnit.MILLISECONDS)
+            .subscribe({
+                if (it) {
+                    if (codeSms == fieldConfirmCode.text.toString()) {
+                        Log.d("tagAccept", "код подтверждён")
+                        validCode = true
+                        dialog.dismiss()
+                        //TODO!!!!!!!!!!!!!!!!!!!!!!!
+                    } else {
+                        Log.e("tagCanceled", "код неверный")
+                        validCode = false
+                        dialog.dismiss()
+                        //TODO!!!!!!!!!!!!!!!!!!!!!!!
+                    }
+                }
+            }, {
+                Log.e("tagConfirm", "ошибка ${it.localizedMessage}")
+            }).disposeAtTheEnd()
+
+        dialog.setOnDismissListener {
+            validCode?.let {
+                if (it) showDialogCodeConfirmed() else showDialogCodeCanceled()
+            }
+        }
+    }
+
+
+    private fun showDialogCodeConfirmed() {
+        sendSmsOrder() /* при подтверждённом номере, отправляются введённые данные оператору угля */
+
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_code_confirmed)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val buttonOk = dialog.findViewById<Button>(R.id.btn_code_ok)
+        dialog.show()
+
+        buttonOk.setOnClickListener {
+            startTheEnd(dialog)
+        }
+        dialog.setOnDismissListener {
+            startTheEnd(dialog)
+        }
+
+    }
+
+    private fun startTheEnd(dialog: Dialog){
+        if(orderIsValid != false){
+            Toast.makeText(this, "Заказ отправлен на обработку!", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "Заказ не был отправлен на обработку.", Toast.LENGTH_LONG).show()
+        }
+        val intent = Intent(this, MainActivity::class.java)
+        dialog.dismiss()
+        finish()
+        startActivity(intent)
+    }
+
+
+    private fun showDialogCodeCanceled() {
+        val dialogCodeCanceled = Dialog(this)
+        dialogCodeCanceled.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialogCodeCanceled.setContentView(R.layout.dialog_code_canceled)
+
+        val buttonRepeat = dialogCodeCanceled.findViewById<Button>(R.id.btn_code_repeat)
+        val buttonCancel = dialogCodeCanceled.findViewById<Button>(R.id.btn_code_cancel)
+
+        dialogCodeCanceled.show()
+
+        createBlockForSendCode(buttonRepeat)
+
+        buttonRepeat.setOnClickListener {
+            dialogCodeCanceled.dismiss()
+            showDialogConfirmSms(generateCodeSms())
+        }
+
+        buttonCancel.setOnClickListener {
+            dialogCodeCanceled.dismiss()
+            b.fieldPhoneOrder.text.clear()
+        }
+
+    }
+
+    fun sendCodeConfirm(phoneNumber: String, codeConfirm: String){
+        retrofitSmsApi.sendMessageApi(phoneNumber, "Код подтверждения: $codeConfirm")
+            .subscribeOn(io.reactivex.schedulers.Schedulers.computation())
+            .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+            .subscribe(object : SingleObserver<SmsModel> {
+                override fun onSubscribe(d: io.reactivex.disposables.Disposable) {
+                    Log.d("SMS", "подписка выполнена")
+                }
+
+                override fun onSuccess(t: SmsModel) {
+                    if(t.cnt != null){
+                        Log.d(TAG, "sendCodeConfirm -> сообщение отправлено успешно, кол-во частей смс = ${t.cnt.toString()}")
+                    }
+                    if(t.error != null){
+                        orderIsValid = false
+                        Toast.makeText(this@ConfirmActivity,
+                            "Возникла ошибка в работе с сервером: ${t.error.toString() + " | id sms -> " + t.id.toString()} ",
+                            Toast.LENGTH_LONG).show()
+                        Log.e(TAG, "sendCodeConfirm -> ${t.error.toString() + " | " + t.error_code.toString() + " id sms -> " + t.id.toString()}")
+                    }
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.e("SMS", "ошибка -> ${e.localizedMessage}")
+                    Toast.makeText(
+                        this@ConfirmActivity,
+                        "ошибка ${e.localizedMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+            })
+    }
+
+    private fun sendSmsOrder() {
+        retrofitSmsApi.sendMessageApi(
+            Companion.PHONE_OPERATOR_COAL,
+            "Поставщик: ${b.fieldProviderOrder.text} \n" +
+                    "Марка угля: ${b.fieldMarkCoalOrder.text} \n" +
+                    "Масса: ${b.fieldRequiredMassOrder.text} \n" +
+                    "Адрес: ${b.fieldAddressDeliveryOrder.text} \n" +
+                    "Телефон заказчика: ${b.fieldPhoneOrder.text}"
+        )
+            .subscribeOn(io.reactivex.schedulers.Schedulers.computation())
+            .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+            .subscribe(object : SingleObserver<SmsModel> {
+                override fun onSubscribe(d: io.reactivex.disposables.Disposable) {
+                    Log.d(SMS, "подписка выполнена")
+                }
+
+                override fun onSuccess(t: SmsModel) {
+                    if(t.cnt != null){
+                        Log.d(TAG, "sendCodeConfirm -> сообщение отправлено успешно, кол-во частей смс = ${t.cnt.toString()}")
+                    }
+                    if(t.error != null){
+                        orderIsValid = false
+                        Toast.makeText(this@ConfirmActivity,
+                            "Возникла ошибка в работе с сервером: ${t.error.toString() + " | id sms -> " + t.id.toString()} ",
+                            Toast.LENGTH_LONG).show()
+                        Log.e(TAG, "sendSmsOrder -> ${t.error.toString() + " | " + t.error_code.toString() + " id sms -> " + t.id.toString()}")
+                    }
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.e(SMS, "ошибка -> ${e.localizedMessage}")
+                    Toast.makeText(
+                        this@ConfirmActivity,
+                        "ошибка ${e.localizedMessage}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+
+            })
+    }
+
+    /*======================================UTILS==========================================*/
 
     private fun generateCodeSms(): String {
         codeSms = ""
@@ -133,143 +299,55 @@ class ConfirmActivity : AppCompatActivity() {
     }
 
 
-    /*=============================================================================================*/
-
-    private fun showDialogConfirmSms(codeConfirm: String) {
-        dialog = Dialog(this)
-        dialog.setContentView(R.layout.dialog_confirm_phone)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
-        val fieldConfirmCode = dialog.findViewById<EditText>(R.id.field_inputCodeSms)
-
-//        retrofitSmsApi.sendMessageApi(phone.text.toString(), "Код подтверждения: $codeConfirm")
-//            .subscribeOn(io.reactivex.schedulers.Schedulers.computation())
-//            .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
-//            .subscribe(object : SingleObserver<SmsModel> {
-//                override fun onSubscribe(d: io.reactivex.disposables.Disposable) {
-//                    Log.d("SmsApi", "подписка выполнена")
-//                }
-//
-//                override fun onSuccess(t: SmsModel) {
-//                    Log.d("SmsApi", "${t.error.toString()}")
-//                }
-//
-//                override fun onError(e: Throwable) {
-//                    Log.e("SmsApi", "ошибка -> ${e.localizedMessage}")
-//                    Toast.makeText(
-//                        this@ConfirmActivity,
-//                        "ошибка ${e.localizedMessage}",
-//                        Toast.LENGTH_LONG
-//                    ).show()
-//                }
-//
-//            })
-//        sendMessage(b.fieldPhoneOrder.text.toString(), codeConfirm)
-        dialog.show()
-
-        var flag: Boolean? = null
-
-        fieldConfirmCode.textChanges()
-            .map { text -> (text.length == 4) }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.newThread())
-            .debounce(350, TimeUnit.MILLISECONDS)
+    private fun createBlockForSendCode(btn: Button) {
+        createTicker()
+            .subscribeOn(io.reactivex.schedulers.Schedulers.newThread())
+            .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
             .subscribe({
-                if (it) {
-                    if (codeSms == fieldConfirmCode.text.toString()) {
-                        Log.d("tagAccept", "код подтверждён")
-                        flag = true
-                        dialog.dismiss()
-                        //TODO!!!!!!!!!!!!!!!!!!!!!!!
-                    } else {
-                        Log.e("tagCanceled", "код неверный")
-                        flag = false
-                        dialog.dismiss()
-                        //TODO!!!!!!!!!!!!!!!!!!!!!!!
-                    }
+                b.btnConfirmOrder.isEnabled = false
+                b.fieldPhoneOrder.isEnabled = false
+                btn.isEnabled = false
+                btn.text = it.toString()
+                b.btnConfirmOrder.text = it.toString()
+
+                if(btn.text == "0") {
+                    btn.text = "Повторить"
+                    b.btnConfirmOrder.text = "Подтвердить"
+                    b.btnConfirmOrder.isEnabled = true
+                    b.fieldPhoneOrder.isEnabled = true
+                    btn.isEnabled = true
                 }
             }, {
-                Log.e("tagConfirm", "ошибка ${it.localizedMessage}")
+                Log.e(TAG, it.localizedMessage)
+            }, {
             }).disposeAtTheEnd()
+    }
 
-        dialog.setOnCancelListener {
-            dialog.dismiss()
-            Toast.makeText(this, "Подтверждение пока что в разработке", Toast.LENGTH_SHORT).show()
-        }
-
-        dialog.setOnDismissListener {
-            flag?.let {
-                if (it) showDialogCodeConfirmed() else showDialogCodeCanceled()
+    private fun createTicker(): Observable<Int> {
+        return Observable.create { second ->
+            for (i in 30 downTo 0) {
+                Thread.sleep(1000)
+                second.onNext(i)
             }
         }
     }
 
 
-    private fun showDialogCodeConfirmed() {
-        var dialog = Dialog(this)
-        dialog.setContentView(R.layout.dialog_code_confirmed)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.show()
-
-        val buttonOk = dialog.findViewById<Button>(R.id.btn_code_ok)
-
-        buttonOk?.setOnClickListener {
-            Toast.makeText(this, "Ну ок так ок", Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
-        }
-
+    /* Очищение потоков */
+    private fun Disposable.disposeAtTheEnd() {
+        compositeDisposable.add(this)
     }
 
-    private fun showDialogCodeCanceled() {
-        var dialog = Dialog(this)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.setContentView(R.layout.dialog_code_canceled)
-        dialog.show()
-
-        val buttonRepeat = dialog.findViewById<Button>(R.id.btn_code_repeat)
-        val buttonCancel = dialog.findViewById<Button>(R.id.btn_code_cancel)
-
-        buttonRepeat?.setOnClickListener {
-            dialog.dismiss()
-            showDialogConfirmSms(generateCodeSms())
-        }
-
-        buttonCancel?.setOnClickListener {
-            dialog.dismiss()
-            b.fieldPhoneOrder.text.clear()
-        }
-
-
+    private fun io.reactivex.disposables.Disposable.disposeAtTheEnd() {
+        compositeDisposableRx2.add(this)
     }
-
-//    fun sendMessage(phoneNumber: String, codeConfirm: String){
-//        retrofitSmsApi.sendMessageApi(phoneNumber, "Код подтверждения: $codeConfirm")
-//            .subscribeOn(io.reactivex.schedulers.Schedulers.computation())
-//            .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
-//            .subscribe(object : SingleObserver<SmsModel> {
-//                override fun onSubscribe(d: io.reactivex.disposables.Disposable) {
-//                    Log.d("SmsApi", "подписка выполнена")
-//                }
-//
-//                override fun onSuccess(t: SmsModel) {
-//                    Log.d("SmsApi", "${t.error.toString()}")
-//                }
-//
-//                override fun onError(e: Throwable) {
-//                    Log.e("SmsApi", "ошибка -> ${e.localizedMessage}")
-//                    Toast.makeText(
-//                        this@ConfirmActivity,
-//                        "ошибка ${e.localizedMessage}",
-//                        Toast.LENGTH_LONG
-//                    ).show()
-//                }
-//
-//            })
-//    }
 
     override fun onDestroy() {
-        compositeDisposable.dispose()
+        Handler().postDelayed({
+            compositeDisposable.dispose()
+            compositeDisposableRx2.dispose()
+            Log.d(TAG, "dispose? = ${compositeDisposableRx2.isDisposed}")
+        }, 30000)
         super.onDestroy()
     }
-
 }
