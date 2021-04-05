@@ -330,7 +330,7 @@
 
     <TextView
         android:id="@+id/field_allPrice"
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="40dp"
         android:background="@drawable/bg_field_main_activity"
         android:gravity="center"

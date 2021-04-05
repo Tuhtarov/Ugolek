@@ -116,14 +116,19 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
 
         val intentMapsActivity = Intent(this, MapsActivity::class.java)
         b.btnChooseOnMap.setOnClickListener {
-            massAndAddressIsValid.subscribe {
-                if (it == true) {
-                    intentMapsActivity.putExtra("provider", b.fieldProvider.text.toString())
-                    startActivityForResult(intentMapsActivity, 0)
-                } else {
-                    Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show()
-                }
-            }.disposeAtTheEnd()
+            if(checkValidatesFieldForMaps()){
+//                massAndAddressIsValid.subscribe {
+//                    if (it == true) {
+                Log.d("TAG", "btnChooseOnMap -> намерение для карты было создано")
+                        intentMapsActivity.putExtra("provider", b.fieldProvider.text.toString())
+                        startActivityForResult(intentMapsActivity, 0)
+//                    } else {
+//                        Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show()
+//                    }
+//                }.disposeAtTheEnd()
+            } else {
+                Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show()
+            }
         }
 
         b.fieldAddressDelivery.textChanges()
@@ -172,6 +177,8 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                 intentConfirm.putExtra("priceDelivery", b.fieldDelivery.text.toString())
                 intentConfirm.putExtra("allPrice", b.fieldAllPrice.text.toString())
                 startActivity(intentConfirm)
+            } else {
+                Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -323,15 +330,19 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                 && b.fieldDelivery.text.isNotEmpty() && b.fieldAllPrice.text.isNotEmpty())
     }
 
+    private fun checkValidatesFieldForMaps(): Boolean{
+        return (b.fieldProvider.text.isNotEmpty() && b.fieldMarkCoal.text.isNotEmpty() && b.fieldPriceCoal.text.isNotEmpty())
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 data?.let {
-                    addressGeolocation = data.getStringExtra("addressGeolocation").toString()
                     b.fieldAddressDelivery.setText(data.getStringExtra("address").toString())
-                    b.fieldAddressDelivery.setSelection(b.fieldAddressDelivery.text.length)
+                    addressGeolocation = data.getStringExtra("addressGeolocation").toString()
                     b.fieldDistance.text = data.getStringExtra("distance")
+                    b.fieldAddressDelivery.setSelection(b.fieldAddressDelivery.text.length)
                     addressString = data.getStringExtra("address").toString()
                     calculateOrder()
                 }

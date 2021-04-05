@@ -298,7 +298,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="15dp"
                 android:paddingVertical="7dp"
-                android:paddingHorizontal="27dp"
+                android:paddingHorizontal="20dp"
                 android:gravity="center"
                 android:fontFamily="@font/russian_road"
                 android:textSize="24sp"
