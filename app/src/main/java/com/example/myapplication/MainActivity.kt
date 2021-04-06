@@ -114,12 +114,12 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                 }
             }.disposeAtTheEnd()
 
+
         val intentMapsActivity = Intent(this, MapsActivity::class.java)
         b.btnChooseOnMap.setOnClickListener {
             if(checkValidatesFieldForMaps()){
 //                massAndAddressIsValid.subscribe {
 //                    if (it == true) {
-                Log.d("TAG", "btnChooseOnMap -> намерение для карты было создано")
                         intentMapsActivity.putExtra("provider", b.fieldProvider.text.toString())
                         startActivityForResult(intentMapsActivity, 0)
 //                    } else {

@@ -88,6 +88,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
             .build()
+
         distanceMatrixApi = retrofit.create(DistanceMatrixApi::class.java)
     }
 
@@ -282,10 +283,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         val btnOkay = dialogCalculate.findViewById<Button>(R.id.btn_ok)
         val fieldResultDistance = dialogCalculate.findViewById<EditText>(R.id.field_outputDistance)
 
+
         if(!distanceResult.isNullOrEmpty()){
             fieldResultDistance.setText(distanceResult.replace("km","км"))
         } else {
-            Toast.makeText(this, "Отсутствует интернет соединение", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Не выбран адрес или отсутствует интернет соединение", Toast.LENGTH_LONG).show()
         }
 
         btnOkay.setOnClickListener {
