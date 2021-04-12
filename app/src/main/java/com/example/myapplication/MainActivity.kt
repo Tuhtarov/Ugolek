@@ -138,20 +138,20 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe{ boolean ->
-                if(boolean) b.btnSearchAddress.isEnabled = boolean else b.btnSearchAddress.isEnabled = boolean
+                if(boolean) b.btnChooseOnMap.isEnabled = boolean else b.btnChooseOnMap.isEnabled = boolean
             }.disposeAtTheEnd()
 
-        b.btnSearchAddress.setOnClickListener {
-            if(addressString == b.fieldAddressDelivery.text.toString()){
-                if(providerName == b.fieldProvider.text.toString()){
-                    Log.e("TAG", "btnSearchAddress -> Адрес и расстояние доставки уже определены")
-                } else {
-                    calculateDistance(b.fieldProvider.text.toString(), addressGeolocation)
-                }
-            } else {
-                findLocation(this, b.fieldAddressDelivery.text.toString())
-            }
-        }
+//        b.btnChooseOnMap.setOnClickListener {
+//            if(addressString == b.fieldAddressDelivery.text.toString()){
+//                if(providerName == b.fieldProvider.text.toString()){
+//                    Log.e("TAG", "btnSearchAddress -> Адрес и расстояние доставки уже определены")
+//                } else {
+//                    calculateDistance(b.fieldProvider.text.toString(), addressGeolocation)
+//                }
+//            } else {
+//                findLocation(this, b.fieldAddressDelivery.text.toString())
+//            }
+//        }
 
         b.fieldPriceCoal.textChanges()
             .map { boolean -> (b.fieldDistance.text.toString().isEmpty() && b.fieldAddressDelivery.text.length > 10) }

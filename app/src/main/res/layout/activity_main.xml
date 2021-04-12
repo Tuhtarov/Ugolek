@@ -1,378 +1,333 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ugol_one"
-    tools:context=".MainActivity">
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/CardViewPrMrk"
-        tools:viewBindingIgnore="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        app:cardElevation="0dp"
-        android:backgroundTint="#DBF9F8F8"
-        app:layout_constraintBottom_toTopOf="@id/text_priceCoal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.013">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/text_provider"
-                android:text="Поставщик"
-                tools:viewBindingIgnore="true"
-                style="@style/text_main_activity"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/field_provider"
-                app:layout_constraintEnd_toEndOf="@+id/field_provider"
-                app:layout_constraintBottom_toTopOf="@+id/field_provider">
-            </TextView>
-
-            <TextView
-                android:id="@+id/field_provider"
-                android:layout_width="210dp"
-                android:layout_height="50dp"
-                android:background="@drawable/bg_field_main_activity"
-                tools:text="@string/chernogorskiy"
-                android:text=""
-                android:gravity="center"
-                android:textColor="#000"
-                android:textSize="18sp"
-                android:layout_marginHorizontal="20dp"
-                app:layout_constraintBottom_toTopOf="@+id/text_markCoal"
-                app:layout_constraintTop_toBottomOf="@+id/text_provider"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-            </TextView>
-
-            <TextView
-                android:id="@+id/text_markCoal"
-                android:text="Марка угля"
-                tools:viewBindingIgnore="true"
-                style="@style/text_main_activity"
-                app:layout_constraintStart_toStartOf="@+id/field_markCoal"
-                app:layout_constraintEnd_toEndOf="@+id/field_markCoal"
-                app:layout_constraintBottom_toTopOf="@+id/field_markCoal"
-                app:layout_constraintTop_toBottomOf="@+id/field_provider">
-            </TextView>
-
-            <TextView
-                android:id="@+id/field_markCoal"
-                android:layout_width="210dp"
-                android:layout_height="50dp"
-                android:background="@drawable/bg_field_main_activity"
-                android:gravity="center"
-                android:text=""
-                tools:text="@string/dmsch"
-                android:textColor="#000"
-                android:textSize="18sp"
-                android:layout_marginBottom="15dp"
-                app:layout_constraintTop_toBottomOf="@+id/text_markCoal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
-            </TextView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-
+    android:background="?colorPrimary"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/text_priceCoal"
-        style="@style/text_main_activity"
-        tools:viewBindingIgnore="true"
-        android:text="@string/priceCoal"
-        android:layout_marginBottom="6dp"
-        app:layout_constraintTop_toTopOf="@+id/field_priceCoal"
-        app:layout_constraintBottom_toBottomOf="@+id/field_priceCoal"
-        app:layout_constraintEnd_toStartOf="@+id/field_priceCoal"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        style="@style/textStyle"
+        android:layout_gravity="center"
+        android:layout_marginVertical="5dp"
+        android:text="@string/header" />
 
-    <TextView
-        android:id="@+id/field_priceCoal"
-        android:layout_width="110dp"
-        android:layout_height="40dp"
-        android:background="@drawable/bg_field_main_activity"
-        android:textColor="#000"
-        android:textSize="20sp"
-        android:gravity="center"
-        tools:text="1740"
-        android:text=""
-        app:layout_constraintTop_toBottomOf="@+id/CardViewPrMrk"
-        app:layout_constraintStart_toEndOf="@+id/text_priceCoal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/field_requiredMass"
-        />
-
-    <TextView
-        android:id="@+id/text_requiredMass"
-        style="@style/text_main_activity"
-        tools:viewBindingIgnore="true"
-        android:text="@string/requiredMass"
-        android:layout_marginBottom="6dp"
-        app:layout_constraintEnd_toStartOf="@+id/field_requiredMass"
-        app:layout_constraintTop_toTopOf="@+id/field_requiredMass"
-        app:layout_constraintBottom_toBottomOf="@+id/field_requiredMass"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-
-    <EditText
-        android:id="@+id/field_requiredMass"
-        android:layout_width="110dp"
-        android:layout_height="40dp"
-        android:background="@drawable/bg_field_main_activity"
-        android:gravity="center"
-        android:hint="@string/_1_40"
-        android:inputType="number"
-        android:maxLength="2"
-        tools:text="56"
-        android:text=""
-        android:textColor="#000"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/text_requiredMass"
-        app:layout_constraintBottom_toTopOf="@+id/text_addressDelivery"
-        app:layout_constraintTop_toBottomOf="@+id/field_priceCoal"
-        app:layout_constraintVertical_bias="1.0" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/main_page_background">
 
         <TextView
-            android:id="@+id/text_addressDelivery"
-            style="@style/text_main_activity"
-            android:text="@string/adressDelivery"
-            tools:viewBindingIgnore="true"
-            app:layout_constraintBottom_toTopOf="@+id/LinearLayoutContainer"
-            app:layout_constraintEnd_toEndOf="@+id/LinearLayoutContainer"
-            app:layout_constraintStart_toStartOf="@+id/LinearLayoutContainer"
-            app:layout_constraintTop_toBottomOf="@id/field_requiredMass"
-            />
+            android:id="@+id/text_provider"
+            style="@style/textStyle"
+            android:gravity="center"
+            android:text="@string/provider"
+            app:layout_constraintBottom_toBottomOf="@+id/field_provider"
+            app:layout_constraintStart_toEndOf="@id/guidelineStart"
+            app:layout_constraintTop_toTopOf="@+id/field_provider"
+            tools:viewBindingIgnore="true" />
 
-    <LinearLayout
-        android:id="@+id/LinearLayoutContainer"
-        tools:viewBindingIgnore="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_addressDelivery"
-        app:layout_constraintBottom_toTopOf="@id/btn_chooseOnMap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/field_provider"
+            style="@style/textFieldStyle"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:textAlignment="center"
+            android:background="@drawable/field_background"
+            android:elevation="1dp"
+            android:translationZ="2dp"
+            app:layout_constraintBottom_toTopOf="@+id/field_markCoal"
+            app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--    Область выбора марки угля   -->
+        <TextView
+            android:id="@+id/text_markCoal"
+            style="@style/textStyle"
+            android:gravity="center"
+            android:text="@string/markCoal"
+            app:layout_constraintBottom_toBottomOf="@id/field_markCoal"
+            app:layout_constraintStart_toEndOf="@+id/guidelineStart"
+            app:layout_constraintTop_toTopOf="@id/field_markCoal"
+            tools:viewBindingIgnore="true" />
+
+        <TextView
+            android:id="@+id/field_markCoal"
+            style="@style/textFieldStyle"
+            android:layout_width="140dp"
+            android:layout_height="40dp"
+            android:background="@drawable/field_background"
+            android:elevation="1dp"
+            android:translationZ="2dp"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@id/field_requiredMass"
+            app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+            app:layout_constraintTop_toBottomOf="@id/field_provider" />
+
+        <!--    Область требуемой массы  -->
+        <TextView
+            android:id="@+id/text_requiredMass"
+            style="@style/textStyle"
+            android:text="@string/requiredMass"
+            app:layout_constraintBottom_toBottomOf="@id/field_requiredMass"
+            app:layout_constraintStart_toEndOf="@id/guidelineStart"
+            app:layout_constraintTop_toTopOf="@id/field_requiredMass"
+            tools:viewBindingIgnore="true" />
 
         <EditText
-            android:id="@+id/field_addressDelivery"
-            android:layout_width="0dp"
-            android:layout_weight="9"
-            android:layout_height="80dp"
-            android:textSize="20sp"
-            android:maxLength="100"
-            android:maxLines="4"
+            android:id="@+id/field_requiredMass"
+            style="@style/textFieldStyle"
+            android:textSize="19sp"
+            android:layout_width="105dp"
+            android:layout_height="42dp"
+            android:background="@drawable/field_background"
+            android:elevation="1dp"
+            android:hint="@string/_1_40"
             android:textAlignment="center"
-            android:gravity="center"
-            android:fontFamily="@font/russian_road"
-            android:paddingHorizontal="5dp"
-            android:hint="@string/enterAddress"
-            android:layout_marginHorizontal="10dp"
-            tools:text="Республика Хакасия, г.Абакан, Щетинкина 11-а"
-            android:layout_gravity="center"
-            android:background="@drawable/bg_field_main_activity">
-        </EditText>
+            android:translationZ="2dp"
+            android:inputType="number"
+            app:layout_constraintBottom_toTopOf="@id/container_addressDelivery"
+            app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
+            app:layout_constraintTop_toBottomOf="@id/field_markCoal" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_searchAddress"
-            android:layout_width="0dp"
-            android:layout_weight="2"
+        <!--    Область адреса доставки  -->
+        <LinearLayout
+            android:id="@+id/container_addressDelivery"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_btn_choose_map"
-            android:fontFamily="@font/txt_solid"
-            android:textSize="22sp"
-            android:layout_gravity="center"
-            android:layout_marginEnd="10dp"
-            android:text="">
-        </androidx.appcompat.widget.AppCompatButton>
+            android:orientation="vertical"
+            android:translationZ="0dp"
+            app:layout_constraintBottom_toTopOf="@id/container_chooseOnMap"
+            app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/field_requiredMass"
+            tools:viewBindingIgnore="true">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/text_addressDelivery"
+                style="@style/textStyle"
+                android:paddingHorizontal="100dp"
+                android:text="@string/addressDelivery"
+                tools:viewBindingIgnore="true" />
 
+            <EditText
+                android:id="@+id/field_addressDelivery"
+                style="@style/textFieldStyle"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginTop="2dp"
+                android:textSize="18sp"
+                android:background="@drawable/field_background"
+                android:elevation="1dp"
+                android:layout_margin="3dp"
+                android:maxLines="4"
+                android:textAlignment="center"
+                android:translationZ="2dp" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/text_chooseOnMap"
-        style="@style/text_main_activity"
-        android:text="@string/chooseOnMap"
-        tools:viewBindingIgnore="true"
-        android:layout_marginBottom="6dp"
-        app:layout_constraintTop_toTopOf="@+id/btn_chooseOnMap"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_chooseOnMap"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_chooseOnMap"
-        />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_chooseOnMap"
-        android:layout_width="100dp"
-        android:layout_height="38dp"
-        android:background="@drawable/bg_btn_choose_map"
-        android:fontFamily="@font/txt_solid"
-        android:text=""
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/text_chooseOnMap"
-        app:layout_constraintTop_toBottomOf="@+id/LinearLayoutContainer"
-        app:layout_constraintBottom_toTopOf="@+id/CardViewDistance"
-        />
-
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/CardViewDistance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardElevation="0dp"
-        android:backgroundTint="#DBF9F8F8"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintTop_toBottomOf="@id/btn_chooseOnMap"
-        app:layout_constraintBottom_toTopOf="@id/field_allPrice"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/CardViewDelivery">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!--    Область выбора адреса на карте  -->
+        <LinearLayout
+            android:id="@+id/container_chooseOnMap"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/linear_uix"
+            app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+            app:layout_constraintStart_toEndOf="@id/guidelineStart"
+            app:layout_constraintTop_toBottomOf="@id/container_addressDelivery"
+            tools:viewBindingIgnore="true">
 
             <TextView
-                android:id="@+id/text_distance"
-                style="@style/text_main_activity"
-                android:text="@string/distance"
-                android:layout_marginVertical="5dp"
-                tools:viewBindingIgnore="true"
-                app:layout_constraintStart_toStartOf="@+id/field_distance"
-                app:layout_constraintEnd_toEndOf="@+id/field_distance"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/field_distance"/>
+                android:id="@+id/text_chooseOnMap"
+                style="@style/textStyle"
+                android:layout_marginEnd="30dp"
+                android:text="@string/chooseOnMap"
+                tools:viewBindingIgnore="true" />
 
-            <TextView
-                android:id="@+id/field_distance"
-                android:layout_width="110dp"
-                android:layout_height="40dp"
-                android:background="@drawable/bg_field_main_activity"
-                tools:text="10 км"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginBottom="15dp"
-                app:layout_constraintTop_toBottomOf="@+id/text_distance"
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_chooseOnMap"
+                android:layout_width="72dp"
+                android:layout_height="36dp"
+                android:textColor="?md_color_button_text"
+                android:background="@drawable/btn_background"
+                android:elevation="1dp"
+                android:fontFamily="@font/txt_solid"
+                android:textSize="18sp"
+                android:text="" />
+        </LinearLayout>
+
+        <!--    Линия, разделяющая UIX   -->
+        <View
+            android:id="@+id/linear_uix"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginVertical="10dp"
+            android:background="?color"
+            app:layout_constraintBottom_toTopOf="@+id/cord_info"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container_chooseOnMap"
+            tools:viewBindingIgnore="true" />
+
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/cord_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear_uix">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="35dp"
+                android:layout_marginBottom="30dp"
+                app:cardCornerRadius="40dp"
+                app:cardElevation="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
+                app:layout_constraintStart_toEndOf="@id/guidelineStart"
+                app:layout_constraintTop_toBottomOf="@+id/linear_uix">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?colorPrimaryVariant"
+                    android:layout_gravity="center">
 
-    </androidx.cardview.widget.CardView>
+                    <!--    область стоимости тонны    -->
+                    <TextView
+                        android:id="@+id/text_priceCoal"
+                        style="@style/textStyle"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="27dp"
+                        android:layout_marginBottom="5dp"
+                        android:text="@string/priceCoal"
+                        app:layout_constraintBottom_toTopOf="@id/text_distance"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <TextView
+                        android:id="@+id/field_priceCoal"
+                        style="@style/textStyle"
+                        app:layout_constraintBottom_toBottomOf="@id/text_priceCoal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/text_priceCoal"
+                        app:layout_constraintTop_toTopOf="@id/text_priceCoal" />
+
+                    <!--    область расстояния доставки    -->
+                    <TextView
+                        android:id="@+id/text_distance"
+                        style="@style/textStyle"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/distance"
+                        app:layout_constraintBottom_toTopOf="@+id/text_delivery"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_priceCoal" />
+                    <TextView
+                        android:id="@+id/field_distance"
+                        style="@style/textStyle"
+                        app:layout_constraintBottom_toBottomOf="@id/text_distance"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/text_distance"
+                        app:layout_constraintTop_toTopOf="@id/text_distance" />
+
+                    <!--    область стоимости доставки    -->
+                    <TextView
+                        android:id="@+id/text_delivery"
+                        style="@style/textStyle"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/priceDelivery"
+                        app:layout_constraintBottom_toTopOf="@id/divider_price"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/text_distance" />
+                    <TextView
+                        android:id="@+id/field_delivery"
+                        style="@style/textStyle"
+                        app:layout_constraintBottom_toBottomOf="@id/text_delivery"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/text_delivery"
+                        app:layout_constraintTop_toTopOf="@id/text_delivery" />
+
+                    <!--    Линия, разделяющая стоимость доставки и общую стоимость    -->
+                    <View
+                        android:id="@+id/divider_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="30dp"
+                        android:background="?color"
+                        app:layout_constraintBottom_toTopOf="@id/text_allPrice"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/text_delivery" />
+
+                    <!--    Область общей стоимости    -->
+                    <TextView
+                        android:id="@+id/text_allPrice"
+                        style="@style/textStyle"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="47dp"
+                        android:text="@string/commonPrice"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_price" />
+                    <TextView
+                        android:id="@+id/field_allPrice"
+                        style="@style/textStyle"
+                        app:layout_constraintBottom_toBottomOf="@id/text_allPrice"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/text_allPrice"
+                        app:layout_constraintTop_toTopOf="@id/text_allPrice" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_toOrder"
+                android:layout_width="100dp"
+                android:layout_height="43dp"
+                android:background="@drawable/btn_background"
+                android:elevation="3dp"
+                android:text=""
+                android:textColor="?md_color_button_text"
+                android:textSize="20sp"
+                android:fontFamily="@font/txt_solid"
+                app:layout_anchor="@+id/card_info"
+                app:layout_anchorGravity="bottom|center"
+                app:layout_constraintEnd_toEndOf="@id/card_info"
+                app:layout_constraintStart_toStartOf="@id/card_info"
+                app:layout_constraintTop_toBottomOf="@+id/card_info" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/CardViewDelivery"
-        tools:viewBindingIgnore="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardElevation="0dp"
-        android:backgroundTint="#DBF9F8F8"
-        app:cardCornerRadius="20dp"
-        app:layout_constraintTop_toBottomOf="@id/btn_chooseOnMap"
-        app:layout_constraintStart_toEndOf="@+id/CardViewDistance"
-        app:layout_constraintBottom_toTopOf="@id/field_allPrice"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!--    вертикальные ГайдЛайны  -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEnd"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="30dp"
+            tools:viewBindingIgnore="true" />
 
-            <TextView
-                android:id="@+id/text_delivery"
-                style="@style/text_main_activity"
-                android:text="@string/delivery"
-                android:layout_marginVertical="5dp"
-                tools:viewBindingIgnore="true"
-                app:layout_constraintStart_toStartOf="@+id/field_delivery"
-                app:layout_constraintEnd_toEndOf="@+id/field_delivery"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/field_delivery"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="30dp"
+            tools:viewBindingIgnore="true" />
 
-            <TextView
-                android:id="@+id/field_delivery"
-                android:layout_width="110dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:background="@drawable/bg_field_main_activity"
-                tools:text="1500"
-                android:textSize="19sp"
-                android:textStyle="bold"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginBottom="15dp"
-                app:layout_constraintTop_toBottomOf="@+id/text_delivery"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <TextView
-        android:id="@+id/field_allPrice"
-        android:layout_width="130dp"
-        android:layout_height="40dp"
-        android:background="@drawable/bg_field_main_activity"
-        android:gravity="center"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:text=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/text_allPrice"
-        app:layout_constraintBottom_toTopOf="@+id/btn_toOrder"
-        app:layout_constraintTop_toBottomOf="@+id/CardViewDelivery"
-        />
-
-    <TextView
-        android:id="@+id/text_allPrice"
-        style="@style/text_main_activity"
-        android:text="@string/totalAmount"
-        android:layout_marginBottom="5dp"
-        tools:viewBindingIgnore="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/field_allPrice"
-        app:layout_constraintTop_toTopOf="@+id/field_allPrice"
-        app:layout_constraintBottom_toBottomOf="@id/field_allPrice"
-        />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_toOrder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/toOrder"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:fontFamily="@font/russian_road"
-        android:drawableEnd="@drawable/ic_baseline_check_24"
-        android:drawablePadding="5dp"
-        android:paddingHorizontal="22dp"
-        android:paddingVertical="10dp"
-        android:background="@drawable/bg_btn_accept_address"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/field_allPrice"
-        />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

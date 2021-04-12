@@ -10,4 +10,43 @@
     <color name="white">#FFFFFFFF</color>
     <color name="theme_bttn">#9CFB98</color>
     <color name="color_themeCardView">#F9F9F9</color>
+
+
+    <!--    светлая тема-->
+    <color name="colorPrimaryGreen">#C6EAC3</color>
+    <color name="colorOnPrimaryGray">#F4F4F4</color>
+    <color name="colorPrimaryVariantWhite">#FFFFFF</color>
+    <!--    обводки полей ввода и обводки окон нередактируемых полей-->
+    <color name="colorSecondaryLightGreen">#C6EAC3</color>
+    <color name="colorSecondaryVariantBlackGray">#BBBBBB</color>
+    <!--    для текста-->
+    <color name="colorOnSecondaryBlack">#000000</color>
+    <!--    для линии-->
+    <color name="linearBlack">#707070</color>
+    <!--    для обводки объектов-->
+    <color name="colorGreenBorder">#C6EAC3</color>
+    <!--    для цвета текста-->
+    <color name="colorBlackTextLight">#000000</color>
+    <!--    для нажатой кнопки-->
+    <color name="colorAccentButtonLight">#000000</color>
+
+    <!--    темная тема-->
+    <color name="colorPrimaryLightBlack">#4D4E51</color>
+    <color name="colorOnPrimaryBlack">#393E39</color>
+    <color name="colorPrimaryVariantGray">#5D5F63</color>
+    <!--    обводки полей ввода и обводки окон нередактируемых полей-->
+    <color name="colorSecondaryPurple">#CA5FC6</color>
+    <color name="colorSecondaryVariantLightBlack">#707070</color>
+    <!--    для текста-->
+    <color name="colorOnSecondaryWhite">#FFFFFFFF</color>
+    <!--    для линии-->
+    <color name="linearWood">#C48181</color>
+    <!--    для обводки объектов-->
+    <color name="colorPurpleBorder">#CE00C6</color>
+    <!--    для цвета текста-->
+    <color name="colorBlackTextDark">#000000</color>
+    <!--    для нажатой кнопки-->
+    <color name="colorAccentButtonDark">#000000</color>
+
+
 </resources>

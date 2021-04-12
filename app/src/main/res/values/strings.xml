@@ -26,17 +26,13 @@
     <string name="Fire" translatable="false">Принять</string>
     <string name="forFieldConfirm" translatable="false">Значение</string>
     <string name="Cancel" translatable="false">Отменить</string>
-    <string name="_1_40" translatable="false">1-40(тонн)</string>
-    <string name="back">Нааааазаааад</string>
+    <string name="_1_40" translatable="false">1-40 тонн</string>
     <string name="enteredOrderFields">Введённые поля заказа</string>
-    <string name="adressDelivery">Адрес доставки</string>
+    <string name="addressDelivery">Адрес доставки</string>
     <string name="provider">Поставщик</string>
-    <string name="priceDelivery">Доставка</string>
-    <string name="Disctance">Расстояние</string>
+    <string name="priceDelivery">Стоимость доставки</string>
     <string name="totalAmount">Общая стоимость</string>
-    <string name="Tellphone">Телефон</string>
     <string name="title_activity_maps">Map</string>
-    <string name="Adress">Адрес</string>
     <string name="text_accept">Подтвердить</string>
     <string name="text_chooseProvider">Выберите поставщика</string>
     <string name="chooseMark">Выберите марку угля</string>
@@ -49,12 +45,14 @@
     <string name="phone">Телефон</string>
     <string name="phoneOfDeveloper">+7(923)398-75-19</string>
     <string name="commonPrice">Общая стоимость</string>
-    <string name="distance">Расстояние</string>
-    <string name="delivery">Доставка</string>
+    <string name="distance">Расстояние доставки</string>
     <string name="toOrder">Заказать</string>
     <string name="address">Регион, Город, улица, дом</string>
     <string name="chooseOnMap">Выбрать на карте</string>
     <string name="chooseAddress">Введите адрес</string>
     <string name="distanceBetween">Расстояние между поставщиком и выбранным адресом:</string>
     <string name="enterAddress">Введите адрес</string>
+    <string name="header">Оформление заказа</string>
+    <string name="delivery">Доставка</string>
+    <string name="distanceLocation">Расстояние</string>
 </resources>
