@@ -1,80 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_marginHorizontal="25dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_page_background"
+    android:elevation="2dp"
+    android:translationZ="1dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/CardViewCalculate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="50dp"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:layout_constraintStart_toStartOf="parent"
+    <TextView
+        android:id="@+id/text_outputDistance"
+        style="@style/textStyle"
+        android:layout_width="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="20dp"
+        android:text="@string/distanceBetween"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/field_outputDistance"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/field_outputDistance"
+        style="@style/textFieldStyle"
+        android:layout_marginVertical="10dp"
+        android:editable="false"
+        android:focusable="false"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@id/btn_ok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_outputDistance"
+        tools:text="20 км" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_dialog_background"
+        android:fontFamily="@font/txt_solid"
+        android:text="@string/symbol_check"
+        android:textColor="?colorOnSecondary"
+        android:textSize="19sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginHorizontal="25dp"
-
-        >
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/dialog_page_background">
-
-            <TextView
-                android:id="@+id/text_outputDistance"
-                style="@style/textStyle"
-                android:textSize="20sp"
-                android:layout_width="wrap_content"
-                android:paddingHorizontal="20dp"
-                android:textAlignment="center"
-                android:text="@string/distanceBetween"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/field_outputDistance"
-                app:layout_constraintEnd_toEndOf="parent">
-            </TextView>
-
-            <EditText
-                android:layout_marginVertical="10dp"
-                android:id="@+id/field_outputDistance"
-                style="@style/textFieldStyle"
-                app:layout_constraintTop_toBottomOf="@+id/text_outputDistance"
-                app:layout_constraintBottom_toTopOf="@id/btn_ok"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                tools:text = "20 км"
-                android:textSize="25sp"
-                android:focusable="false"
-                android:editable="false">
-            </EditText>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_ok"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/btn_dialog_background"
-                android:fontFamily="@font/txt_solid"
-                android:text="@string/symbol_check"
-                android:textColor="?colorOnSecondary"
-                android:textSize="19sp"
-                android:layout_marginBottom="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/field_outputDistance">
-
-            </androidx.appcompat.widget.AppCompatButton>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/field_outputDistance" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

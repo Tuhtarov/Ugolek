@@ -1,107 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="350dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center">
+    android:background="@drawable/dialog_page_background"
+    android:layout_gravity="center"
+    android:elevation="2dp"
+    android:translationZ="1dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/CardView"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/text_confirm"
+        style="@style/textStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@android:color/transparent"
-        app:cardCornerRadius="50dp"
-        app:cardElevation="3dp"
-        android:layout_margin="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginHorizontal="90dp"
+        android:text="Подтвердите \nвыбранный адрес"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/fieldDialogAddressConfirm"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/dialog_page_background">
+    <TextView
+        android:id="@+id/fieldDialogAddressConfirm"
+        style="@style/textStyle"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_margin="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/field_background"
+        android:elevation="3dp"
+        android:gravity="center"
+        android:hint="Адрес"
+        android:paddingHorizontal="15dp"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnDialogConfirmAddress"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_confirm" />
 
-            <TextView
-                android:id="@+id/text_confirm"
-                style="@style/textStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="Подтвердите \nвыбранный адресс"
-                android:textAlignment="center"
-                app:layout_constraintBottom_toTopOf="@+id/fieldDialogAddressConfirm"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnDialogConfirmAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/btn_background"
+        android:elevation="1dp"
+        android:fontFamily="@font/txt_solid"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/symbol_check"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="?colorOnSecondary"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnDialogCancelAddress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fieldDialogAddressConfirm" />
 
-            </TextView>
-
-            <TextView
-                android:id="@+id/fieldDialogAddressConfirm"
-                style="@style/textStyle"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_margin="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/field_background"
-                android:elevation="3dp"
-                android:gravity="center"
-                android:hint="Адрес"
-                android:paddingHorizontal="10dp"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toTopOf="@+id/btnDialogConfirmAddress"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_confirm">
-
-            </TextView>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnDialogConfirmAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:background="@drawable/btn_background"
-                android:elevation="1dp"
-                android:fontFamily="@font/txt_solid"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text="@string/symbol_check"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="?colorOnSecondary"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btnDialogCancelAddress"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fieldDialogAddressConfirm" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnDialogCancelAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/btn_cancel_background"
-                android:elevation="1dp"
-                android:fontFamily="@font/txt_solid"
-                android:gravity="center"
-                android:padding="12dp"
-                android:text=""
-                android:textColor="?colorOnSecondary"
-                android:textAlignment="center"
-                android:textAllCaps="true"
-                android:textSize="22sp"
-                app:layout_constraintBottom_toBottomOf="@id/btnDialogConfirmAddress"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btnDialogConfirmAddress"
-                app:layout_constraintTop_toTopOf="@id/btnDialogConfirmAddress" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnDialogCancelAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/btn_cancel_background"
+        android:elevation="1dp"
+        android:fontFamily="@font/txt_solid"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="?colorOnSecondary"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@id/btnDialogConfirmAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnDialogConfirmAddress"
+        app:layout_constraintTop_toTopOf="@id/btnDialogConfirmAddress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -94,6 +94,7 @@ class ConfirmActivity : AppCompatActivity() {
                     } else {
                         b.fieldPhoneOrder.text.clear()
                         b.fieldPhoneOrder.setText("+7")
+                        b.btnConfirmOrder.isEnabled = b.fieldPhoneOrder.text.length == 12
                     }
 
                     b.btnConfirmOrder.isEnabled = b.fieldPhoneOrder.text.length == 12
@@ -201,12 +202,11 @@ class ConfirmActivity : AppCompatActivity() {
 
         buttonCancel.setOnClickListener {
             dialogCodeCanceled.dismiss()
-            b.fieldPhoneOrder.text.clear()
         }
 
     }
 
-    fun sendCodeConfirm(phoneNumber: String, codeConfirm: String){
+    private fun sendCodeConfirm(phoneNumber: String, codeConfirm: String){
         retrofitSmsApi.sendMessageApi(phoneNumber, "Код подтверждения: $codeConfirm")
             .subscribeOn(io.reactivex.schedulers.Schedulers.computation())
             .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
