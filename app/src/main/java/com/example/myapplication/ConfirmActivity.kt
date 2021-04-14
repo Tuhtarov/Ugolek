@@ -30,13 +30,6 @@ class ConfirmActivity : AppCompatActivity() {
     private lateinit var compositeDisposableRx2: io.reactivex.disposables.CompositeDisposable
     lateinit var retrofitSmsApi: RetrofitSmsApi
 
-    companion object {
-        const val PHONE_OPERATOR_COAL = "+79628003000"
-        private val TAG = ConfirmActivity::class.java.simpleName
-        private val SMS = "SmsApi"
-        var codeSms = ""
-    }
-
     var orderIsValid: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,16 +40,16 @@ class ConfirmActivity : AppCompatActivity() {
         retrofitSmsApi = RetrofitSmsApi()
         setContentView(b.root)
 
-        b.fieldProviderOrder.text = intent.getStringExtra("provider")
-        b.fieldMarkCoalOrder.text = intent.getStringExtra("coal")
-        b.fieldPriceCoalOrder.text = intent.getStringExtra("priceCoal")
+        b.fieldProviderOrder.setText(intent.getStringExtra("provider"))
+        b.fieldMarkCoalOrder.setText(intent.getStringExtra("coal"))
+        b.fieldPriceCoalOrder.setText(intent.getStringExtra("priceCoal"))
         b.fieldPriceCoalOrder.append(" руб.")
-        b.fieldAddressDeliveryOrder.text = intent.getStringExtra("addressDelivery")
-        b.fieldRequiredMassOrder.text = intent.getStringExtra("requiredMass")
+        b.fieldAddressDeliveryOrder.setText(intent.getStringExtra("addressDelivery"))
+        b.fieldRequiredMassOrder.setText(intent.getStringExtra("requiredMass"))
         b.fieldRequiredMassOrder.append(" тон")
-        b.fieldDistanceOrder.text = intent.getStringExtra("distance")
-        b.fieldDeliveryOrder.text = intent.getStringExtra("priceDelivery")
-        b.fieldAllPriceOrder.text = intent.getStringExtra("allPrice")
+        b.fieldDistanceOrder.setText(intent.getStringExtra("distance"))
+        b.fieldDeliveryOrder.setText(intent.getStringExtra("priceDelivery"))
+        b.fieldAllPriceOrder.setText(intent.getStringExtra("allPrice"))
         b.fieldAllPriceOrder.append(" руб.")
 
         b.fieldPhoneOrder.textChanges()
@@ -312,7 +305,7 @@ class ConfirmActivity : AppCompatActivity() {
 
                 if(btn.text == "0") {
                     btn.text = "Повторить"
-                    b.btnConfirmOrder.text = "Подтвердить"
+                    b.btnConfirmOrder.text = getString(R.string.symbol_check)
                     b.btnConfirmOrder.isEnabled = true
                     b.fieldPhoneOrder.isEnabled = true
                     btn.isEnabled = true
@@ -349,5 +342,13 @@ class ConfirmActivity : AppCompatActivity() {
             Log.d(TAG, "dispose? = ${compositeDisposableRx2.isDisposed}")
         }, 30000)
         super.onDestroy()
+    }
+
+    //Константы
+    companion object {
+        const val PHONE_OPERATOR_COAL = "+79628003000"
+        private val TAG = ConfirmActivity::class.java.simpleName
+        private val SMS = "SmsApi"
+        var codeSms = ""
     }
 }

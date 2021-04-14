@@ -8,8 +8,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="50dp"
-        android:backgroundTint="@color/cardview_light_background"
-        app:cardElevation="15dp"
+        app:cardElevation="1dp"
+        app:cardBackgroundColor="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -19,7 +19,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/field_background">
 
             <TextView
                 android:id="@+id/icon_confirmed"
@@ -27,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="50sp"
-                android:textColor="@color/quantum_googgreen"
+                android:textColor="?colorAccent"
                 android:layout_marginHorizontal="130dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="25dp"
@@ -47,6 +48,7 @@
                 android:textAlignment="center"
                 android:fontFamily="@font/russian_road"
                 android:textSize="22sp"
+                style="@style/textStyle"
                 android:layout_gravity="center"
                 android:layout_marginBottom="30dp"
                 android:layout_marginHorizontal="15dp"
@@ -67,8 +69,9 @@
                 android:layout_marginBottom="20dp"
                 android:textSize="20sp"
                 android:fontFamily="@font/russian_road"
-                android:background="@drawable/bg_btn_accept_address"
+                android:background="@drawable/btn_dialog_background"
                 android:text="ОК"
+                android:textColor="?colorOnSecondary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/order_confirmed"

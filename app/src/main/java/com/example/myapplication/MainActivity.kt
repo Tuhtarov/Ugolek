@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -131,15 +132,15 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
             }
         }
 
-        b.fieldAddressDelivery.textChanges()
-            .debounce(500, TimeUnit.MILLISECONDS)
-            .map { text -> (text.length > 15) }
-            .distinctUntilChanged()
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe{ boolean ->
-                if(boolean) b.btnChooseOnMap.isEnabled = boolean else b.btnChooseOnMap.isEnabled = boolean
-            }.disposeAtTheEnd()
+//        b.fieldAddressDelivery.textChanges()
+//            .debounce(500, TimeUnit.MILLISECONDS)
+//            .map { text -> (text.length > 15) }
+//            .distinctUntilChanged()
+//            .subscribeOn(Schedulers.newThread())
+//            .observeOn(AndroidSchedulers.mainThread())
+//            .subscribe{ boolean ->
+//                if(boolean) b.btnChooseOnMap.isEnabled = boolean else b.btnChooseOnMap.isEnabled = boolean
+//            }.disposeAtTheEnd()
 
 //        b.btnChooseOnMap.setOnClickListener {
 //            if(addressString == b.fieldAddressDelivery.text.toString()){

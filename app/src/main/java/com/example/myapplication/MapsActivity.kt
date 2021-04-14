@@ -51,7 +51,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var markerr: Marker
     private lateinit var dialog: Dialog
     private lateinit var dialogCalculate: Dialog
-    private lateinit var binding: ActivityMapsBinding
+    private lateinit var vBind: ActivityMapsBinding
     private val tag = MapsActivity::class.java.simpleName
     private var distanceResult = ""
     var addressResult = ""
@@ -60,8 +60,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMapsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        vBind = ActivityMapsBinding.inflate(layoutInflater)
+        setContentView(vBind.root)
 
         findLocation = FindLocation(this)
 
@@ -146,13 +146,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     //TODO АДРЕСНАЯ СТРОКА
     private fun initAddressSearchUI() {
         Log.d(tag, "init: initialing")
-        val searchField = binding.inputAddressMap
-        searchField.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+//        val searchField = binding.inputAddressMap
+
+        vBind.inputAddressMap.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.action == KeyEvent.KEYCODE_ENTER) {
 
-                if (searchField.text.toString() != "" && searchField.text.length >= 3){
-                    findLocation.findAndSetAddressByString(searchField, mMap)
-                } else searchField.setText("")
+                if (vBind.inputAddressMap.text.toString() != "" && vBind.inputAddressMap.text.length >= 3){
+                    findLocation.findAndSetAddressByString(vBind.inputAddressMap, mMap)
+                } else vBind.inputAddressMap.setText("")
                 cleanFocus()
 
             }
@@ -220,7 +221,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         createProviderMarker()
 
         val btnAccept = findViewById<Button>(R.id.btn_acceptAddress)
-        val btnCancel = findViewById<Button>(R.id.btn_cancelAddress)
         val btnDistance = findViewById<Button>(R.id.btn_calculateAddress).also{it.isVisible = false}
 
         if(flagProviderOfCoal){
@@ -228,16 +228,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
 
         btnAccept.setOnClickListener {
-            addressResult = binding.fieldChosenAddress.text.toString()
+            addressResult = vBind.fieldChosenAddress.text.toString()
             sendResult()
             mMap.clear()
-        }
-
-        btnCancel.setOnClickListener {
-            binding.fieldChosenAddress.text = ""
-            addressResult = ""
-            mMap.clear()
-            createProviderMarker()
         }
 
         btnDistance.setOnClickListener {
@@ -250,12 +243,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         dialog.setContentView(R.layout.dialog_confirm_adress)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        val fieldText = dialog.findViewById<TextView>(R.id.fieldDIalogAddressConfirm)
+        val fieldText = dialog.findViewById<TextView>(R.id.fieldDialogAddressConfirm)
         val btnConfirm = dialog.findViewById<Button>(R.id.btnDialogConfirmAddress)
         val btnCancel = dialog.findViewById<Button>(R.id.btnDialogCancelAddress)
 
         //нахождение адреса по данным LatLng + присвоение этого адреса вьюхе
-        findLocation.findAndSetAddressByLatLng(p0, fieldText, binding.fieldChosenAddress)
+        findLocation.findAndSetAddressByLatLng(p0, fieldText, vBind.fieldChosenAddress)
 
         btnCancel.setOnClickListener {
             fieldText.text = ""
@@ -298,8 +291,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     private fun cleanFocus() {
-        if (binding.inputAddressMap.isFocused) {
-            binding.inputAddressMap.clearFocus()
+        if (vBind.inputAddressMap.isFocused) {
+            vBind.inputAddressMap.clearFocus()
         }
     }
 
@@ -381,8 +374,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onDestroy() {
         /* Отложенное очищение композит бэга нужно, что бы композит бэк не очистился во время выполнения запроса на сервер(иначе результат попытается придти
         в удалённый контейнер), это может случится при плохом соединении с интернетом */
-        binding.inputAddressMap.text.clear()
-        binding.fieldChosenAddress.text = ""
+        vBind.inputAddressMap.text.clear()
+        vBind.fieldChosenAddress.setText("")
         mMap.clear()
 
         Handler().postDelayed({

@@ -6,9 +6,9 @@
         <item name="colorPrimaryVariant">@color/colorPrimaryVariantGray</item>
         <item name="colorOnPrimary">@color/colorOnPrimaryBlack</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/colorSecondaryPurple</item>
+        <item name="colorSecondary">#CA46C5</item>
         <item name="colorSecondaryVariant">@color/colorSecondaryVariantLightBlack</item>
-        <item name="colorOnSecondary">@color/colorOnSecondaryWhite</item>
+        <item name="colorOnSecondary">#EDEDED</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
@@ -20,6 +20,16 @@
         <item name="colorAccent">#BC3FB7</item>
         <!-- Для заблокированного объекта -->
         <item name="colorOnError">#4E4E4E</item>
+
+        <!-- Для границ фоновых объектов (page confirm activity) -->
+        <item name="colorBackgroundFloating">#CE00C6</item>
+        <!-- Для границ фоновых объектов (page confirm activity) -->
+        <item name="colorOnSurface">@color/onSurfaceNight</item>
+
+        <!--       Для фона кнопок диалоговых окон-->
+        <item name="colorButtonNormal">@color/colorBtnNormalNight</item>
+        <!--        Для фона диалоговых окон-->
+        <item name="colorControlNormal">@color/colorDialogBackgroundNight</item>
 
     </style>
 </resources>

@@ -55,4 +55,8 @@
     <string name="header">Оформление заказа</string>
     <string name="delivery">Доставка</string>
     <string name="distanceLocation">Расстояние</string>
+    <string name="searchAddress">Поиск адреса</string>
+    <string name="helpersMaps">Выберите адрес доставки нажатием на карту</string>
+    <string name="inputsAddress">Выбранный адрес:</string>
+    <string name="symbol_check"></string>
 </resources>

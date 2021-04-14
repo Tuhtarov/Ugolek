@@ -9,26 +9,32 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/CardViewCalculate"
-        android:backgroundTint="#F9F9F9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="30dp"
+        app:cardCornerRadius="50dp"
+        app:cardBackgroundColor="@android:color/transparent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginHorizontal="10dp">
+        android:layout_marginHorizontal="25dp"
+
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="30dp">
+            android:background="@drawable/dialog_page_background">
 
             <TextView
                 android:id="@+id/text_outputDistance"
-                style="@style/text_main_activity"
+                style="@style/textStyle"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:paddingHorizontal="20dp"
                 android:textAlignment="center"
                 android:text="@string/distanceBetween"
+                android:layout_marginTop="20dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/field_outputDistance"
@@ -36,13 +42,15 @@
             </TextView>
 
             <EditText
+                android:layout_marginVertical="10dp"
                 android:id="@+id/field_outputDistance"
-                style="@style/text_main_activity"
+                style="@style/textFieldStyle"
                 app:layout_constraintTop_toBottomOf="@+id/text_outputDistance"
                 app:layout_constraintBottom_toTopOf="@id/btn_ok"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text = "20 км"
+                android:textSize="25sp"
                 android:focusable="false"
                 android:editable="false">
             </EditText>
@@ -52,10 +60,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:background="@drawable/bg_btn_accept_address"
+                android:background="@drawable/btn_dialog_background"
                 android:fontFamily="@font/txt_solid"
-                android:text=""
+                android:text="@string/symbol_check"
+                android:textColor="?colorOnSecondary"
                 android:textSize="19sp"
+                android:layout_marginBottom="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

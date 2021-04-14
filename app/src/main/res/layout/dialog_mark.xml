@@ -10,8 +10,9 @@
         android:id="@+id/CardViewMrkLt"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="@android:color/transparent"
         app:cardCornerRadius="50dp"
-        android:backgroundTint="@color/color_themeCardView"
+        android:layout_margin="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -22,31 +23,33 @@
             android:id="@+id/containerMark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            android:background="@drawable/dialog_page_background"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/text_chooseMark"
+                style="@style/textStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="25dp"
                 android:layout_marginBottom="25dp"
-                android:layout_gravity="center"
                 android:text="@string/chooseMark"
-                android:textSize="22sp"
-                android:fontFamily="@font/russian_road">
-            </TextView>
+                android:textSize="20sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_dmsch_mark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
                 android:layout_gravity="center"
-                android:text="@string/dmsch"
-                android:textSize="17sp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/btn_dialog_background"
+                android:fontFamily="@font/russian_road"
                 android:paddingHorizontal="15dp"
-                android:background="@drawable/bg_btn_dialog">
+                android:text="@string/dmsch"
+                android:textColor="?colorOnSecondary"
+                android:textSize="18sp">
 
             </androidx.appcompat.widget.AppCompatButton>
 
@@ -54,12 +57,14 @@
                 android:id="@+id/btn_do_mark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
                 android:layout_gravity="center"
-                android:text="@string/do25"
-                android:textSize="17sp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/btn_dialog_background"
+                android:fontFamily="@font/russian_road"
                 android:paddingHorizontal="15dp"
-                android:background="@drawable/bg_btn_dialog">
+                android:text="@string/do25"
+                android:textColor="?colorOnSecondary"
+                android:textSize="18sp">
 
             </androidx.appcompat.widget.AppCompatButton>
 
@@ -67,12 +72,14 @@
                 android:id="@+id/btn_dpk_mark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
                 android:layout_gravity="center"
-                android:text="@string/dpk"
-                android:textSize="17sp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/btn_dialog_background"
+                android:fontFamily="@font/russian_road"
                 android:paddingHorizontal="15dp"
-                android:background="@drawable/bg_btn_dialog">
+                android:text="@string/dpk"
+                android:textColor="?colorOnSecondary"
+                android:textSize="18sp">
 
             </androidx.appcompat.widget.AppCompatButton>
 
@@ -80,12 +87,14 @@
                 android:id="@+id/btn_dp_mark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="25dp"
                 android:layout_gravity="center"
-                android:text="@string/dp"
-                android:textSize="17sp"
+                android:layout_marginBottom="25dp"
+                android:background="@drawable/btn_dialog_background"
+                android:fontFamily="@font/russian_road"
                 android:paddingHorizontal="15dp"
-                android:background="@drawable/bg_btn_dialog">
+                android:text="@string/dp"
+                android:textColor="?colorOnSecondary"
+                android:textSize="18sp">
 
             </androidx.appcompat.widget.AppCompatButton>
 

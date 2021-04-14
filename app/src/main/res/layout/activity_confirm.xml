@@ -1,374 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:mask="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ugol_one"
-    tools:context=".ConfirmActivity">
+    android:background="?colorPrimary"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/text_inputsFields"
+        android:id="@+id/text_headerConfirm"
+        style="@style/textStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/enteredFieldsOnOrder"
-        android:textSize="26sp"
-        android:fontFamily="@font/russian_road"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/CardViewOrder">
+        android:layout_gravity="center"
+        android:layout_marginVertical="10dp"
+        android:text="Подтверждение" />
 
-    </TextView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/CardViewOrder"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="50dp"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_inputsFields"
-        app:layout_constraintBottom_toTopOf="@+id/field_phoneOrder">
+        android:layout_height="match_parent"
+        android:background="@drawable/main_page_background"
+        android:backgroundTint="?colorOnSurface">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/containerOrder"
+            android:id="@+id/container_fieldsOrder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="80dp"
+            android:background="@drawable/order_page_background">
 
             <TextView
-                android:id="@+id/text_providerOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/russian_road"
-                android:text="@string/txt_Provider"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="@id/field_providerOrder"
-                app:layout_constraintEnd_toStartOf="@+id/field_providerOrder"
+                android:id="@+id/text_youOrder"
+                style="@style/textStyle"
+                android:layout_marginTop="15dp"
+                android:text="Ваш заказ"
+                app:layout_constraintBottom_toTopOf="@+id/divider_header_ui"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/field_providerOrder">
+                app:layout_constraintTop_toTopOf="parent"
+                tools:viewBindingIgnore="true" />
 
-            </TextView>
+            <View
+                android:id="@+id/divider_header_ui"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="35dp"
+                android:layout_marginVertical="15dp"
+                android:background="?color"
+                app:layout_constraintBottom_toTopOf="@id/text_providerOrder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_youOrder" />
+
+            <!-- Область поставщика -->
+            <TextView
+                android:id="@+id/text_providerOrder"
+                style="@style/textStyle"
+                android:layout_marginStart="25dp"
+                android:text="@string/provider"
+                app:layout_constraintBottom_toTopOf="@id/text_markCoalOrder"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider_header_ui"
+                tools:viewBindingIgnore="true" />
 
             <TextView
                 android:id="@+id/field_providerOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="@string/chernogorskiy"
-                android:padding="10dp"
-                android:fontFamily="@font/russian_road"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:background="@drawable/bg_field_confirm_activity"
-                android:layout_marginTop="15dp"
-                app:layout_constraintBottom_toTopOf="@id/field_markCoalOrder"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/text_providerOrder"
-                app:layout_constraintEnd_toEndOf="parent">
+                style="@style/textStyle"
+                android:layout_marginEnd="25dp"
+                android:textAlignment="textStart"
+                app:layout_constraintBottom_toBottomOf="@+id/text_providerOrder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/text_providerOrder"
+                tools:text="Черногорский разрез" />
 
-            </TextView>
-
+            <!--  Область марки угля -->
             <TextView
                 android:id="@+id/text_markCoalOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/russian_road"
-                android:text="@string/markCoal"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="@id/field_markCoalOrder"
-                app:layout_constraintEnd_toStartOf="@+id/field_markCoalOrder"
+                style="@style/textStyle"
+                android:layout_marginStart="25dp"
+                android:text="Марка угля:"
+                app:layout_constraintBottom_toTopOf="@+id/text_priceCoalOrder"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/field_markCoalOrder">
-
-            </TextView>
+                app:layout_constraintTop_toBottomOf="@+id/text_providerOrder"
+                tools:viewBindingIgnore="true" />
 
             <TextView
                 android:id="@+id/field_markCoalOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="@string/do25"
-                android:paddingVertical="10dp"
-                android:paddingHorizontal="20dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:fontFamily="@font/russian_road"
-                android:background="@drawable/bg_field_confirm_activity"
-                android:layout_margin="5dp"
-                app:layout_constraintBottom_toTopOf="@id/field_priceCoalOrder"
-                app:layout_constraintTop_toBottomOf="@id/field_providerOrder"
-                app:layout_constraintStart_toEndOf="@id/text_markCoalOrder"
-                app:layout_constraintEnd_toEndOf="parent">
+                style="@style/textStyle"
+                android:layout_marginEnd="25dp"
+                android:textAlignment="center"
+                app:layout_constraintBottom_toBottomOf="@+id/text_markCoalOrder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_markCoalOrder"
+                tools:text="ДКП 25-02" />
 
-            </TextView>
-
+            <!-- Область стоимости тонны -->
             <TextView
                 android:id="@+id/text_priceCoalOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/russian_road"
-                android:text="@string/priceCoal"
-                android:textSize="24sp"
-                android:layout_margin="5dp"
-                app:layout_constraintBottom_toBottomOf="@id/field_priceCoalOrder"
-                app:layout_constraintEnd_toStartOf="@+id/field_priceCoalOrder"
+                style="@style/textStyle"
+                android:layout_marginStart="25dp"
+                android:text="Стоимость тонны:"
+                app:layout_constraintBottom_toTopOf="@+id/text_requiredMassOrder"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/field_priceCoalOrder">
-
-            </TextView>
+                app:layout_constraintTop_toBottomOf="@+id/text_markCoalOrder"
+                tools:viewBindingIgnore="true" />
 
             <TextView
                 android:id="@+id/field_priceCoalOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="1795"
-                android:paddingVertical="7dp"
-                android:paddingHorizontal="30dp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:fontFamily="@font/russian_road"
-                android:background="@drawable/bg_field_confirm_activity"
-                android:layout_margin="5dp"
-                app:layout_constraintBottom_toTopOf="@+id/field_requiredMassOrder"
-                app:layout_constraintTop_toBottomOf="@id/field_markCoalOrder"
-                app:layout_constraintStart_toEndOf="@id/text_priceCoalOrder"
-                app:layout_constraintEnd_toEndOf="parent">
+                style="@style/textStyle"
+                android:layout_marginEnd="25dp"
+                app:layout_constraintBottom_toBottomOf="@+id/text_priceCoalOrder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_priceCoalOrder"
+                tools:text="1700 руб." />
 
-            </TextView>
-
+            <!-- Количество тонн угля -->
             <TextView
                 android:id="@+id/text_requiredMassOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/russian_road"
-                android:text="@string/requiredMass"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="@id/field_requiredMassOrder"
-                app:layout_constraintEnd_toStartOf="@+id/field_requiredMassOrder"
+                style="@style/textStyle"
+                android:layout_marginStart="25dp"
+                android:text="Количество тонн угля:"
+                app:layout_constraintBottom_toTopOf="@+id/text_addressDeliveryOrder"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/field_requiredMassOrder">
-
-            </TextView>
+                app:layout_constraintTop_toBottomOf="@id/text_priceCoalOrder"
+                tools:viewBindingIgnore="true" />
 
             <TextView
                 android:id="@+id/field_requiredMassOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="10 тон"
-                android:paddingVertical="7dp"
-                android:paddingHorizontal="30dp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:layout_margin="5dp"
-                android:fontFamily="@font/russian_road"
-                android:background="@drawable/bg_field_confirm_activity"
-                app:layout_constraintBottom_toTopOf="@id/text_addressDeliveryOrder"
-                app:layout_constraintTop_toBottomOf="@id/field_priceCoalOrder"
-                app:layout_constraintStart_toEndOf="@id/text_requiredMassOrder"
-                app:layout_constraintEnd_toEndOf="parent">
+                style="@style/textStyle"
+                android:layout_marginEnd="25dp"
+                app:layout_constraintBottom_toBottomOf="@id/text_requiredMassOrder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_requiredMassOrder"
+                tools:text="40 тонн" />
 
-            </TextView>
-
+            <!-- Область адреса доставкит -->
             <TextView
                 android:id="@+id/text_addressDeliveryOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/addressDelivery"
-                android:textSize="24sp"
-                android:fontFamily="@font/russian_road"
-                app:layout_constraintTop_toBottomOf="@+id/field_requiredMassOrder"
-                app:layout_constraintStart_toStartOf="@+id/field_addressDeliveryOrder"
-                app:layout_constraintEnd_toEndOf="@+id/field_addressDeliveryOrder"
-                app:layout_constraintBottom_toTopOf="@id/field_addressDeliveryOrder">
-
-            </TextView>
+                style="@style/textStyle"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="25dp"
+                android:layout_marginTop="20dp"
+                android:gravity="start"
+                android:text="Адрес на который нужно доставить уголь:"
+                android:textAlignment="viewStart"
+                app:layout_constraintBottom_toTopOf="@id/field_addressDeliveryOrder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_requiredMassOrder"
+                tools:viewBindingIgnore="true" />
 
             <TextView
                 android:id="@+id/field_addressDeliveryOrder"
+                style="@style/textFieldStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:textSize="20sp"
-                android:textAlignment="center"
-                android:layout_marginTop="5dp"
-                android:layout_marginHorizontal="10dp"
-                android:fontFamily="@font/russian_road"
-                android:textStyle="bold"
-                tools:text="Республика Хакасия, г.Абакан, Щетинкина 11-а"
-                android:background="@drawable/bg_field_confirm_activity"
-                app:layout_constraintTop_toBottomOf="@+id/text_addressDeliveryOrder"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginHorizontal="25dp"
+                android:textAlignment="viewStart"
+                app:layout_constraintBottom_toTopOf="@id/text_distanceOrder"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/text_distanceOrder">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_addressDeliveryOrder"
+                tools:text="Россия, Республика Хакасия, г. Абакан, ул. Щетинкина, 11-а" />
 
-            </TextView>
-
+            <!-- Расстояние доставки -->
             <TextView
                 android:id="@+id/text_distanceOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/distanceLocation"
-                android:textSize="24sp"
-                android:fontFamily="@font/russian_road"
-                app:layout_constraintStart_toStartOf="@+id/field_distanceOrder"
-                app:layout_constraintEnd_toEndOf="@+id/field_distanceOrder"
+                style="@style/textStyle"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="25dp"
+                android:text="Расстояние доставки"
+                app:layout_constraintBottom_toTopOf="@+id/text_deliveryOrder"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/field_addressDeliveryOrder"
-                app:layout_constraintBottom_toTopOf="@+id/field_distanceOrder"
-                >
-            </TextView>
-
-            <TextView
-                android:id="@+id/text_deliveryOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/delivery"
-                android:textSize="24sp"
-                android:fontFamily="@font/russian_road"
-                app:layout_constraintTop_toBottomOf="@+id/field_addressDeliveryOrder"
-                app:layout_constraintBottom_toTopOf="@+id/field_deliveryOrder"
-                app:layout_constraintStart_toStartOf="@+id/field_deliveryOrder"
-                app:layout_constraintEnd_toEndOf="@id/field_deliveryOrder"
-                >
-            </TextView>
+                tools:viewBindingIgnore="true" />
 
             <TextView
                 android:id="@+id/field_distanceOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingVertical="7dp"
-                android:paddingHorizontal="40dp"
-                android:layout_marginBottom="10dp"
-                tools:text="10 км"
-                android:gravity="center"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:background="@drawable/bg_field_confirm_activity"
-                android:fontFamily="@font/russian_road"
-                app:layout_constraintBottom_toTopOf="@+id/field_allPriceOrder"
+                style="@style/textFieldStyle"
+                android:layout_marginEnd="25dp"
+                app:layout_constraintBottom_toBottomOf="@id/text_distanceOrder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_distanceOrder"
+                tools:text="86 км" />
+
+            <!-- Стоимость доставки -->
+            <TextView
+                android:id="@+id/text_deliveryOrder"
+                style="@style/textStyle"
+                android:layout_marginStart="25dp"
+                android:text="Стоимость доставки"
+                app:layout_constraintBottom_toTopOf="@+id/divider_order_uix"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/field_deliveryOrder"
                 app:layout_constraintTop_toBottomOf="@+id/text_distanceOrder"
-                >
-            </TextView>
+                tools:viewBindingIgnore="true" />
 
             <TextView
                 android:id="@+id/field_deliveryOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingVertical="7dp"
-                android:paddingHorizontal="40dp"
-                tools:text="1200"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:background="@drawable/bg_field_confirm_activity"
-                android:textSize="22sp"
-                android:fontFamily="@font/russian_road"
+                style="@style/textStyle"
+                android:layout_marginEnd="25dp"
+                app:layout_constraintBottom_toBottomOf="@+id/text_deliveryOrder"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/text_deliveryOrder"
-                app:layout_constraintBottom_toTopOf="@+id/field_allPriceOrder"
-                app:layout_constraintStart_toEndOf="@+id/field_distanceOrder"
-                >
-            </TextView>
+                app:layout_constraintTop_toTopOf="@+id/text_deliveryOrder"
+                tools:text="12000 руб." />
 
+            <View
+                android:id="@+id/divider_order_uix"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="35dp"
+                android:layout_marginVertical="25dp"
+                android:background="?color"
+                app:layout_constraintBottom_toTopOf="@id/text_allPriceOrder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_deliveryOrder"
+                tools:viewBindingIgnore="true" />
+
+            <!-- Общая стоимость -->
             <TextView
                 android:id="@+id/text_allPriceOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/commonPrice"
-                android:fontFamily="@font/russian_road"
-                android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="@id/field_allPriceOrder"
-                app:layout_constraintEnd_toStartOf="@+id/field_allPriceOrder"
-                app:layout_constraintTop_toTopOf="@+id/field_allPriceOrder"
-                app:layout_constraintStart_toStartOf="parent">
+                style="@style/textStyle"
+                android:layout_marginStart="25dp"
+                android:text="Общая стоимость:"
+                app:layout_constraintBottom_toTopOf="@+id/text_phoneOrder"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_order_uix"
+                tools:viewBindingIgnore="true" />
 
-            </TextView>
-
-            <TextView
+            <EditText
                 android:id="@+id/field_allPriceOrder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="15000"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="15dp"
-                android:paddingVertical="7dp"
-                android:paddingHorizontal="20dp"
-                android:gravity="center"
-                android:fontFamily="@font/russian_road"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:background="@drawable/bg_field_confirm_activity"
-                app:layout_constraintStart_toEndOf="@+id/text_allPriceOrder"
+                style="@style/textStyle"
+                android:layout_marginEnd="25dp"
+                android:editable="false"
+                android:focusable="false"
+                app:layout_constraintBottom_toBottomOf="@id/text_allPriceOrder"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/field_deliveryOrder">
+                app:layout_constraintTop_toTopOf="@+id/text_allPriceOrder"
+                tools:text="13700 рублей" />
 
-            </TextView>
+            <!-- Область телефона -->
+            <TextView
+                android:id="@+id/text_phoneOrder"
+                style="@style/textStyle"
+                android:layout_marginStart="25dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="65dp"
+                android:text="Телефон"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_allPriceOrder"
+                tools:viewBindingIgnore="true" />
+
+            <EditText
+                android:id="@+id/field_phoneOrder"
+                style="@style/textFieldStyle"
+                android:layout_width="160dp"
+                android:layout_height="46dp"
+                android:layout_marginEnd="25dp"
+                android:background="@drawable/field_background"
+                android:elevation="2dp"
+                android:hint="номер"
+                android:inputType="phone"
+                android:maxLength="12"
+                android:translationZ="2dp"
+                app:layout_constraintBottom_toBottomOf="@+id/text_phoneOrder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/text_phoneOrder"
+                tools:text="+79233987519" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_confirmOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_background"
+            android:elevation="4dp"
+            android:fontFamily="@font/txt_solid"
+            android:text="@string/symbol_check"
+            android:textSize="20sp"
+            android:translationZ="3dp"
+            app:layout_anchor="@+id/container_fieldsOrder"
+            app:layout_anchorGravity="bottom|center" />
 
-    <TextView
-        android:id="@+id/text_phoneOrder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/phone"
-        android:fontFamily="@font/russian_road"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/field_phoneOrder"
-        app:layout_constraintTop_toTopOf="@+id/field_phoneOrder"
-        app:layout_constraintBottom_toBottomOf="@+id/field_phoneOrder">
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    </TextView>
-
-
-    <EditText
-        android:id="@+id/field_phoneOrder"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:hint="Ваш номер"
-        android:textStyle="bold"
-        android:inputType="phone"
-        android:maxLength="12"
-        android:gravity="center"
-        android:background="@drawable/bg_field_main_activity"
-        android:fontFamily="@font/russian_road"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_confirmOrder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/text_phoneOrder"
-        app:layout_constraintTop_toBottomOf="@+id/CardViewOrder"
-    />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_confirmOrder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/confirm"
-        android:textSize="18sp"
-        android:drawablePadding="5dp"
-        android:paddingHorizontal="22dp"
-        android:paddingVertical="10dp"
-        android:fontFamily="@font/russian_road"
-        android:enabled="false"
-        android:gravity="center"
-        android:textAllCaps="true"
-        android:drawableEnd="@drawable/ic_baseline_check_24"
-        android:background="@drawable/bg_btn_accept_address"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/field_phoneOrder">
-    </androidx.appcompat.widget.AppCompatButton>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

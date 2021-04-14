@@ -29,6 +29,9 @@
     <color name="colorBlackTextLight">#000000</color>
     <!--    для нажатой кнопки-->
     <color name="colorAccentButtonLight">#000000</color>
+    <!--    &lt;!&ndash;    для кнопки отмены и нажатой кнопки отмены&ndash;&gt;-->
+    <!--    <color name="colorSchemeLight"></color>-->
+    <!--    <color name="colorSchemeLightPressed"></color>-->
 
     <!--    темная тема-->
     <color name="colorPrimaryLightBlack">#4D4E51</color>
@@ -47,6 +50,17 @@
     <color name="colorBlackTextDark">#000000</color>
     <!--    для нажатой кнопки-->
     <color name="colorAccentButtonDark">#000000</color>
+    <!--    &lt;!&ndash;    для кнопки отмены и нажатой кнопки отмены&ndash;&gt;-->
+    <!--    <color name="colorSchemeDark"></color>-->
+    <!--    <color name="colorSchemeDarkPressed"></color>-->
+    <color name="onSurfaceLight">#ffffff</color>
+    <color name="onSurfaceNight">#393E39</color>
+    <!--    для кнопок диалоговых окон-->
+    <color name="colorBtnNormalLight">#C6EAC3</color>
+    <color name="colorBtnNormalNight">#B651B2</color>
+    <!--    для фона диалоговых окон-->
+    <color name="colorDialogBackgroundNight">#343934</color>
+
 
 
 </resources>

@@ -31,6 +31,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/field_provider"
             style="@style/textFieldStyle"
+            android:textColor="?colorOnSecondary"
             android:layout_width="200dp"
             android:layout_height="40dp"
             android:textAlignment="center"
@@ -60,6 +61,7 @@
             android:background="@drawable/field_background"
             android:elevation="1dp"
             android:translationZ="2dp"
+            android:textColor="?colorOnSecondary"
             android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@id/field_requiredMass"
             app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
@@ -117,11 +119,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
                 android:layout_marginTop="2dp"
+                android:padding="10dp"
                 android:textSize="18sp"
                 android:background="@drawable/field_background"
                 android:elevation="1dp"
                 android:layout_margin="3dp"
                 android:maxLines="4"
+                android:textColor="?colorOnSecondary"
                 android:textAlignment="center"
                 android:translationZ="2dp" />
         </LinearLayout>
@@ -217,7 +221,7 @@
                         style="@style/textStyle"
                         app:layout_constraintBottom_toBottomOf="@id/text_priceCoal"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/text_priceCoal"
+                        android:layout_marginEnd="30dp"
                         app:layout_constraintTop_toTopOf="@id/text_priceCoal" />
 
                     <!--    область расстояния доставки    -->
@@ -235,7 +239,7 @@
                         style="@style/textStyle"
                         app:layout_constraintBottom_toBottomOf="@id/text_distance"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/text_distance"
+                        android:layout_marginEnd="30dp"
                         app:layout_constraintTop_toTopOf="@id/text_distance" />
 
                     <!--    область стоимости доставки    -->
@@ -254,7 +258,7 @@
                         style="@style/textStyle"
                         app:layout_constraintBottom_toBottomOf="@id/text_delivery"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/text_delivery"
+                        android:layout_marginEnd="30dp"
                         app:layout_constraintTop_toTopOf="@id/text_delivery" />
 
                     <!--    Линия, разделяющая стоимость доставки и общую стоимость    -->
@@ -283,9 +287,9 @@
                     <TextView
                         android:id="@+id/field_allPrice"
                         style="@style/textStyle"
+                        android:layout_marginEnd="30dp"
                         app:layout_constraintBottom_toBottomOf="@id/text_allPrice"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/text_allPrice"
                         app:layout_constraintTop_toTopOf="@id/text_allPrice" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -298,7 +302,7 @@
                 android:layout_height="43dp"
                 android:background="@drawable/btn_background"
                 android:elevation="3dp"
-                android:text=""
+                android:text="@string/symbol_check"
                 android:textColor="?md_color_button_text"
                 android:textSize="20sp"
                 android:fontFamily="@font/txt_solid"
