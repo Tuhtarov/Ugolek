@@ -6,7 +6,11 @@ import retrofit2.http.Query
 
 interface DistanceMatrixApi {
     @GET("maps/api/distancematrix/json")
-    fun getDistance(@Query("key") key: String,
-                    @Query("destinations") destination: String,
-                    @Query("origins") origins: String): Single<ModelDistanceMatrix>
+    fun getDistance(
+        @Query("key") key: String,
+        @Query("destinations") destination: String,
+        @Query("origins") origins: String,
+        @Query("language") language: String = "ru"
+    ): Single<ModelDistanceMatrix>
+
 }

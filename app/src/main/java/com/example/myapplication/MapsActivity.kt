@@ -167,7 +167,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         cleanFocus()
         createProviderMarker()
         createMarkOfChoiceAddress(p0)
-        showConfirmDialog(p0)
+//        showConfirmDialog(p0)
         stringDestination = StringBuilder("${p0.latitude},${p0.longitude}").toString()
         calculateDistanceMatrixApi(stringDestination, p0)
     }
@@ -183,13 +183,16 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
                     override fun onSuccess(t: ModelDistanceMatrix) {
                         if(t.rows[0].elements.get(0).status != "ZERO_RESULTS"){
+
                             val valueDistance = t.rows.get(0).elements.get(0).distance.value.toDouble()
                             val ONE_KM = 1000.00
                             (valueDistance / ONE_KM).roundToInt().toString().also {
                                 distanceResult = StringBuilder(it).append(" км").toString().trim()
                             }
+                            showConfirmDialog(t.origin_addresses[0].toString())
                         } else {
                             Toast.makeText(this@MapsActivity, "Ничего не найдено", Toast.LENGTH_SHORT).show()
+                            vBind.fieldChosenAddress.text?.clear()
                         }
 
                         if (distanceResult == ""){
@@ -238,7 +241,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
-    private fun showConfirmDialog(p0: LatLng) {
+    private fun showConfirmDialog(p0: String) {
         dialog = Dialog(this)
         dialog.setContentView(R.layout.dialog_confirm_adress)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -248,7 +251,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         val btnCancel = dialog.findViewById<Button>(R.id.btnDialogCancelAddress)
 
         //нахождение адреса по данным LatLng + присвоение этого адреса вьюхе
-        findLocation.findAndSetAddressByLatLng(p0, fieldText, vBind.fieldChosenAddress)
+//        findLocation.findAndSetAddressByLatLng(p0, fieldText, vBind.fieldChosenAddress)
+        p0.also {
+            fieldText.text = it
+            vBind.fieldChosenAddress.setText(it)
+        }
 
         btnCancel.setOnClickListener {
             fieldText.text = ""

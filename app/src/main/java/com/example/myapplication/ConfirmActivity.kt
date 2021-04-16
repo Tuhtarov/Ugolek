@@ -55,7 +55,6 @@ class ConfirmActivity : AppCompatActivity() {
         b.fieldDeliveryOrder.setText(intent.getStringExtra("priceDelivery"))
         b.fieldDeliveryOrder.append(" руб.")
         b.fieldAllPriceOrder.setText(intent.getStringExtra("allPrice"))
-        b.fieldAllPriceOrder.append(" рублей")
 
         b.fieldPhoneOrder.textChanges()
             .map { text -> text.isNotEmpty() }

@@ -294,6 +294,7 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                     b.fieldRequiredMass.text.toString().toInt(),
                     b.fieldDelivery.text.toString().toFloat()
                 )
+                b.fieldAllPrice.append(" руб.")
             }
         }
     }
