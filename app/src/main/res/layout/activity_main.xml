@@ -161,7 +161,7 @@
                 android:background="@drawable/btn_background"
                 android:elevation="3dp"
                 android:layout_margin="3dp"
-                android:translationZ="2dp"
+                android:translationZ="4dp"
                 android:fontFamily="@font/txt_solid"
                 android:textSize="18sp"
                 android:text="" />
