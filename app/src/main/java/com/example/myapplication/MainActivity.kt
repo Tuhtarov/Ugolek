@@ -5,35 +5,31 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.location.Address
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import com.example.myapplication.common.MainActivityData
 import com.example.myapplication.common.management.*
-import com.example.myapplication.common.management.calculate.PriceOrder
 import com.example.myapplication.common.management.progressBar.ProgressBarManage
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.distancematrixtwo.RowsMatrix
-import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.SingleObserver
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.io.IOException
-import java.util.concurrent.TimeUnit
-import kotlin.math.roundToInt
 
 
-class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDistanceManagement, PriceOrderManagement {
+class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDistanceManagement,
+    PriceOrderManagement {
     private lateinit var b: ActivityMainBinding
     private lateinit var management: MainActivityManagement
     private lateinit var disposableBagRxJava3: CompositeDisposable
@@ -44,7 +40,8 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
     fun Disposable.disposeAtTheEnd() {
         disposableBagRxJava3.add(this)
     }
-    fun io.reactivex.disposables.Disposable.disposeAtTheEndRxJava2(){
+
+    fun io.reactivex.disposables.Disposable.disposeAtTheEndRxJava2() {
         disposableBagRxJava2.add(this)
     }
 
@@ -55,22 +52,24 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
         findLocation = FindLocation(this)
         management = MainActivityManagement()
         progressBarManage = ProgressBarManage(b.progressBarMain, b.progressMainContainer)
-        progressBarManage.progressOff()
         disposableBagRxJava3 = CompositeDisposable()
         disposableBagRxJava2 = io.reactivex.disposables.CompositeDisposable()
 
         setContentView(b.root)
+        progressBarManage.progressOff()
 
         b.fieldProvider.setOnClickListener {
+            b.fieldMarkCoal.isEnabled = true
             cleanFieldData()
             showDialogProvider()
         }
 
         b.fieldMarkCoal.setOnClickListener {
-            if(b.fieldProvider.text.isNotEmpty()){
+            if (b.fieldProvider.text.isNotEmpty()) {
                 showDialogMark()
             } else {
-                Toast.makeText(this, "Выберите поставщика", Toast.LENGTH_SHORT).show()
+                showCustomToast("Выберите поставщика!", getString(R.string.symbol_cancel))
+                b.fieldMarkCoal.isEnabled = false
             }
         }
 
@@ -113,47 +112,40 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                     }
                 } else {
                     b.fieldRequiredMass.text.clear()
-                    Toast.makeText(
-                        applicationContext,
-                        "Только целочисленные значения от 1-40",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showCustomToast("Только целочисленные значения от 1-40", getString(R.string.symbol_not_equal))
                 }
             }.disposeAtTheEnd()
 
 
         val intentMapsActivity = Intent(this, MapsActivity::class.java)
         b.btnChooseOnMap.setOnClickListener {
-            if(checkValidatesFieldForMaps()){
-//                massAndAddressIsValid.subscribe {
-//                    if (it == true) {
-                        intentMapsActivity.putExtra("provider", b.fieldProvider.text.toString())
-                        startActivityForResult(intentMapsActivity, 0)
-//                    } else {
-//                        Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show()
-//                    }
-//                }.disposeAtTheEnd()
+            if (checkValidatesFieldForMaps()) {
+                intentMapsActivity.putExtra("provider", b.fieldProvider.text.toString())
+                startActivityForResult(intentMapsActivity, 0)
             } else {
-                Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show()
+                showCustomToast("Заполните выделенные поля!", getString(R.string.symbol_pen_write))
             }
         }
 
 
         b.fieldPriceCoal.textChanges()
-            .map { boolean -> (b.fieldDistance.text.toString().isEmpty() && b.fieldAddressDelivery.text.length > 10) }
-            .subscribe{
-                if(it) {
-                    if(checkFieldForCalculate() && b.fieldAddressDelivery.text.toString() == addressString){
+            .map { boolean ->
+                (b.fieldDistance.text.toString()
+                    .isEmpty() && b.fieldAddressDelivery.text.length > 10)
+            }
+            .subscribe {
+                if (it) {
+                    if (checkFieldForCalculate() && b.fieldAddressDelivery.text.toString() == addressString) {
                         calculateDistance(b.fieldProvider.text.toString(), addressGeolocation)
-                    } else{
+                    } else {
                         Log.d("TAG", "Не робит валидация")
                     }
                 }
             }.disposeAtTheEnd()
 
-        val intentConfirm= Intent(this, ConfirmActivity::class.java)
+        val intentConfirm = Intent(this, ConfirmActivity::class.java)
         b.btnToOrder.setOnClickListener {
-            if(checkValidatesField()){
+            if (checkValidatesField()) {
                 intentConfirm.putExtra("provider", b.fieldProvider.text.toString())
                 intentConfirm.putExtra("coal", b.fieldMarkCoal.text.toString())
                 intentConfirm.putExtra("priceCoal", b.fieldPriceCoal.text.toString())
@@ -164,7 +156,7 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                 intentConfirm.putExtra("allPrice", b.fieldAllPrice.text.toString())
                 startActivity(intentConfirm)
             } else {
-                Toast.makeText(this, "Заполните все поля", Toast.LENGTH_SHORT).show()
+                showCustomToast("Заполните выделенные поля!", getString(R.string.symbol_pen_write))
             }
         }
 
@@ -198,6 +190,12 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                 dialogProvider.dismiss()
             }
         }
+        dialogProvider.setOnDismissListener {
+            if(b.fieldProvider.text.isEmpty()){
+                b.fieldMarkCoal.isEnabled = false
+                showCustomToast("Поставщик не выбран!", getString(R.string.symbol_cancel))
+            }
+        }
     }
 
     private fun showDialogMark() {
@@ -215,9 +213,10 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
             btn.isGone = !management.getListCoalForProvider().contains(btn.text.toString())
             btn.setOnClickListener {
                 b.fieldMarkCoal.text = btn.text
-                b.fieldPriceCoal.text = management.getPriceListOfCoal().getValue(btn.text.toString()).toString()
-                if(checkFieldForCalculate()){
-                    if(b.fieldDistance.text.toString().isNotEmpty()){
+                b.fieldPriceCoal.text =
+                    management.getPriceListOfCoal().getValue(btn.text.toString()).toString()
+                if (checkFieldForCalculate()) {
+                    if (b.fieldDistance.text.toString().isNotEmpty()) {
                         calculateOrder()
                     } else {
                         findLocation(this, b.fieldAddressDelivery.text.toString())
@@ -236,44 +235,55 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                 b.fieldAddressDelivery.setText(address.getAddressLine(0).toString())
                 addressString = b.fieldAddressDelivery.text.toString()
                 addressGeolocation = "${address.latitude}, ${address.longitude}"
-                    Log.d("TAG", "Результат поиска локации -> ${address.getAddressLine(0)}")
-                    /* Подсчёт дистанции */
-                        calculateDistance(b.fieldProvider.text.toString(), addressGeolocation)
-            },{
-                Toast.makeText(this, "Адрес не был найден.", Toast.LENGTH_LONG).show()
+                Log.d("TAG", "Результат поиска локации -> ${address.getAddressLine(0)}")
+                /* Подсчёт дистанции */
+                calculateDistance(b.fieldProvider.text.toString(), addressGeolocation)
+            }, {
+                showCustomToast("Адрес не был найден.", getString(R.string.symbol_cancel))
                 Log.e("TAG", "Адрес не был найден -> ${it.localizedMessage}")
             }).disposeAtTheEnd()
     }
 
-    private fun calculateDistance(provider: String, address: String){
+    private fun calculateDistance(provider: String, address: String) {
         super.calculateDistance(this, provider, address)?.let {
             it
-            .subscribeOn(io.reactivex.schedulers.Schedulers.io())
-            .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
-            .subscribe(object : SingleObserver<RowsMatrix> {
-                override fun onSubscribe(d: io.reactivex.disposables.Disposable) {
-                    progressBarManage.progressOn()
-                }
-
-                override fun onSuccess(t: RowsMatrix) {
-                    Log.d("TAG", "Расстояние обнаружено, результат -> ${t.rows[0].elements[0].distance.text}")
-                    progressBarManage.progressOff()
-                    b.fieldDistance.text = t.rows[0].elements[0].distance.text.replace("km", "км")
-                    providerName = b.fieldProvider.text.toString()
-                    distanceResult = b.fieldDistance.text.toString().also {
-                        if (it.contains(",")) {
-                            Toast.makeText(this@MainActivity, "Слишком далеко :В", Toast.LENGTH_SHORT).show()
-                        }
+                .subscribeOn(io.reactivex.schedulers.Schedulers.io())
+                .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
+                .subscribe(object : SingleObserver<RowsMatrix> {
+                    override fun onSubscribe(d: io.reactivex.disposables.Disposable) {
+                        progressBarManage.progressOn()
                     }
-                    calculateOrder()
-                }
 
-                override fun onError(e: Throwable) {
-                    progressBarManage.progressOff()
-                    Log.e("TAG", " calculateTotalDistance(MainActivity) -> ${e.localizedMessage}")
-                    Toast.makeText(this@MainActivity, "Возникла ошибка при подсчёте дистанции, повторите попытку", Toast.LENGTH_SHORT).show()
-                }
-            })
+                    override fun onSuccess(t: RowsMatrix) {
+                        Log.d(
+                            "TAG",
+                            "Расстояние обнаружено, результат -> ${t.rows[0].elements[0].distance.text}"
+                        )
+                        progressBarManage.progressOff()
+                        b.fieldDistance.text =
+                            t.rows[0].elements[0].distance.text.replace("km", "км")
+                        providerName = b.fieldProvider.text.toString()
+                        distanceResult = b.fieldDistance.text.toString().also {
+                            if (it.contains(",")) {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "Слишком далеко :В",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                        calculateOrder()
+                    }
+
+                    override fun onError(e: Throwable) {
+                        progressBarManage.progressOff()
+                        Log.e(
+                            "TAG",
+                            " calculateTotalDistance(MainActivity) -> ${e.localizedMessage}"
+                        )
+                        showCustomToast("Возникла ошибка при подсчёте расстояния \n повторите попытку.", getString(R.string.symbol_cancel))
+                    }
+                })
         }
     }
 
@@ -290,28 +300,32 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
 //    Log.e("TAG", " calculateTotalDistance(MainActivity) -> ${it.localizedMessage}")
 //}).disposeAtTheEndRxJava2()
 
-    private fun calculateOrder(){
+    private fun calculateOrder() {
         /* Подсчёт стоимости доставки */
-        if(b.fieldDistance.text.toString().isNotEmpty() && b.fieldRequiredMass.text.toString().isNotEmpty()){
-            if(b.fieldDistance.text.contains(",")){
+        if (b.fieldDistance.text.toString().isNotEmpty() && b.fieldRequiredMass.text.toString()
+                .isNotEmpty()
+        ) {
+            if (b.fieldDistance.text.contains(",")) {
                 Log.e("TAG", "Слишком большое расстояние")
             } else {
-                b.fieldDelivery.text = calculatePriceDelivery(b.fieldDistance.text.toString(), b.fieldRequiredMass.text.toString().toInt())
+                b.fieldDelivery.text = calculatePriceDelivery(
+                    b.fieldDistance.text.toString(),
+                    b.fieldRequiredMass.text.toString().toInt()
+                )
 
                 /* Подсчёт стоимости заказа */
                 try {
-                    b.fieldAllPrice.text = calculatePriceOrder(b.fieldPriceCoal.text.toString().toInt(),
+                    b.fieldAllPrice.text = calculatePriceOrder(
+                        b.fieldPriceCoal.text.toString().toInt(),
                         b.fieldRequiredMass.text.toString().toInt(),
                         b.fieldDelivery.text.toString().toFloat()
                     )
                     b.fieldAllPrice.append(" руб.")
-                } catch (e: IOException){
-                    Log.e("calculate order", "Возникла ошибка при подсчёте общей стоимости: \n ${e.localizedMessage} -- ${e.message}")
-                    Toast.makeText(
-                        this,
-                        "Ошибка при подсчётах, повторите попытку",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                } catch (e: IOException) {
+                    Log.e(
+                        "calculate order",
+                        "Возникла ошибка при подсчёте общей стоимости: \n ${e.localizedMessage} -- ${e.message}"
+                    )
                 }
             }
         }
@@ -322,10 +336,13 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
         return super.calculatePriceDelivery(distance, requiredMass)
     }
 
-    override fun calculatePriceOrder(priceCoal: Int, requiredMass: Int, deliveryPrice: Float): String {
+    override fun calculatePriceOrder(
+        priceCoal: Int,
+        requiredMass: Int,
+        deliveryPrice: Float
+    ): String {
         return super.calculatePriceOrder(priceCoal, requiredMass, deliveryPrice)
     }
-
 
     private fun cleanFieldData() {
         b.fieldProvider.text = ""
@@ -336,21 +353,21 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
         b.fieldAllPrice.text = ""
     }
 
-    private fun checkFieldForCalculate(): Boolean{
+    private fun checkFieldForCalculate(): Boolean {
         return (b.fieldProvider.text.toString().isNotEmpty()
                 && b.fieldMarkCoal.text.toString().isNotEmpty()
                 && b.fieldRequiredMass.text.toString().isNotEmpty()
                 && b.fieldAddressDelivery.text.toString().isNotEmpty())
     }
 
-    private fun checkValidatesField(): Boolean{
+    private fun checkValidatesField(): Boolean {
         return (b.fieldProvider.text.isNotEmpty() && b.fieldMarkCoal.text.isNotEmpty()
                 && b.fieldRequiredMass.text.isNotEmpty() && b.fieldPriceCoal.text.isNotEmpty()
                 && b.fieldAddressDelivery.text.isNotEmpty() && b.fieldDistance.text.isNotEmpty()
                 && b.fieldDelivery.text.isNotEmpty() && b.fieldAllPrice.text.isNotEmpty())
     }
 
-    private fun checkValidatesFieldForMaps(): Boolean{
+    private fun checkValidatesFieldForMaps(): Boolean {
         return (b.fieldProvider.text.isNotEmpty() && b.fieldMarkCoal.text.isNotEmpty() && b.fieldPriceCoal.text.isNotEmpty())
     }
 
@@ -367,12 +384,26 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                     calculateOrder()
                 }
             } else {
-                Toast.makeText(
-                    this,
-                    "Не удалось подсчитать стоимость доставки. Попробуйте ещё раз.",
-                    Toast.LENGTH_LONG
-                ).show()
+                showCustomToast("Не удалось подсчитать стоимость доставки. Попробуйте ещё раз.", getString(R.string.symbol_cancel))
             }
+        }
+    }
+
+    private fun showCustomToast(text: String, symbol: String) {
+        val view = layoutInflater.inflate(
+            R.layout.custom_toast,
+            findViewById(R.id.custom_toast_group)
+        )
+        val textT = view.findViewById<TextView>(R.id.text_custom_toast)
+        val iconT = view.findViewById<TextView>(R.id.icon_custom_toast)
+        textT.setText(text)
+        iconT.setText(symbol)
+
+        with(Toast(applicationContext)){
+            duration = Toast.LENGTH_SHORT
+            setView(view)
+            setGravity(Gravity.CENTER,0,0)
+            show()
         }
     }
 

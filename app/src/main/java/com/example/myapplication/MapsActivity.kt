@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -141,11 +142,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 }
                 mMap.isMyLocationEnabled = true
             } else {
-                Toast.makeText(
-                    this,
-                    "Разрешите доступ к местоположению устройства",
-                    Toast.LENGTH_LONG
-                ).show()
+//TODO                Toast.makeText(
+//                    this,
+//                    "Разрешите доступ к местоположению устройства",
+//                    Toast.LENGTH_LONG
+//                ).show()
+                showCustomToast("Разрешите доступ к местоположению устройства", getString(R.string.symbol_cancel))
                 finish()
             }
         }
@@ -203,28 +205,32 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                             }
                             showConfirmDialog(t.origin_addresses[0].toString())
                         } else {
-                            Toast.makeText(this@MapsActivity, "Ничего не найдено", Toast.LENGTH_SHORT).show()
+//TODO                            Toast.makeText(this@MapsActivity, "Ничего не найдено", Toast.LENGTH_SHORT).show()
+                            showCustomToast("Ничего не найдено", getString(R.string.symbol_cancel))
                             vBind.fieldChosenAddress.text?.clear()
                             progressBarManage.progressOff()
                         }
 
                         if (distanceResult == ""){
-                            Toast.makeText(
-                                this@MapsActivity,
-                                "Проверьте интернет соединение",
-                                Toast.LENGTH_SHORT
-                            ).show()
+//TODO                            Toast.makeText(
+//                                this@MapsActivity,
+//                                "Проверьте интернет соединение",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+                            showCustomToast("Проверьте подключение к интернету.", getString(R.string.symbol_not_equal))
                         }
                     }
 
                     override fun onError(e: Throwable) {
                         Log.e("TAG retrofit", "Возникла ошибка ${e.localizedMessage}")
-                        Toast.makeText(this@MapsActivity, "Проверьте подключение к интернету.", Toast.LENGTH_LONG).show()
+//TODO                        Toast.makeText(this@MapsActivity, "Проверьте подключение к интернету.", Toast.LENGTH_LONG).show()
+                        showCustomToast("Проверьте подключение к интернету.", getString(R.string.symbol_not_equal))
                         progressBarManage.progressOff()
                     }
                 })
         } ?: run {
-            Toast.makeText(this, "Поставщик не был выбран", Toast.LENGTH_SHORT).show()
+//TODO            Toast.makeText(this, "Поставщик не был выбран", Toast.LENGTH_SHORT).show()
+            showCustomToast("Поставщик не был выбран", getString(R.string.symbol_not_equal))
         }
     }
 
@@ -301,7 +307,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         if(!distanceResult.isNullOrEmpty()){
             fieldResultDistance.setText(distanceResult.replace("km","км"))
         } else {
-            Toast.makeText(this, "Не выбран адрес или отсутствует интернет соединение", Toast.LENGTH_LONG).show()
+//TODO            Toast.makeText(this, "Не выбран адрес или отсутствует интернет соединение", Toast.LENGTH_LONG).show()
+            showCustomToast("Не выбран адрес или \n отсутствует интернет соединение", getString(R.string.symbol_not_equal))
         }
 
         btnOkay.setOnClickListener {
@@ -368,12 +375,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                     providerGeolocationLatLng = "53.529799, 91.410684"
                 }
 
-                else -> Toast.makeText(this, "Не предвиденная ошибка", Toast.LENGTH_SHORT).show()
+//TODO                else -> Toast.makeText(this, "Возникла ошибка", Toast.LENGTH_SHORT).show()
+                else -> showCustomToast("Возникла ошибка", getString(R.string.symbol_bug))
             }
         } ?: run {
             mMap.clear()
             flagProviderOfCoal = false
-            Toast.makeText(this, "Поставщик не выбран", Toast.LENGTH_SHORT).show()
+//TODO            Toast.makeText(this, "Поставщик не выбран", Toast.LENGTH_SHORT).show()
+            showCustomToast("Поставщик не выбран", getString(R.string.symbol_cancel))
 
         }
     }
@@ -390,6 +399,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             setResult(RESULT_OK, intentResult)
         }
         finish()
+    }
+
+    private fun showCustomToast(text: String, symbol: String) {
+        val view = layoutInflater.inflate(
+            R.layout.custom_toast,
+            findViewById(R.id.custom_toast_group)
+        )
+        val textT = view.findViewById<TextView>(R.id.text_custom_toast)
+        val iconT = view.findViewById<TextView>(R.id.icon_custom_toast)
+        textT.setText(text)
+        iconT.setText(symbol)
+
+        with(Toast(applicationContext)){
+            duration = Toast.LENGTH_SHORT
+            setView(view)
+            setGravity(Gravity.CENTER,0,0)
+            show()
+        }
     }
 
     override fun onDestroy() {

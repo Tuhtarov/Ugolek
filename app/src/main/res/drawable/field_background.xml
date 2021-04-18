@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="?attr/colorPrimaryVariant" />
-    <corners android:radius="20dp" />
-    <stroke android:color="?colorSecondary"
-        android:width="0.6dp"/>
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--    Field is Enabled    -->
+    <item android:state_enabled="true">
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/colorPrimaryVariant" />
+            <corners android:radius="20dp" />
+            <stroke android:width="0.6dp" android:color="?colorSecondary" />
+        </shape>
+    </item>
+
+    <!--    Field is Enabled off :)   -->
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="?attr/colorOnError" />
+            <corners android:radius="20dp" />
+            <stroke android:width="0.6dp" android:color="?colorOnError" />
+        </shape>
+    </item>
+
+</selector>

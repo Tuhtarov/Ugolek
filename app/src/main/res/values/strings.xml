@@ -59,4 +59,8 @@
     <string name="helpersMaps">Выберите адрес доставки нажатием на карту</string>
     <string name="inputsAddress">Выбранный адрес:</string>
     <string name="symbol_check"></string>
+    <string name="symbol_cancel"></string>
+    <string name="symbol_pen_write"></string>
+    <string name="symbol_not_equal"></string>
+    <string name="symbol_bug"></string>
 </resources>

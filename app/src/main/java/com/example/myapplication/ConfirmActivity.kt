@@ -9,8 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.Gravity
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.myapplication.common.management.ConfirmActivityData
@@ -110,11 +112,12 @@ class ConfirmActivity : AppCompatActivity() {
         b.btnConfirmOrder.setOnClickListener {
             createBlockForSendCode()
             if(b.fieldPhoneOrder.text.isEmpty()){
-                Toast.makeText(
-                    this,
-                    "Поле ввода номера телефона каким-то образом оказалась пустым",
-                    Toast.LENGTH_SHORT
-                ).show()
+//TODO                Toast.makeText(
+//                    this,
+//                    "Поле ввода номера телефона каким-то образом оказалась пустым",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+                showCustomToast("Поле ввода номера телефона пустое", getString(R.string.symbol_bug))
             } else {
                 codeConfirm = generateCodeSms()
                 sendCodeConfirm(b.fieldPhoneOrder.text.toString(), codeConfirm)
@@ -201,9 +204,11 @@ class ConfirmActivity : AppCompatActivity() {
 
     private fun startTheEnd(dialog: Dialog) {
         if (orderIsValid != false) {
-            Toast.makeText(this, "Заказ отправлен на обработку!", Toast.LENGTH_LONG).show()
+//TODO            Toast.makeText(this, "Заказ отправлен на обработку!", Toast.LENGTH_LONG).show()
+            showCustomToast("аказ отправлен на обработку!", getString(R.string.symbol_check))
         } else {
-            Toast.makeText(this, "Заказ не был отправлен на обработку.", Toast.LENGTH_LONG).show()
+//TODO            Toast.makeText(this, "Заказ не был отправлен на обработку.", Toast.LENGTH_LONG).show()
+            showCustomToast("Заказ не был отправлен на обработку.", getString(R.string.symbol_check))
         }
         val intent = Intent(this, MainActivity::class.java)
         dialog.dismiss()
@@ -243,11 +248,12 @@ class ConfirmActivity : AppCompatActivity() {
             dialogCodeCanceled.dismiss()
             createBlockForSendCode()
             if(b.fieldPhoneOrder.text.isEmpty()){
-                Toast.makeText(
-                    this,
-                    "Поле ввода номера телефона каким-то образом оказалась пустым",
-                    Toast.LENGTH_SHORT
-                ).show()
+//TODO                Toast.makeText(
+//                    this,
+//                    "Поле ввода номера телефона каким-то образом оказалась пустым",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+                showCustomToast("Поле ввода номера телефона пустое", getString(R.string.symbol_bug))
             } else {
                 codeConfirm = generateCodeSms()
                 sendCodeConfirm(b.fieldPhoneOrder.text.toString(), codeConfirm)
@@ -295,11 +301,12 @@ class ConfirmActivity : AppCompatActivity() {
                     }
                     if (t.error != null) {
                         orderIsValid = false
-                        Toast.makeText(
-                            this@ConfirmActivity,
-                            "Возникла ошибка в работе с сервером: ${t.error.toString() + " | id sms -> " + t.id.toString()} ",
-                            Toast.LENGTH_LONG
-                        ).show()
+//TODO                        Toast.makeText(
+//                            this@ConfirmActivity,
+//                            "Возникла ошибка в работе с сервером: ${t.error.toString() + " | id sms -> " + t.id.toString()} ",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+                        showCustomToast("Возникла ошибка с сервером: \n ${t.error.toString()} \n id = ${t.id.toString()}", getString(R.string.symbol_bug))
                         Log.e(
                             TAG,
                             "sendCodeConfirm -> ${t.error.toString() + " | " + t.error_code.toString() + " id sms -> " + t.id.toString()}"
@@ -309,11 +316,12 @@ class ConfirmActivity : AppCompatActivity() {
 
                 override fun onError(e: Throwable) {
                     Log.e("SMS", "ошибка -> ${e.localizedMessage}")
-                    Toast.makeText(
-                        this@ConfirmActivity,
-                        "ошибка ${e.localizedMessage}",
-                        Toast.LENGTH_LONG
-                    ).show()
+//TODO                    Toast.makeText(
+//                        this@ConfirmActivity,
+//                        "ошибка ${e.localizedMessage}",
+//                        Toast.LENGTH_LONG
+//                    ).show()
+                    showCustomToast("Возникла ошибка: \n ${e.localizedMessage}", getString(R.string.symbol_bug))
                 }
 
             })
@@ -344,11 +352,12 @@ class ConfirmActivity : AppCompatActivity() {
                     }
                     if (t.error != null) {
                         orderIsValid = false
-                        Toast.makeText(
-                            this@ConfirmActivity,
-                            "Возникла ошибка в работе с сервером: ${t.error.toString() + " | id sms -> " + t.id.toString()} ",
-                            Toast.LENGTH_LONG
-                        ).show()
+//TODO                        Toast.makeText(
+//                            this@ConfirmActivity,
+//                            "Возникла ошибка в работе с сервером: ${t.error.toString() + " | id sms -> " + t.id.toString()} ",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+                        showCustomToast("Возникла ошибка с сервером: \n ${t.error.toString()} \n id = ${t.id.toString()}", getString(R.string.symbol_bug))
                         Log.e(
                             TAG,
                             "sendSmsOrder -> ${t.error.toString() + " | " + t.error_code.toString() + " id sms -> " + t.id.toString()}"
@@ -411,6 +420,24 @@ class ConfirmActivity : AppCompatActivity() {
             Log.d(TAG, "dispose? = ${compositeDisposableRx2.isDisposed}")
         }, 30000)
         super.onDestroy()
+    }
+
+    private fun showCustomToast(text: String, symbol: String) {
+        val view = layoutInflater.inflate(
+            R.layout.custom_toast,
+            findViewById(R.id.custom_toast_group)
+        )
+        val textT = view.findViewById<TextView>(R.id.text_custom_toast)
+        val iconT = view.findViewById<TextView>(R.id.icon_custom_toast)
+        textT.setText(text)
+        iconT.setText(symbol)
+
+        with(Toast(applicationContext)){
+            duration = Toast.LENGTH_SHORT
+            setView(view)
+            setGravity(Gravity.CENTER,0,0)
+            show()
+        }
     }
 
     //Константы
