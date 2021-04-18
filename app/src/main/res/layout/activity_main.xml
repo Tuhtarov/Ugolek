@@ -31,14 +31,14 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/field_provider"
             style="@style/textFieldStyle"
-            android:textColor="?colorOnSecondary"
             android:layout_width="200dp"
             android:layout_height="40dp"
-            android:textAlignment="center"
             android:background="@drawable/field_background"
             android:elevation="1dp"
-            android:translationZ="2dp"
             android:focusable="false"
+            android:textAlignment="center"
+            android:textColor="?colorOnSecondary"
+            android:translationZ="2dp"
             app:layout_constraintBottom_toTopOf="@+id/field_markCoal"
             app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
             app:layout_constraintTop_toTopOf="parent" />
@@ -61,10 +61,10 @@
             android:layout_height="40dp"
             android:background="@drawable/field_background"
             android:elevation="1dp"
-            android:translationZ="2dp"
-            android:textColor="?colorOnSecondary"
-            android:textAlignment="center"
             android:focusable="false"
+            android:textAlignment="center"
+            android:textColor="?colorOnSecondary"
+            android:translationZ="2dp"
             app:layout_constraintBottom_toTopOf="@id/field_requiredMass"
             app:layout_constraintEnd_toStartOf="@id/guidelineEnd"
             app:layout_constraintTop_toBottomOf="@id/field_provider" />
@@ -82,15 +82,15 @@
         <EditText
             android:id="@+id/field_requiredMass"
             style="@style/textFieldStyle"
-            android:textSize="19sp"
             android:layout_width="105dp"
             android:layout_height="42dp"
             android:background="@drawable/field_background"
             android:elevation="1dp"
             android:hint="@string/_1_40"
-            android:textAlignment="center"
-            android:translationZ="2dp"
             android:inputType="number"
+            android:textAlignment="center"
+            android:textSize="19sp"
+            android:translationZ="2dp"
             app:layout_constraintBottom_toTopOf="@id/container_addressDelivery"
             app:layout_constraintEnd_toStartOf="@+id/guidelineEnd"
             app:layout_constraintTop_toBottomOf="@id/field_markCoal" />
@@ -120,16 +120,16 @@
                 style="@style/textFieldStyle"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
+                android:layout_margin="3dp"
                 android:layout_marginTop="2dp"
-                android:padding="10dp"
-                android:textSize="18sp"
                 android:background="@drawable/field_background"
                 android:elevation="1dp"
-                android:layout_margin="3dp"
-                android:maxLines="4"
                 android:focusable="false"
-                android:textColor="?colorOnSecondary"
+                android:maxLines="4"
+                android:padding="10dp"
                 android:textAlignment="center"
+                android:textColor="?colorOnSecondary"
+                android:textSize="18sp"
                 android:translationZ="2dp" />
         </LinearLayout>
 
@@ -157,14 +157,14 @@
                 android:id="@+id/btn_chooseOnMap"
                 android:layout_width="72dp"
                 android:layout_height="36dp"
-                android:textColor="?md_color_button_text"
+                android:layout_margin="3dp"
                 android:background="@drawable/btn_background"
                 android:elevation="3dp"
-                android:layout_margin="3dp"
-                android:translationZ="4dp"
                 android:fontFamily="@font/txt_solid"
+                android:text=""
+                android:textColor="?md_color_button_text"
                 android:textSize="18sp"
-                android:text="" />
+                android:translationZ="4dp" />
         </LinearLayout>
 
         <!--    Линия, разделяющая UIX   -->
@@ -190,7 +190,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linear_uix">
+            app:layout_constraintTop_toBottomOf="@+id/linear_uix"
+            tools:viewBindingIgnore="true">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_info"
@@ -198,18 +199,19 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="30dp"
                 app:cardCornerRadius="40dp"
-                app:cardElevation="2dp">
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toStartOf="@id/guidelineEnd"-->
-<!--                app:layout_constraintStart_toEndOf="@id/guidelineStart"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/linear_uix"-->
-<!--                >-->
+                app:cardElevation="2dp"
+                tools:viewBindingIgnore="true">
+                <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                app:layout_constraintEnd_toStartOf="@id/guidelineEnd"-->
+                <!--                app:layout_constraintStart_toEndOf="@id/guidelineStart"-->
+                <!--                app:layout_constraintTop_toBottomOf="@+id/linear_uix"-->
+                <!--                >-->
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?colorPrimaryVariant"
-                    android:layout_gravity="center">
+                    android:layout_gravity="center"
+                    android:background="?colorPrimaryVariant">
 
                     <!--    область стоимости тонны    -->
                     <TextView
@@ -221,13 +223,15 @@
                         android:text="@string/priceCoal"
                         app:layout_constraintBottom_toTopOf="@id/text_distance"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:viewBindingIgnore="true"/>
+
                     <TextView
                         android:id="@+id/field_priceCoal"
                         style="@style/textStyle"
+                        android:layout_marginEnd="20dp"
                         app:layout_constraintBottom_toBottomOf="@id/text_priceCoal"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginEnd="20dp"
                         app:layout_constraintTop_toTopOf="@id/text_priceCoal" />
 
                     <!--    область расстояния доставки    -->
@@ -239,13 +243,15 @@
                         android:text="@string/distance"
                         app:layout_constraintBottom_toTopOf="@+id/text_delivery"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/text_priceCoal" />
+                        app:layout_constraintTop_toBottomOf="@id/text_priceCoal"
+                        tools:viewBindingIgnore="true"/>
+
                     <TextView
                         android:id="@+id/field_distance"
                         style="@style/textStyle"
+                        android:layout_marginEnd="20dp"
                         app:layout_constraintBottom_toBottomOf="@id/text_distance"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginEnd="20dp"
                         app:layout_constraintTop_toTopOf="@id/text_distance" />
 
                     <!--    область стоимости доставки    -->
@@ -258,13 +264,15 @@
                         android:text="@string/priceDelivery"
                         app:layout_constraintBottom_toTopOf="@id/divider_price"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/text_distance" />
+                        app:layout_constraintTop_toBottomOf="@id/text_distance"
+                        tools:viewBindingIgnore="true"/>
+
                     <TextView
                         android:id="@+id/field_delivery"
                         style="@style/textStyle"
+                        android:layout_marginEnd="20dp"
                         app:layout_constraintBottom_toBottomOf="@id/text_delivery"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginEnd="20dp"
                         app:layout_constraintTop_toTopOf="@id/text_delivery" />
 
                     <!--    Линия, разделяющая стоимость доставки и общую стоимость    -->
@@ -277,7 +285,8 @@
                         app:layout_constraintBottom_toTopOf="@id/text_allPrice"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/text_delivery" />
+                        app:layout_constraintTop_toBottomOf="@+id/text_delivery"
+                        tools:viewBindingIgnore="true"/>
 
                     <!--    Область общей стоимости    -->
                     <TextView
@@ -289,7 +298,9 @@
                         android:text="@string/commonPrice"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/divider_price" />
+                        app:layout_constraintTop_toBottomOf="@id/divider_price"
+                        tools:viewBindingIgnore="true"/>
+
                     <TextView
                         android:id="@+id/field_allPrice"
                         style="@style/textStyle"
@@ -308,19 +319,37 @@
                 android:layout_height="43dp"
                 android:background="@drawable/btn_background"
                 android:elevation="3dp"
+                android:fontFamily="@font/txt_solid"
                 android:text="@string/symbol_check"
                 android:textColor="?md_color_button_text"
                 android:textSize="20sp"
-                android:fontFamily="@font/txt_solid"
                 app:layout_anchor="@+id/card_info"
                 app:layout_anchorGravity="bottom|center"
                 app:layout_constraintEnd_toEndOf="@id/card_info"
                 app:layout_constraintStart_toStartOf="@id/card_info"
                 app:layout_constraintTop_toBottomOf="@+id/card_info" />
-
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+        <LinearLayout
+            android:id="@+id/progress_main_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/progress_bar_background"
+            android:elevation="8dp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="@id/cord_info"
+            app:layout_constraintEnd_toEndOf="@id/cord_info"
+            app:layout_constraintBottom_toTopOf="@id/cord_info">
 
+            <ProgressBar
+                android:id="@+id/progressBarMain"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_margin="10dp"
+                android:elevation="8dp" />
+
+        </LinearLayout>
 
         <!--    вертикальные ГайдЛайны  -->
         <androidx.constraintlayout.widget.Guideline

@@ -2,6 +2,7 @@
 package com.example.myapplication
 
 import android.Manifest
+import android.app.Activity
 import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,16 +13,20 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.KeyEvent
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.TextView.GONE
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.example.myapplication.common.management.FindLocation
+import com.example.myapplication.common.management.progressBar.ProgressBarManage
 import com.example.myapplication.databinding.ActivityMapsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -57,12 +62,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     var addressResult = ""
     lateinit var distanceMatrixApi: DistanceMatrixApi
     lateinit var findLocation: FindLocation
+    lateinit var progressBarManage: ProgressBarManage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vBind = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(vBind.root)
 
+        progressBarManage = ProgressBarManage(vBind.progressBarMaps, vBind.progressMapsContainer)
+        progressBarManage.progressOff()
         findLocation = FindLocation(this)
 
         //сборка ретрофита
@@ -179,10 +187,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<ModelDistanceMatrix> {
                     override fun onSubscribe(d: Disposable) {
+                        progressBarManage.progressOn()
+                        Log.d(tag, "ProgressBar.iSVisible? = ${vBind.progressBarMaps.isVisible} + \n Subscribe")
                     }
 
                     override fun onSuccess(t: ModelDistanceMatrix) {
                         if(t.rows[0].elements.get(0).status != "ZERO_RESULTS"){
+                            progressBarManage.progressOff()
+                            Log.d(tag, "ProgressBar.iSVisible? = ${vBind.progressBarMaps.isVisible} + \n onSuccess")
 
                             val valueDistance = t.rows.get(0).elements.get(0).distance.value.toDouble()
                             val ONE_KM = 1000.00
@@ -193,6 +205,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                         } else {
                             Toast.makeText(this@MapsActivity, "Ничего не найдено", Toast.LENGTH_SHORT).show()
                             vBind.fieldChosenAddress.text?.clear()
+                            progressBarManage.progressOff()
                         }
 
                         if (distanceResult == ""){
@@ -207,6 +220,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                     override fun onError(e: Throwable) {
                         Log.e("TAG retrofit", "Возникла ошибка ${e.localizedMessage}")
                         Toast.makeText(this@MapsActivity, "Проверьте подключение к интернету.", Toast.LENGTH_LONG).show()
+                        progressBarManage.progressOff()
                     }
                 })
         } ?: run {

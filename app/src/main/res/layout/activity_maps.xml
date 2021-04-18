@@ -48,6 +48,28 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+    <LinearLayout
+        android:id="@+id/progress_maps_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="80dp"
+        android:elevation="8dp"
+        android:background="@drawable/progress_bar_background"
+        app:layout_constraintBottom_toTopOf="@+id/CardViewInputsAddress"
+        app:layout_constraintStart_toStartOf="@+id/CardViewInputsAddress"
+        app:layout_constraintEnd_toEndOf="@+id/CardViewInputsAddress">
+
+        <ProgressBar
+            android:id="@+id/progressBarMaps"
+            android:layout_margin="10dp"
+            style="?android:attr/progressBarStyle"
+            android:elevation="8dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"/>
+
+    </LinearLayout>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/CardViewInputsAddress"
         android:layout_width="310dp"
@@ -167,6 +189,7 @@
         <!--        </androidx.appcompat.widget.AppCompatButton>-->
 
     </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

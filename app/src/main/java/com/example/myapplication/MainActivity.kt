@@ -16,16 +16,19 @@ import androidx.core.view.isGone
 import com.example.myapplication.common.MainActivityData
 import com.example.myapplication.common.management.*
 import com.example.myapplication.common.management.calculate.PriceOrder
+import com.example.myapplication.common.management.progressBar.ProgressBarManage
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.distancematrixtwo.RowsMatrix
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
+import io.reactivex.SingleObserver
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
     private lateinit var disposableBagRxJava3: CompositeDisposable
     private lateinit var disposableBagRxJava2: io.reactivex.disposables.CompositeDisposable
     private lateinit var findLocation: FindLocation
+    private lateinit var progressBarManage: ProgressBarManage
 
     fun Disposable.disposeAtTheEnd() {
         disposableBagRxJava3.add(this)
@@ -50,6 +54,8 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
 
         findLocation = FindLocation(this)
         management = MainActivityManagement()
+        progressBarManage = ProgressBarManage(b.progressBarMain, b.progressMainContainer)
+        progressBarManage.progressOff()
         disposableBagRxJava3 = CompositeDisposable()
         disposableBagRxJava2 = io.reactivex.disposables.CompositeDisposable()
 
@@ -132,27 +138,6 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
             }
         }
 
-//        b.fieldAddressDelivery.textChanges()
-//            .debounce(500, TimeUnit.MILLISECONDS)
-//            .map { text -> (text.length > 15) }
-//            .distinctUntilChanged()
-//            .subscribeOn(Schedulers.newThread())
-//            .observeOn(AndroidSchedulers.mainThread())
-//            .subscribe{ boolean ->
-//                if(boolean) b.btnChooseOnMap.isEnabled = boolean else b.btnChooseOnMap.isEnabled = boolean
-//            }.disposeAtTheEnd()
-
-//        b.btnChooseOnMap.setOnClickListener {
-//            if(addressString == b.fieldAddressDelivery.text.toString()){
-//                if(providerName == b.fieldProvider.text.toString()){
-//                    Log.e("TAG", "btnSearchAddress -> Адрес и расстояние доставки уже определены")
-//                } else {
-//                    calculateDistance(b.fieldProvider.text.toString(), addressGeolocation)
-//                }
-//            } else {
-//                findLocation(this, b.fieldAddressDelivery.text.toString())
-//            }
-//        }
 
         b.fieldPriceCoal.textChanges()
             .map { boolean -> (b.fieldDistance.text.toString().isEmpty() && b.fieldAddressDelivery.text.length > 10) }
@@ -265,21 +250,45 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
             it
             .subscribeOn(io.reactivex.schedulers.Schedulers.io())
             .observeOn(io.reactivex.android.schedulers.AndroidSchedulers.mainThread())
-            .subscribe({
-                Log.d("TAG", "Расстояние обнаружено, результат -> ${it.rows[0].elements[0].distance.text}")
-                b.fieldDistance.text = it.rows[0].elements[0].distance.text.replace("km", "км")
-                providerName = b.fieldProvider.text.toString()
-                distanceResult = b.fieldDistance.text.toString().also {
-                    if(it.contains(",")){
-                        Toast.makeText(this, "Слишком далеко :В", Toast.LENGTH_SHORT).show()
-                    }
+            .subscribe(object : SingleObserver<RowsMatrix> {
+                override fun onSubscribe(d: io.reactivex.disposables.Disposable) {
+                    progressBarManage.progressOn()
                 }
-                   calculateOrder()
-            },{
-                Log.e("TAG", " calculateTotalDistance(MainActivity) -> ${it.localizedMessage}")
-            }).disposeAtTheEndRxJava2()
+
+                override fun onSuccess(t: RowsMatrix) {
+                    Log.d("TAG", "Расстояние обнаружено, результат -> ${t.rows[0].elements[0].distance.text}")
+                    progressBarManage.progressOff()
+                    b.fieldDistance.text = t.rows[0].elements[0].distance.text.replace("km", "км")
+                    providerName = b.fieldProvider.text.toString()
+                    distanceResult = b.fieldDistance.text.toString().also {
+                        if (it.contains(",")) {
+                            Toast.makeText(this@MainActivity, "Слишком далеко :В", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    calculateOrder()
+                }
+
+                override fun onError(e: Throwable) {
+                    progressBarManage.progressOff()
+                    Log.e("TAG", " calculateTotalDistance(MainActivity) -> ${e.localizedMessage}")
+                    Toast.makeText(this@MainActivity, "Возникла ошибка при подсчёте дистанции, повторите попытку", Toast.LENGTH_SHORT).show()
+                }
+            })
         }
     }
+
+//    Log.d("TAG", "Расстояние обнаружено, результат -> ${it.rows[0].elements[0].distance.text}")
+//    b.fieldDistance.text = it.rows[0].elements[0].distance.text.replace("km", "км")
+//    providerName = b.fieldProvider.text.toString()
+//    distanceResult = b.fieldDistance.text.toString().also {
+//        if(it.contains(",")){
+//            Toast.makeText(this, "Слишком далеко :В", Toast.LENGTH_SHORT).show()
+//        }
+//    }
+//    calculateOrder()
+//},{
+//    Log.e("TAG", " calculateTotalDistance(MainActivity) -> ${it.localizedMessage}")
+//}).disposeAtTheEndRxJava2()
 
     private fun calculateOrder(){
         /* Подсчёт стоимости доставки */
@@ -290,11 +299,20 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                 b.fieldDelivery.text = calculatePriceDelivery(b.fieldDistance.text.toString(), b.fieldRequiredMass.text.toString().toInt())
 
                 /* Подсчёт стоимости заказа */
-                b.fieldAllPrice.text = calculatePriceOrder(b.fieldPriceCoal.text.toString().toInt(),
-                    b.fieldRequiredMass.text.toString().toInt(),
-                    b.fieldDelivery.text.toString().toFloat()
-                )
-                b.fieldAllPrice.append(" руб.")
+                try {
+                    b.fieldAllPrice.text = calculatePriceOrder(b.fieldPriceCoal.text.toString().toInt(),
+                        b.fieldRequiredMass.text.toString().toInt(),
+                        b.fieldDelivery.text.toString().toFloat()
+                    )
+                    b.fieldAllPrice.append(" руб.")
+                } catch (e: IOException){
+                    Log.e("calculate order", "Возникла ошибка при подсчёте общей стоимости: \n ${e.localizedMessage} -- ${e.message}")
+                    Toast.makeText(
+                        this,
+                        "Ошибка при подсчётах, повторите попытку",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }

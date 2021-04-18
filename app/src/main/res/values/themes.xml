@@ -30,6 +30,5 @@
         <item name="colorButtonNormal">@color/colorBtnNormalLight</item>
         <!--        Для фона диалоговых окон-->
         <item name="colorControlNormal">@color/colorOnPrimaryGray</item>
-
     </style>
 </resources>
