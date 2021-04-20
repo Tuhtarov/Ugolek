@@ -10,6 +10,7 @@ import com.example.myapplication.MapsActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -42,8 +43,11 @@ open class FindLocation(private val cntxt: Context?){
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude),15f))
-                editText.setText(it.getAddressLine(0).toString())
+                Log.e("FindLocation", "Google Map searching. Result = ${it.getAddressLine(0)}")
+                map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(it.latitude, it.longitude),20f))
+//                 Здесь присваивался результат в поле с поиском адреса
+//                editText.setText(it.getAddressLine(0).toString())
+//                editTextSecond?.setText(it.getAddressLine(0).toString())
             },{
                 Log.e("FindLocation", " -> ${it.localizedMessage}")
             })

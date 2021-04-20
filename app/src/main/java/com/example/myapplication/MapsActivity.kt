@@ -4,6 +4,7 @@ package com.example.myapplication
 import android.Manifest
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -16,6 +17,7 @@ import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -24,6 +26,7 @@ import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.example.myapplication.common.management.FindLocation
@@ -47,6 +50,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -153,21 +157,32 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
+
+    fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
     //TODO АДРЕСНАЯ СТРОКА
     private fun initAddressSearchUI() {
         Log.d(tag, "init: initialing")
-//        val searchField = binding.inputAddressMap
-
-        vBind.inputAddressMap.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
+        val searchField = vBind.inputAddressMap
+        searchField.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event.action == KeyEvent.KEYCODE_ENTER) {
-
-                if (vBind.inputAddressMap.text.toString() != "" && vBind.inputAddressMap.text.length >= 3){
-                    findLocation.findAndSetAddressByString(vBind.inputAddressMap, mMap)
-                } else vBind.inputAddressMap.setText("")
+                if (searchField.text.toString() != "" && searchField.text!!.length >= 3){
+                    try{
+                        findLocation.findAndSetAddressByString(searchField, mMap)
+                        this.hideKeyboard(vBind.root)
+                    } catch (e: IOException){
+                        showCustomToast("Ошибка.",getString(R.string.symbol_cancel))
+                    }
+                } else searchField.setText("")
                 cleanFocus()
-
+                return@OnEditorActionListener true
+            } else {
+                Log.e(tag, "event not equals")
             }
-            return@OnEditorActionListener false
+            return@OnEditorActionListener true
         })
 
     }
@@ -299,10 +314,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         dialogCalculate = Dialog(this)
         dialogCalculate.setContentView(R.layout.dialog_calculate_distance)
         dialogCalculate.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
         val btnOkay = dialogCalculate.findViewById<Button>(R.id.btn_ok)
         val fieldResultDistance = dialogCalculate.findViewById<EditText>(R.id.field_outputDistance)
-
 
         if(!distanceResult.isNullOrEmpty()){
             fieldResultDistance.setText(distanceResult.replace("km","км"))
@@ -310,7 +323,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 //TODO            Toast.makeText(this, "Не выбран адрес или отсутствует интернет соединение", Toast.LENGTH_LONG).show()
             showCustomToast("Не выбран адрес или \n отсутствует интернет соединение", getString(R.string.symbol_not_equal))
         }
-
         btnOkay.setOnClickListener {
             dialogCalculate.dismiss()
         }
@@ -422,7 +434,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     override fun onDestroy() {
         /* Отложенное очищение композит бэга нужно, что бы композит бэк не очистился во время выполнения запроса на сервер(иначе результат попытается придти
         в удалённый контейнер), это может случится при плохом соединении с интернетом */
-        vBind.inputAddressMap.text.clear()
+        vBind.inputAddressMap.text?.clear()
         vBind.fieldChosenAddress.setText("")
         mMap.clear()
 

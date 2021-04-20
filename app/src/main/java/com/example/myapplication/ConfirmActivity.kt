@@ -433,7 +433,7 @@ class ConfirmActivity : AppCompatActivity() {
         iconT.setText(symbol)
 
         with(Toast(applicationContext)){
-            duration = Toast.LENGTH_SHORT
+            duration = Toast.LENGTH_LONG
             setView(view)
             setGravity(Gravity.CENTER,0,0)
             show()

@@ -19,8 +19,7 @@
         <!-- Для нажатой кнопки -->
         <item name="colorAccent">#8AE483</item>
         <!-- Для заблокированного объекта -->
-        <item name="colorOnError">#E8E8E8</item>
-
+        <item name="colorOnError">#F8F8F8</item>
         <!-- Для границ фоновых объектов (page confirm activity) -->
         <item name="colorBackgroundFloating">#BBBBBB</item>
         <!-- Для фона фоновых объектов (page confirm activity) -->

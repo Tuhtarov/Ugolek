@@ -1,14 +1,23 @@
 package com.example.myapplication
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.Gravity
+import android.view.KeyEvent
+import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +35,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.io.IOException
+import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDistanceManagement,
@@ -39,6 +49,12 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
 
     fun Disposable.disposeAtTheEnd() {
         disposableBagRxJava3.add(this)
+    }
+
+    private fun Context.hideSoftBoard(view: View){
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+
     }
 
     fun io.reactivex.disposables.Disposable.disposeAtTheEndRxJava2() {
@@ -56,6 +72,7 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
         disposableBagRxJava2 = io.reactivex.disposables.CompositeDisposable()
 
         setContentView(b.root)
+        b.fieldMarkCoal.isEnabled = false
         progressBarManage.progressOff()
 
         b.fieldProvider.setOnClickListener {
@@ -112,7 +129,10 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                     }
                 } else {
                     b.fieldRequiredMass.text.clear()
-                    showCustomToast("Только целочисленные значения от 1-40", getString(R.string.symbol_not_equal))
+                    showCustomToast(
+                        "Только целочисленные значения от 1-40",
+                        getString(R.string.symbol_not_equal)
+                    )
                 }
             }.disposeAtTheEnd()
 
@@ -146,6 +166,7 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
         val intentConfirm = Intent(this, ConfirmActivity::class.java)
         b.btnToOrder.setOnClickListener {
             if (checkValidatesField()) {
+                b.fieldAddressDelivery.setText(addressString)
                 intentConfirm.putExtra("provider", b.fieldProvider.text.toString())
                 intentConfirm.putExtra("coal", b.fieldMarkCoal.text.toString())
                 intentConfirm.putExtra("priceCoal", b.fieldPriceCoal.text.toString())
@@ -160,7 +181,44 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
             }
         }
 
+        var addressFromUsersInputs = ""
+        b.fieldAddressDelivery.textChanges()
+            .map { text -> text.isNotEmpty() }
+            .debounce(2000, TimeUnit.MILLISECONDS)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ boolean ->
+                if (boolean == true) {
+                    if (b.fieldAddressDelivery.text.toString().contains("  ")) {
+                        b.fieldAddressDelivery.setText(b.fieldAddressDelivery.text.toString().replace("  ", " "))
+                        b.fieldAddressDelivery.setText(b.fieldAddressDelivery.text.toString().replace("  ", " "))
+                        b.fieldAddressDelivery.setText(b.fieldAddressDelivery.text.toString().replace("  ", " "))
+                        b.fieldAddressDelivery.setSelection(b.fieldAddressDelivery.text.length)
+                    }
+                    if(b.fieldAddressDelivery.text.length > 15){
+                        if (addressFromUsersInputs != b.fieldAddressDelivery.text.toString()) {
+                            if(addressString == b.fieldAddressDelivery.text.toString()){
+                                if(providerName == b.fieldProvider.text.toString()){
+                                    Log.e("fieldAddress", "на такой адрес уже свершился подсчёт")
+                                } else {
+                                    calculateDistance(b.fieldProvider.text.toString(), addressGeolocation)
+                                    hideSoftBoard(b.root)
+                                }
+                            } else {
+                                findLocation(this, b.fieldAddressDelivery.text.toString())
+                                hideSoftBoard(b.root)
+                            }
+                        }
+                        addressFromUsersInputs = b.fieldAddressDelivery.text.toString()
+                    }
+                }
+            }, {
+
+
+                Log.e("fieldAddress", it.localizedMessage)
+            }).disposeAtTheEnd()
     }
+
     /*============================================================================================*/
 
     /* addressGeolocation - переменная, в которую помещается геоданные о выбранном адресе */
@@ -191,7 +249,7 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
             }
         }
         dialogProvider.setOnDismissListener {
-            if(b.fieldProvider.text.isEmpty()){
+            if (b.fieldProvider.text.isEmpty()) {
                 b.fieldMarkCoal.isEnabled = false
                 showCustomToast("Поставщик не выбран!", getString(R.string.symbol_cancel))
             }
@@ -281,24 +339,14 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                             "TAG",
                             " calculateTotalDistance(MainActivity) -> ${e.localizedMessage}"
                         )
-                        showCustomToast("Возникла ошибка при подсчёте расстояния \n повторите попытку.", getString(R.string.symbol_cancel))
+                        showCustomToast(
+                            "Возникла ошибка при подсчёте расстояния \n повторите попытку.",
+                            getString(R.string.symbol_cancel)
+                        )
                     }
                 })
         }
     }
-
-//    Log.d("TAG", "Расстояние обнаружено, результат -> ${it.rows[0].elements[0].distance.text}")
-//    b.fieldDistance.text = it.rows[0].elements[0].distance.text.replace("km", "км")
-//    providerName = b.fieldProvider.text.toString()
-//    distanceResult = b.fieldDistance.text.toString().also {
-//        if(it.contains(",")){
-//            Toast.makeText(this, "Слишком далеко :В", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-//    calculateOrder()
-//},{
-//    Log.e("TAG", " calculateTotalDistance(MainActivity) -> ${it.localizedMessage}")
-//}).disposeAtTheEndRxJava2()
 
     private fun calculateOrder() {
         /* Подсчёт стоимости доставки */
@@ -384,7 +432,10 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
                     calculateOrder()
                 }
             } else {
-                showCustomToast("Не удалось подсчитать стоимость доставки. Попробуйте ещё раз.", getString(R.string.symbol_cancel))
+                showCustomToast(
+                    "Не удалось подсчитать стоимость доставки. Попробуйте ещё раз.",
+                    getString(R.string.symbol_cancel)
+                )
             }
         }
     }
@@ -399,12 +450,25 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
         textT.setText(text)
         iconT.setText(symbol)
 
-        with(Toast(applicationContext)){
+        with(Toast(applicationContext)) {
             duration = Toast.LENGTH_SHORT
             setView(view)
-            setGravity(Gravity.CENTER,0,0)
+            setGravity(Gravity.CENTER, 0, 0)
             show()
         }
+    }
+
+    override fun onBackPressed() {
+        with(AlertDialog.Builder(this)) {
+            setTitle("Подтверждение действия")
+            setMessage("Вы точно хотите выйти?")
+            setPositiveButton("Да") { _, _ ->
+                super.onBackPressed()
+            }
+            setNegativeButton("Нет") { _, _ ->
+            }
+            setCancelable(true)
+        }.create().show()
     }
 
     override fun onDestroy() {
@@ -412,4 +476,5 @@ class MainActivity : AppCompatActivity(), FindLocationManagement, CalculateDista
         disposableBagRxJava2.dispose()
         super.onDestroy()
     }
+
 }

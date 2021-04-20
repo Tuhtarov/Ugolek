@@ -12,9 +12,9 @@ interface CalculateDistanceManagement {
         destination: String
     ): Single<RowsMatrix>? {
         val calculateClass = CalculateDistanceMatrixApi(context)
-        val destinationAddress = calculateClass.checkProvider(provider)
+        val providerAddress = calculateClass.checkProvider(provider)
 
-        destinationAddress?.let {
+        providerAddress?.let {
             return calculateClass.calculateDistance(it, destination)
         } ?: run {
             return null
